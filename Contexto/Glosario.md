@@ -180,3 +180,27 @@ Capacidad del cliente para consultar información, descargar documentos y ejecut
 Equipo interno encargado de atender incidencias, consultas y problemas operativos relacionados con la plataforma y los documentos electrónicos.
 
 ---
+
+## Sesión de Usuario
+
+Período de tiempo durante el cual un usuario autenticado tiene acceso activo al sistema bajo el contexto de un cliente específico. La sesión inicia después de una autenticación exitosa y selección de cliente, y finaliza por cierre explícito del usuario, inactividad o expiración del tiempo de sesión.
+
+---
+
+## Bloqueo de Cuenta
+
+Estado temporal de una cuenta de usuario que impide el acceso al sistema debido a intentos fallidos consecutivos de autenticación. El bloqueo es un mecanismo de seguridad para proteger contra ataques de fuerza bruta y adivinación de contraseñas.
+
+---
+
+## Desbloqueo Automático
+
+Proceso mediante el cual una cuenta de usuario bloqueada por intentos fallidos de autenticación recupera automáticamente su capacidad de acceso después de transcurrido un período de tiempo definido, sin intervención manual de un administrador.
+
+---
+
+## Contexto de Cliente
+
+Conjunto de información, permisos y configuraciones específicas asociadas a un cliente particular, que determinan el alcance de acceso y funcionalidades disponibles para un usuario durante su sesión en el sistema.
+
+---
