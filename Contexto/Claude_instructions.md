@@ -53,6 +53,7 @@ Una vez tenga tus respuestas, DEBES:
    - Incorporar nuevas reglas de negocio.
    - Ajustar la visión, alcance o lineamientos funcionales.
 3. Proponer explícitamente las actualizaciones al contexto antes de generar la HU.
+4. los mensajes y comunicaciones que se muestren en plataforma deben ser cercanos, es decir siempre tuteamos al cliente pero manetenemso una comunicación  profesional y cordial
 
 📌 Forma de hacerlo:
 - Indica qué archivo(s) de `contexto/` se deben actualizar.
@@ -90,5 +91,7 @@ Cada Historia de Usuario debe:
 - Si se requieren ajustes al contexto: presenta primero la propuesta de actualización.
 - Cuando todo esté alineado: entrega ÚNICAMENTE la HU final en Markdown.
 - No incluyas explicaciones adicionales fuera de los artefactos solicitados.
+
+
 
 Confirma que has entendido el contexto, las reglas y el enfoque funcional, y espera a que te describa la primera funcionalidad.
