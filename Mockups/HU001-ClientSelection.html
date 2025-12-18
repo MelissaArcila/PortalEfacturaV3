@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HU001 - Selección de Cliente - Portal Unificado Efactura</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .selection-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 540px;
+            padding: 48px 40px;
+        }
+
+        .header-section {
+            margin-bottom: 32px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .user-role {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .client-count {
+            font-size: 12px;
+            color: #718096;
+            font-weight: 400;
+            margin-left: 8px;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.2s;
+            background: #f7fafc;
+            cursor: pointer;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        .search-input.error {
+            border-color: #f56565;
+            background: #fff5f5;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .dropdown-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            pointer-events: none;
+            transition: transform 0.2s;
+        }
+
+        .dropdown-arrow.open {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .dropdown-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-height: 280px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .dropdown-list.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f7fafc;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: #f7fafc;
+        }
+
+        .dropdown-item.selected {
+            background: #edf2f7;
+            font-weight: 500;
+        }
+
+        .client-nit {
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .client-name {
+            color: #718096;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .no-results {
+            padding: 24px;
+            text-align: center;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .error-message {
+            display: none;
+            background: #fff5f5;
+            border-left: 4px solid #f56565;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            border-radius: 4px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .error-text {
+            color: #c53030;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-icon {
+            font-size: 18px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            color: #4a5568;
+            background: #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .state-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        .state-selector h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #2d3748;
+        }
+
+        .state-selector button {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .state-selector button:hover {
+            background: #edf2f7;
+        }
+
+        .state-selector button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        @media (max-width: 580px) {
+            .selection-container {
+                padding: 32px 24px;
+            }
+
+            .btn-group {
+                flex-direction: column-reverse;
+            }
+
+            .state-selector {
+                position: static;
+                margin-bottom: 20px;
+                width: 100%;
+                max-width: 540px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Selector de estados para demostración -->
+    <div class="state-selector">
+        <h3>Estados del Mockup</h3>
+        <button onclick="showState('normal')" class="active">Normal</button>
+        <button onclick="showState('few-clients')">Pocos clientes (3)</button>
+        <button onclick="showState('many-clients')">Muchos clientes (15)</button>
+        <button onclick="showState('error-inactive')">Error - Cliente inactivo</button>
+    </div>
+
+    <div class="selection-container">
+        <div class="user-info">
+            <div class="user-avatar">JD</div>
+            <div class="user-details">
+                <div class="user-name">Juan Pérez</div>
+                <div class="user-role">usuario@empresa.com</div>
+            </div>
+        </div>
+
+        <div class="header-section">
+            <h1 class="page-title">Seleccione un cliente</h1>
+            <p class="page-description">
+                Usted tiene acceso a múltiples clientes. Por favor seleccione el cliente con el cual desea trabajar en esta sesión.
+            </p>
+        </div>
+
+        <form id="clientSelectionForm">
+            <div class="error-message" id="errorMessage">
+                <div class="error-text">
+                    <span class="error-icon">⚠</span>
+                    <span id="errorText">Acceso no disponible. Contacte al administrador.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="clientSelect">
+                    Cliente
+                    <span class="client-count" id="clientCount">(8 clientes disponibles)</span>
+                </label>
+                <div class="select-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input
+                        type="text"
+                        id="clientSelect"
+                        class="search-input"
+                        placeholder="Buscar por NIT o nombre..."
+                        autocomplete="off"
+                    >
+                    <span class="dropdown-arrow" id="dropdownArrow">▼</span>
+                    <div class="dropdown-list" id="dropdownList">
+                        <!-- Los items se cargarán dinámicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" onclick="logout()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Ingresar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Datos de ejemplo
+        const clientsData = {
+            few: [
+                { nit: '900123456-7', name: 'Empresa Demo Uno SAS', active: true },
+                { nit: '900234567-8', name: 'Compañía de Pruebas Ltda', active: true },
+                { nit: '900345678-9', name: 'Servicios Empresariales SA', active: true }
+            ],
+            many: [
+                { nit: '900123456-7', name: 'Empresa Demo Uno SAS', active: true },
+                { nit: '900234567-8', name: 'Compañía de Pruebas Ltda', active: true },
+                { nit: '900345678-9', name: 'Servicios Empresariales SA', active: true },
+                { nit: '900456789-0', name: 'Industrias Manufactureras SAS', active: true },
+                { nit: '900567890-1', name: 'Distribuidora Nacional Ltda', active: true },
+                { nit: '900678901-2', name: 'Comercializadora Internacional SA', active: true },
+                { nit: '900789012-3', name: 'Soluciones Tecnológicas SAS', active: true },
+                { nit: '900890123-4', name: 'Consultoría Empresarial Ltda', active: true },
+                { nit: '900901234-5', name: 'Logística y Transporte SA', active: true },
+                { nit: '901012345-6', name: 'Alimentos y Bebidas SAS', active: true },
+                { nit: '901123456-7', name: 'Construcciones y Obras Ltda', active: true },
+                { nit: '901234567-8', name: 'Textiles y Confecciones SA', active: true },
+                { nit: '901345678-9', name: 'Farmacéutica Nacional SAS', active: true },
+                { nit: '901456789-0', name: 'Automotriz del Sur Ltda', active: true },
+                { nit: '901567890-1', name: 'Telecomunicaciones Avanzadas SA', active: true }
+            ],
+            withInactive: [
+                { nit: '900123456-7', name: 'Empresa Demo Uno SAS', active: true },
+                { nit: '900234567-8', name: 'Compañía de Pruebas Ltda', active: false },
+                { nit: '900345678-9', name: 'Servicios Empresariales SA', active: true }
+            ]
+        };
+
+        let currentClients = clientsData.many;
+        let selectedClient = null;
+        let isDropdownOpen = false;
+
+        const clientSelect = document.getElementById('clientSelect');
+        const dropdownList = document.getElementById('dropdownList');
+        const dropdownArrow = document.getElementById('dropdownArrow');
+        const submitBtn = document.getElementById('submitBtn');
+        const clientCount = document.getElementById('clientCount');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const clientSelectionForm = document.getElementById('clientSelectionForm');
+
+        function renderClients(clients = currentClients, filter = '') {
+            const activeClients = clients.filter(c => c.active);
+            const filtered = filter
+                ? activeClients.filter(c =>
+                    c.nit.toLowerCase().includes(filter.toLowerCase()) ||
+                    c.name.toLowerCase().includes(filter.toLowerCase())
+                )
+                : activeClients;
+
+            dropdownList.innerHTML = '';
+
+            if (filtered.length === 0) {
+                dropdownList.innerHTML = '<div class="no-results">No se encontraron clientes</div>';
+            } else {
+                filtered.forEach(client => {
+                    const item = document.createElement('div');
+                    item.className = 'dropdown-item';
+                    if (selectedClient && selectedClient.nit === client.nit) {
+                        item.classList.add('selected');
+                    }
+                    item.innerHTML = `
+                        <span class="client-nit">${client.nit}</span>
+                        <span class="client-name">- ${client.name}</span>
+                    `;
+                    item.addEventListener('click', () => selectClient(client));
+                    dropdownList.appendChild(item);
+                });
+            }
+
+            clientCount.textContent = `(${activeClients.length} cliente${activeClients.length !== 1 ? 's' : ''} disponible${activeClients.length !== 1 ? 's' : ''})`;
+        }
+
+        function selectClient(client) {
+            selectedClient = client;
+            clientSelect.value = `${client.nit} - ${client.name}`;
+            submitBtn.disabled = false;
+            closeDropdown();
+            renderClients();
+        }
+
+        function openDropdown() {
+            isDropdownOpen = true;
+            dropdownList.classList.add('show');
+            dropdownArrow.classList.add('open');
+            renderClients(currentClients, clientSelect.value.split(' - ')[0] === clientSelect.value ? clientSelect.value : '');
+        }
+
+        function closeDropdown() {
+            isDropdownOpen = false;
+            dropdownList.classList.remove('show');
+            dropdownArrow.classList.remove('open');
+        }
+
+        function toggleDropdown() {
+            if (isDropdownOpen) {
+                closeDropdown();
+            } else {
+                openDropdown();
+            }
+        }
+
+        clientSelect.addEventListener('focus', openDropdown);
+        clientSelect.addEventListener('input', (e) => {
+            if (selectedClient) {
+                selectedClient = null;
+                submitBtn.disabled = true;
+            }
+            renderClients(currentClients, e.target.value);
+            if (!isDropdownOpen) openDropdown();
+        });
+
+        dropdownArrow.addEventListener('click', toggleDropdown);
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.select-wrapper')) {
+                closeDropdown();
+            }
+        });
+
+        clientSelectionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (selectedClient) {
+                alert(`Cliente seleccionado: ${selectedClient.nit} - ${selectedClient.name}\n\nEsta es una demostración del mockup.`);
+            }
+        });
+
+        function logout() {
+            alert('Cerrando sesión... (esta es una demostración)');
+        }
+
+        function showState(state) {
+            // Actualizar botones activos
+            document.querySelectorAll('.state-selector button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Resetear estado
+            errorMessage.classList.remove('show');
+            clientSelect.classList.remove('error');
+            selectedClient = null;
+            clientSelect.value = '';
+            submitBtn.disabled = true;
+            closeDropdown();
+
+            // Aplicar estado
+            switch(state) {
+                case 'few-clients':
+                    currentClients = clientsData.few;
+                    renderClients();
+                    break;
+                case 'many-clients':
+                    currentClients = clientsData.many;
+                    renderClients();
+                    break;
+                case 'error-inactive':
+                    currentClients = clientsData.withInactive;
+                    // Simular selección de cliente inactivo
+                    selectedClient = { nit: '900234567-8', name: 'Compañía de Pruebas Ltda', active: false };
+                    clientSelect.value = `${selectedClient.nit} - ${selectedClient.name}`;
+                    clientSelect.classList.add('error');
+                    errorText.textContent = 'Acceso no disponible. Contacte al administrador.';
+                    errorMessage.classList.add('show');
+                    renderClients();
+                    break;
+                case 'normal':
+                default:
+                    currentClients = clientsData.many;
+                    renderClients();
+                    break;
+            }
+        }
+
+        // Inicializar
+        renderClients();
+    </script>
+</body>
+</html>

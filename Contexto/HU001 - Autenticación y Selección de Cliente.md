@@ -85,20 +85,43 @@ Esta funcionalidad es crítica para garantizar la seguridad, trazabilidad y corr
 ## Interacción con el Usuario y Prototipo
 
 ### Mockups / Wireframes
-Pendiente
+
+Los mockups interactivos en HTML están disponibles en la carpeta `Mockups/`:
+
+- **[HU001-Login.html](../Mockups/HU001-Login.html)** - Mockup de la pantalla de autenticación
+- **[HU001-ClientSelection.html](../Mockups/HU001-ClientSelection.html)** - Mockup de la pantalla de selección de cliente
+
+**Características de los mockups:**
+- Totalmente interactivos y funcionales para demostración
+- Incluyen selector de estados para visualizar diferentes escenarios
+- Diseño responsivo adaptable a dispositivos móviles
+- Implementan los estilos y componentes descritos en los requisitos
 
 **Descripción funcional de las pantallas:**
 
-**Pantalla 1 - Login:**
+**Pantalla 1 - Login (HU001-Login.html):**
 - Campo de texto para nombre de usuario
 - Campo de texto enmascarado para contraseña
 - Botón "Ingresar"
 - Área para mostrar mensajes de error
+- **Estados disponibles en el mockup:**
+  - Normal (sin errores)
+  - Error - Credenciales incorrectas
+  - Error - Acceso no disponible
 
-**Pantalla 2 - Selección de Cliente (solo si el usuario tiene múltiples clientes activos):**
+**Pantalla 2 - Selección de Cliente (HU001-ClientSelection.html):**
+- Información del usuario autenticado
 - Lista desplegable con búsqueda que muestra clientes en formato "NIT - Nombre"
-- Botón "Ingresar"
+- Funcionalidad de filtrado en tiempo real por NIT o nombre
+- Contador de clientes disponibles
+- Botón "Ingresar" (habilitado solo cuando se selecciona un cliente)
+- Botón "Cancelar" para cerrar sesión
 - Área para mostrar mensajes de error
+- **Estados disponibles en el mockup:**
+  - Normal (8 clientes)
+  - Pocos clientes (3 clientes)
+  - Muchos clientes (15 clientes con scroll)
+  - Error - Cliente inactivo seleccionado
 
 ---
 
