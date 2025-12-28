@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido al Portal Unificado CDN Facturación - Credenciales de Acceso</title>
+    <style>
+        /* Email-safe CSS - inline styles preferred but included here for demo */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .email-wrapper {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .email-header {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .email-header img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .email-body {
+            padding: 40px 30px;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .greeting {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4A5A9E;
+            margin-bottom: 20px;
+        }
+
+        .intro-text {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 15px;
+        }
+
+        .credentials-box {
+            background-color: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 30px 0;
+        }
+
+        .credentials-box h3 {
+            color: #4A5A9E;
+            font-size: 16px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .credential-row {
+            margin-bottom: 16px;
+            display: table;
+            width: 100%;
+        }
+
+        .credential-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .credential-label {
+            font-weight: 600;
+            color: #666666;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .credential-value {
+            font-size: 16px;
+            color: #333333;
+            background-color: #ffffff;
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #d0d0d0;
+        }
+
+        .credential-value.password {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: #4A5A9E;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+
+        .credential-value.expires {
+            color: #D4145A;
+            font-weight: 600;
+        }
+
+        .instructions {
+            margin: 30px 0;
+        }
+
+        .instructions h3 {
+            color: #4A5A9E;
+            font-size: 16px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .instructions li {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .instructions li strong {
+            color: #4A5A9E;
+        }
+
+        .portal-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 15px;
+            margin: 20px 0;
+        }
+
+        .portal-link:hover {
+            opacity: 0.9;
+        }
+
+        .warning-box {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 16px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box h4 {
+            color: #e65100;
+            font-size: 15px;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .warning-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .warning-box li {
+            font-size: 13px;
+            color: #e65100;
+            margin-bottom: 8px;
+        }
+
+        .help-section {
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .help-section h3 {
+            color: #1976d2;
+            font-size: 16px;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .help-section p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #555555;
+        }
+
+        .help-section strong {
+            color: #1976d2;
+        }
+
+        .email-footer {
+            background-color: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .email-footer p {
+            margin: 8px 0;
+            font-size: 13px;
+            color: #666666;
+        }
+
+        .email-footer .team-name {
+            font-weight: 600;
+            color: #4A5A9E;
+            font-size: 14px;
+        }
+
+        .email-footer .legal {
+            font-size: 11px;
+            color: #999999;
+            margin-top: 16px;
+            font-style: italic;
+        }
+
+        /* Demo controls */
+        .demo-controls {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 16px;
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .demo-controls h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .demo-btn {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 0 4px;
+        }
+
+        .demo-btn:hover {
+            background: #f0f0f0;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .email-body {
+                padding: 30px 20px;
+            }
+
+            .credentials-box {
+                padding: 20px;
+            }
+
+            .credential-value.password {
+                font-size: 16px;
+                word-break: break-all;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Controls -->
+    <div class="demo-controls">
+        <h3>Vista previa de correo electrónico</h3>
+        <button class="demo-btn" onclick="fillDemo()">Llenar con datos de ejemplo</button>
+        <button class="demo-btn" onclick="clearDemo()">Limpiar</button>
+    </div>
+
+    <div class="email-wrapper">
+        <div class="email-container">
+            <!-- Header -->
+            <div class="email-header">
+                <img src="../Contexto/Guia de estilos/CDN.facturación.png" alt="CDN Facturación">
+            </div>
+
+            <!-- Body -->
+            <div class="email-body">
+                <div class="greeting">
+                    Hola <span id="userName">Juan Carlos Pérez López</span>,
+                </div>
+
+                <p class="intro-text">
+                    Bienvenido al <strong>Portal Unificado de CDN Facturación</strong>. Su cuenta ha sido creada exitosamente.
+                </p>
+
+                <p class="intro-text">
+                    A continuación encontrará sus credenciales de acceso:
+                </p>
+
+                <!-- Credentials Box -->
+                <div class="credentials-box">
+                    <h3>📋 Sus Credenciales de Acceso</h3>
+
+                    <div class="credential-row">
+                        <div class="credential-label">Usuario:</div>
+                        <div class="credential-value" id="userIdNumber">123456789</div>
+                    </div>
+
+                    <div class="credential-row">
+                        <div class="credential-label">Contraseña Temporal:</div>
+                        <div class="credential-value password" id="tempPassword">Kj8mL@pQ3z#W</div>
+                    </div>
+
+                    <div class="credential-row">
+                        <div class="credential-label">Válida hasta:</div>
+                        <div class="credential-value expires" id="expiresAt">18 de Enero de 2024 a las 14:30</div>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="instructions">
+                    <h3>🚀 Pasos para activar su cuenta:</h3>
+                    <ol>
+                        <li>
+                            <strong>Acceda al portal</strong> haciendo clic en el siguiente enlace o copiándolo en su navegador:
+                            <div style="margin-top: 8px;">
+                                <a href="#" class="portal-link" id="portalLink">Ir al Portal de CDN Facturación</a>
+                            </div>
+                            <div style="margin-top: 8px; font-size: 12px; color: #999;">
+                                URL: <span id="portalUrl">https://portal.cdnfacturacion.com/login</span>
+                            </div>
+                        </li>
+                        <li>
+                            <strong>Ingrese su usuario</strong> (número de identificación) y su <strong>contraseña temporal</strong> mostrada arriba.
+                        </li>
+                        <li>
+                            <strong>El sistema le solicitará cambiar su contraseña</strong> por una nueva que solo usted conozca.
+                        </li>
+                        <li>
+                            <strong>Cree una contraseña segura</strong> que cumpla con los requisitos de seguridad del sistema.
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- Warning Box -->
+                <div class="warning-box">
+                    <h4>⚠️ Advertencias de Seguridad</h4>
+                    <ul>
+                        <li><strong>Esta contraseña es de un solo uso</strong> y expirará en 72 horas (3 días) desde su generación.</li>
+                        <li><strong>No comparta esta contraseña con nadie.</strong> Ningún miembro del equipo de CDN Facturación le pedirá su contraseña.</li>
+                        <li><strong>Si no solicitó esta cuenta</strong>, contacte inmediatamente a nuestro equipo de soporte.</li>
+                        <li>Después del primer inicio de sesión, deberá establecer una contraseña nueva y segura.</li>
+                    </ul>
+                </div>
+
+                <!-- Help Section -->
+                <div class="help-section">
+                    <h3>💬 ¿Necesita ayuda?</h3>
+                    <p><strong>Teléfono:</strong> +57 (1) 234-5678</p>
+                    <p><strong>Email:</strong> soporte@cdnfacturacion.com</p>
+                    <p><strong>Horario de atención:</strong> Lunes a Viernes de 8:00 AM a 6:00 PM</p>
+                    <p style="margin-top: 16px; font-size: 13px;">
+                        Nuestro equipo de soporte está disponible para ayudarle en cualquier momento durante su proceso de activación.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="email-footer">
+                <p class="team-name">Equipo de CDN Facturación</p>
+                <p style="color: #999; margin-top: 16px;">
+                    Este correo fue enviado a <span id="recipientEmail">juan.perez@empresa.com</span>
+                </p>
+                <p class="legal">
+                    Este es un correo automático, por favor no responda a este mensaje. Si necesita asistencia, utilice los canales de contacto mencionados arriba.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function fillDemo() {
+            // Calculate expiry date (72 hours from now)
+            const expiryDate = new Date();
+            expiryDate.setHours(expiryDate.getHours() + 72);
+
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+
+            document.getElementById('userName').textContent = 'Juan Carlos Pérez López';
+            document.getElementById('userIdNumber').textContent = '123456789';
+            document.getElementById('tempPassword').textContent = 'Kj8mL@pQ3z#W';
+            document.getElementById('expiresAt').textContent = expiryDate.toLocaleDateString('es-ES', options);
+            document.getElementById('portalUrl').textContent = 'https://portal.cdnfacturacion.com/login';
+            document.getElementById('portalLink').href = 'https://portal.cdnfacturacion.com/login';
+            document.getElementById('recipientEmail').textContent = 'juan.perez@empresa.com';
+        }
+
+        function clearDemo() {
+            document.getElementById('userName').textContent = '[Nombre del Usuario]';
+            document.getElementById('userIdNumber').textContent = '[Número de Identificación]';
+            document.getElementById('tempPassword').textContent = '[Contraseña Temporal]';
+            document.getElementById('expiresAt').textContent = '[Fecha de Expiración]';
+            document.getElementById('portalUrl').textContent = '[URL del Portal]';
+            document.getElementById('portalLink').href = '#';
+            document.getElementById('recipientEmail').textContent = '[Correo del Usuario]';
+        }
+
+        // Initialize with demo data
+        fillDemo();
+    </script>
+</body>
+</html>

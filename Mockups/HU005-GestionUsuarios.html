@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HU005 - Gestión de Usuarios - Portal Unificado Efactura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', Arial, sans-serif; background-color: #FAFAFA; }
+        .navbar { background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%); color: white; padding: 16px 24px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+        .navbar h1 { font-size: 1.25rem; font-weight: 600; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .header h2 { font-size: 2rem; font-weight: 600; color: #212121; }
+        .btn { padding: 12px 24px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 8px; cursor: pointer; transition: all 0.3s; border: none; font-family: 'Roboto', Arial, sans-serif; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn-primary { background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%); color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .btn-primary:hover { box-shadow: 0 6px 16px rgba(74, 90, 158, 0.3); transform: translateY(-2px); }
+        .btn-outlined { background: white; color: #4A5A9E; border: 1px solid #4A5A9E; }
+        .btn-outlined:hover { background: #F5F5F5; }
+        .btn-text { background: transparent; color: #4A5A9E; }
+        .btn-text:hover { background: #F5F5F5; }
+        .search-filter-panel { background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); padding: 24px; margin-bottom: 24px; }
+        .search-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .search-input { flex: 1; padding: 12px 16px; font-size: 16px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: 'Roboto', Arial, sans-serif; }
+        .search-input:focus { outline: none; border-color: #4A5A9E; border-width: 2px; padding: 11px 15px; }
+        .filter-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px; }
+        .filter-group { display: flex; flex-direction: column; }
+        .filter-group label { font-size: 12px; font-weight: 500; color: #757575; margin-bottom: 6px; text-transform: uppercase; }
+        .filter-group select { padding: 10px; font-size: 14px; border: 1px solid #BDBDBD; border-radius: 4px; font-family: 'Roboto', Arial, sans-serif; }
+        .filter-actions { display: flex; gap: 12px; justify-content: space-between; align-items: center; margin-top: 16px; }
+        .results-counter { background: white; border-radius: 8px; padding: 16px 24px; margin-bottom: 16px; font-size: 14px; color: #616161; display: flex; justify-content: space-between; align-items: center; }
+        .table-container { background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background-color: #F5F5F5; padding: 16px; text-align: left; font-size: 13px; font-weight: 600; color: #424242; border-bottom: 2px solid #E0E0E0; cursor: pointer; user-select: none; }
+        th:hover { background-color: #EEEEEE; }
+        th.sortable::after { content: '↕'; margin-left: 8px; color: #9E9E9E; font-size: 12px; }
+        th.sorted-asc::after { content: '↑'; color: #4A5A9E; }
+        th.sorted-desc::after { content: '↓'; color: #4A5A9E; }
+        td { padding: 16px; font-size: 14px; color: #616161; border-bottom: 1px solid #F5F5F5; }
+        tr:hover { background-color: #FAFAFA; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; }
+        .badge-primary { background-color: #E3F2FD; color: #1565C0; }
+        .badge-secondary { background-color: #FCE4EC; color: #C2185B; }
+        .chip { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; }
+        .chip-success { background-color: #E8F5E9; color: #2E7D32; }
+        .chip-default { background-color: #E0E0E0; color: #616161; }
+        .chip-error { background-color: #FFEBEE; color: #C62828; }
+        .permission-link { color: #4A5A9E; cursor: pointer; text-decoration: none; font-weight: 500; }
+        .permission-link:hover { text-decoration: underline; }
+        .actions { display: flex; gap: 8px; }
+        .icon-btn { background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 4px; transition: background-color 0.2s; position: relative; }
+        .icon-btn:hover { background-color: #F5F5F5; }
+        .icon-btn .material-icons { font-size: 20px; color: #757575; }
+        .icon-btn:hover .material-icons { color: #4A5A9E; }
+        .pagination { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: white; border-top: 1px solid #E0E0E0; }
+        .pagination-info { font-size: 14px; color: #757575; display: flex; gap: 16px; align-items: center; }
+        .pagination-controls { display: flex; gap: 8px; align-items: center; }
+        .pagination-btn { padding: 8px 16px; border: 1px solid #E0E0E0; background: white; border-radius: 4px; cursor: pointer; font-size: 14px; font-family: 'Roboto', Arial, sans-serif; transition: all 0.2s; }
+        .pagination-btn:hover:not(:disabled) { background-color: #F5F5F5; border-color: #4A5A9E; }
+        .pagination-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .empty-state { text-align: center; padding: 80px 40px; }
+        .empty-state .material-icons { font-size: 80px; color: #BDBDBD; margin-bottom: 24px; }
+        .empty-state h3 { font-size: 1.5rem; color: #616161; margin-bottom: 16px; }
+        .empty-state p { font-size: 14px; color: #9E9E9E; margin-bottom: 24px; }
+        .popover { position: absolute; background: white; border-radius: 8px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); padding: 16px; z-index: 1000; min-width: 280px; display: none; }
+        .popover.show { display: block; }
+        .popover-header { font-size: 14px; font-weight: 600; color: #424242; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #E0E0E0; }
+        .popover-item { padding: 8px 0; font-size: 13px; color: #616161; display: flex; align-items: center; gap: 8px; }
+        .popover-item .material-icons { font-size: 16px; color: #4A5A9E; }
+        .context-menu { position: absolute; background: white; border-radius: 4px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); padding: 8px 0; z-index: 1000; min-width: 200px; display: none; }
+        .context-menu.show { display: block; }
+        .context-menu-item { padding: 12px 16px; font-size: 14px; color: #424242; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: background-color 0.2s; }
+        .context-menu-item:hover { background-color: #F5F5F5; }
+        .context-menu-item .material-icons { font-size: 18px; color: #757575; }
+        .context-menu-item.danger { color: #F44336; }
+        .context-menu-item.danger .material-icons { color: #F44336; }
+        .no-email { color: #BDBDBD; font-style: italic; display: flex; align-items: center; gap: 4px; }
+        .no-email .material-icons { font-size: 16px; }
+        @media (max-width: 768px) { .filter-row { grid-template-columns: 1fr; } .results-counter { flex-direction: column; align-items: flex-start; gap: 8px; } .table-container { overflow-x: auto; } table { min-width: 900px; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Portal Unificado CDN - Administración</h1>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h2>Gestión de Usuarios</h2>
+            <button class="btn btn-primary" onclick="handleCreateUser()">
+                <span class="material-icons">add_circle</span>
+                Crear Nuevo Usuario
+            </button>
+        </div>
+
+        <!-- Panel de búsqueda y filtros -->
+        <div class="search-filter-panel">
+            <div class="search-bar">
+                <span class="material-icons" style="color: #757575;">search</span>
+                <input
+                    type="text"
+                    class="search-input"
+                    id="searchInput"
+                    placeholder="Buscar por nombre, apellido, número de identificación o correo..."
+                    onkeyup="handleSearch(event)"
+                />
+            </div>
+
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="filterEstado">Estado</label>
+                    <select id="filterEstado" onchange="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="activo">Activo</option>
+                        <option value="inactivo">Inactivo</option>
+                        <option value="bloqueado">Bloqueado</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterTipo">Tipo de Usuario</label>
+                    <select id="filterTipo" onchange="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="interno">Usuario Interno</option>
+                        <option value="cliente">Usuario de Cliente</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterCliente">Cliente</label>
+                    <select id="filterCliente" onchange="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="sin-cliente">Solo Internos (Sin Cliente)</option>
+                        <option value="empresa-abc">Empresa ABC S.A.S.</option>
+                        <option value="empresa-xyz">Comercializadora XYZ Ltda.</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-text" onclick="clearFilters()">
+                        <span class="material-icons">clear</span>
+                        Limpiar Filtros
+                    </button>
+                </div>
+                <button class="btn btn-outlined" onclick="handleExport()">
+                    <span class="material-icons">download</span>
+                    Exportar
+                </button>
+            </div>
+        </div>
+
+        <!-- Contador de resultados -->
+        <div class="results-counter" id="resultsCounter">
+            <span id="counterText">Mostrando 1-5 de 5 usuarios</span>
+            <button class="btn btn-text" onclick="handleRefresh()" style="padding: 4px 12px;">
+                <span class="material-icons">refresh</span>
+                Actualizar
+            </button>
+        </div>
+
+        <!-- Tabla de usuarios -->
+        <div class="table-container" id="tableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="sortable" onclick="sortTable('numeroId')">Número ID</th>
+                        <th class="sortable" onclick="sortTable('nombre')">Nombre Completo</th>
+                        <th>Correo Electrónico</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Permisos Asignados</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td>123456789</td>
+                        <td>Juan Carlos Pérez Gómez</td>
+                        <td>juan.perez@cdnfacturacion.com</td>
+                        <td><span class="badge badge-primary">Interno</span></td>
+                        <td><span class="chip chip-success">Activo</span></td>
+                        <td><a href="#" class="permission-link" onclick="showPermissions(event, 1)">5 permisos</a></td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" onclick="handleView(123456789)" title="Ver Detalle">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleEdit(123456789)" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="showContextMenu(event, 1)" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>987654321</td>
+                        <td>María Fernanda López Torres</td>
+                        <td>maria.lopez@empresaabc.com</td>
+                        <td><span class="badge badge-secondary">Cliente</span></td>
+                        <td><span class="chip chip-success">Activo</span></td>
+                        <td><a href="#" class="permission-link" onclick="showPermissions(event, 2)">2 permisos</a></td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" onclick="handleView(987654321)" title="Ver Detalle">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleEdit(987654321)" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="showContextMenu(event, 2)" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>555888999</td>
+                        <td>Carlos Eduardo Ramírez Silva</td>
+                        <td class="no-email">
+                            <span class="material-icons">warning</span>
+                            No registrado
+                        </td>
+                        <td><span class="badge badge-secondary">Cliente</span></td>
+                        <td><span class="chip chip-default">Inactivo</span></td>
+                        <td><a href="#" class="permission-link" onclick="showPermissions(event, 3)">1 permiso</a></td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" onclick="handleView(555888999)" title="Ver Detalle">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleEdit(555888999)" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="showContextMenu(event, 3)" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>111222333</td>
+                        <td>Ana Patricia Morales Díaz</td>
+                        <td>ana.morales@empresaxyz.com</td>
+                        <td><span class="badge badge-secondary">Cliente</span></td>
+                        <td><span class="chip chip-error">Bloqueado</span></td>
+                        <td><a href="#" class="permission-link" onclick="showPermissions(event, 4)">3 permisos</a></td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" onclick="handleView(111222333)" title="Ver Detalle">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleEdit(111222333)" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="showContextMenu(event, 4)" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>444555666</td>
+                        <td>Roberto José Hernández Castro</td>
+                        <td>roberto.hernandez@cdnfacturacion.com</td>
+                        <td><span class="badge badge-primary">Interno</span></td>
+                        <td><span class="chip chip-success">Activo</span></td>
+                        <td><a href="#" class="permission-link" onclick="showPermissions(event, 5)">8 permisos</a></td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" onclick="handleView(444555666)" title="Ver Detalle">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleEdit(444555666)" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="showContextMenu(event, 5)" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination">
+            <div class="pagination-info">
+                <label for="recordsPerPage" style="font-size: 14px; color: #757575;">Registros por página:</label>
+                <select id="recordsPerPage" onchange="changeRecordsPerPage()" style="padding: 6px 12px; border: 1px solid #E0E0E0; border-radius: 4px;">
+                    <option value="10">10</option>
+                    <option value="20" selected>20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <span>Página 1 de 1</span>
+            </div>
+            <div class="pagination-controls">
+                <button class="pagination-btn" disabled onclick="prevPage()">Anterior</button>
+                <button class="pagination-btn" disabled onclick="nextPage()">Siguiente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popover de permisos -->
+    <div class="popover" id="permissionsPopover">
+        <div class="popover-header">Permisos Asignados</div>
+        <div id="permissionsContent"></div>
+    </div>
+
+    <!-- Menú contextual -->
+    <div class="context-menu" id="contextMenu">
+        <div class="context-menu-item" onclick="handleResetPassword()">
+            <span class="material-icons">lock_reset</span>
+            Resetear Contraseña
+        </div>
+        <div class="context-menu-item" onclick="handleToggleStatus()">
+            <span class="material-icons">toggle_off</span>
+            Inactivar Usuario
+        </div>
+        <div class="context-menu-item" onclick="handleViewAudit()">
+            <span class="material-icons">history</span>
+            Ver Auditoría
+        </div>
+        <div class="context-menu-item danger" onclick="handleDelete()">
+            <span class="material-icons">delete</span>
+            Eliminar Usuario
+        </div>
+    </div>
+
+    <script>
+        // Datos de permisos mockeados
+        const permissionsData = {
+            1: [
+                'Empresa ABC - Administrador de Cliente',
+                'Empresa ABC - Gestor Emisión FE',
+                'Empresa XYZ - Consultor',
+                'Administrador del Portal',
+                'Auditor Interno'
+            ],
+            2: [
+                'Empresa ABC - Gestor Emisión FE',
+                'Empresa ABC - Consultor'
+            ],
+            3: ['Empresa XYZ - Consultor'],
+            4: [
+                'Empresa XYZ - Administrador de Cliente',
+                'Empresa ABC - Consultor',
+                'Empresa ABC - Gestor Emisión FE'
+            ],
+            5: [
+                'Administrador del Portal',
+                'Empresa ABC - Administrador de Cliente',
+                'Empresa ABC - Gestor Emisión FE',
+                'Empresa XYZ - Administrador de Cliente',
+                'Empresa XYZ - Gestor Emisión FE',
+                'Auditor Interno',
+                'Soporte Técnico',
+                'Gestor de Reportes'
+            ]
+        };
+
+        // Mostrar popover de permisos
+        function showPermissions(event, userId) {
+            event.preventDefault();
+            const popover = document.getElementById('permissionsPopover');
+            const content = document.getElementById('permissionsContent');
+            const permissions = permissionsData[userId] || [];
+
+            content.innerHTML = '';
+            const displayPerms = permissions.slice(0, 5);
+            displayPerms.forEach(perm => {
+                const div = document.createElement('div');
+                div.className = 'popover-item';
+                div.innerHTML = `<span class="material-icons">check_circle</span>${perm}`;
+                content.appendChild(div);
+            });
+
+            if (permissions.length > 5) {
+                const moreLink = document.createElement('a');
+                moreLink.href = '#';
+                moreLink.className = 'permission-link';
+                moreLink.textContent = `Ver todos (${permissions.length} permisos)`;
+                moreLink.onclick = (e) => { e.preventDefault(); alert('Navegando a detalle de usuario...'); };
+                content.appendChild(moreLink);
+            }
+
+            const rect = event.target.getBoundingClientRect();
+            popover.style.left = `${rect.left}px`;
+            popover.style.top = `${rect.bottom + 10}px`;
+            popover.classList.add('show');
+
+            // Cerrar al hacer clic fuera
+            setTimeout(() => {
+                document.addEventListener('click', closePopover);
+            }, 100);
+        }
+
+        function closePopover() {
+            document.getElementById('permissionsPopover').classList.remove('show');
+            document.removeEventListener('click', closePopover);
+        }
+
+        // Mostrar menú contextual
+        function showContextMenu(event, userId) {
+            event.stopPropagation();
+            const menu = document.getElementById('contextMenu');
+            const rect = event.target.getBoundingClientRect();
+
+            menu.style.left = `${rect.left - 150}px`;
+            menu.style.top = `${rect.bottom + 5}px`;
+            menu.classList.add('show');
+
+            setTimeout(() => {
+                document.addEventListener('click', closeContextMenu);
+            }, 100);
+        }
+
+        function closeContextMenu() {
+            document.getElementById('contextMenu').classList.remove('show');
+            document.removeEventListener('click', closeContextMenu);
+        }
+
+        // Búsqueda
+        function handleSearch(event) {
+            if (event.key === 'Enter' || event.type === 'click') {
+                const searchTerm = document.getElementById('searchInput').value;
+                const counter = document.getElementById('counterText');
+
+                if (searchTerm.trim()) {
+                    counter.textContent = `Mostrando 2 resultados para "${searchTerm}"`;
+                    console.log('Buscando:', searchTerm);
+                } else {
+                    counter.textContent = 'Mostrando 1-5 de 5 usuarios';
+                }
+            }
+        }
+
+        // Aplicar filtros
+        function applyFilters() {
+            const estado = document.getElementById('filterEstado').value;
+            const tipo = document.getElementById('filterTipo').value;
+            const cliente = document.getElementById('filterCliente').value;
+
+            console.log('Filtros aplicados:', { estado, tipo, cliente });
+            alert(`Filtros aplicados: Estado=${estado || 'Todos'}, Tipo=${tipo || 'Todos'}, Cliente=${cliente || 'Todos'}`);
+        }
+
+        // Limpiar filtros
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterEstado').value = '';
+            document.getElementById('filterTipo').value = '';
+            document.getElementById('filterCliente').value = '';
+            document.getElementById('counterText').textContent = 'Mostrando 1-5 de 5 usuarios';
+        }
+
+        // Ordenar tabla
+        function sortTable(column) {
+            console.log('Ordenando por:', column);
+            alert(`Ordenando tabla por: ${column}`);
+        }
+
+        // Acciones de botones
+        function handleCreateUser() {
+            alert('Navegando a pantalla de Crear Nuevo Usuario (HU006)...');
+        }
+
+        function handleView(numeroId) {
+            alert(`Ver detalle de usuario con ID: ${numeroId}`);
+        }
+
+        function handleEdit(numeroId) {
+            alert(`Editar usuario con ID: ${numeroId}`);
+        }
+
+        function handleExport() {
+            alert('Exportando lista de usuarios a CSV...');
+        }
+
+        function handleRefresh() {
+            alert('Actualizando lista de usuarios...');
+        }
+
+        function changeRecordsPerPage() {
+            const value = document.getElementById('recordsPerPage').value;
+            alert(`Mostrando ${value} registros por página`);
+        }
+
+        function prevPage() {
+            alert('Página anterior');
+        }
+
+        function nextPage() {
+            alert('Página siguiente');
+        }
+
+        // Menú contextual acciones
+        function handleResetPassword() {
+            if (confirm('¿Está seguro que desea resetear la contraseña de este usuario?')) {
+                alert('Contraseña reseteada. Se enviará email al usuario.');
+            }
+            closeContextMenu();
+        }
+
+        function handleToggleStatus() {
+            if (confirm('¿Está seguro que desea cambiar el estado de este usuario?')) {
+                alert('Estado del usuario actualizado');
+            }
+            closeContextMenu();
+        }
+
+        function handleViewAudit() {
+            alert('Navegando a auditoría del usuario...');
+            closeContextMenu();
+        }
+
+        function handleDelete() {
+            if (confirm('¿Está seguro que desea ELIMINAR este usuario? Esta acción no se puede deshacer.')) {
+                alert('Usuario eliminado');
+            }
+            closeContextMenu();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+Code;Name;Departamento_Code;Departamento_Name
+1;Leticia;1;Amazonas
+2;Puerto Nariño;1;Amazonas
+3;Medellín;2;Antioquia
+4;Bello;2;Antioquia
+5;Itagüí;2;Antioquia
+6;Envigado;2;Antioquia
+7;Apartadó;2;Antioquia
+8;Turbo;2;Antioquia
+9;Rionegro;2;Antioquia
+10;Sabaneta;2;Antioquia
+11;Caldas;2;Antioquia
+12;La Estrella;2;Antioquia
+13;Copacabana;2;Antioquia
+14;Arauca;3;Arauca
+15;Tame;3;Arauca
+16;Saravena;3;Arauca
+17;Barranquilla;4;Atlántico
+18;Soledad;4;Atlántico
+19;Malambo;4;Atlántico
+20;Sabanalarga;4;Atlántico
+21;Puerto Colombia;4;Atlántico
+22;Cartagena;5;Bolívar
+23;Magangué;5;Bolívar
+24;Turbaco;5;Bolívar
+25;Arjona;5;Bolívar
+26;El Carmen de Bolívar;5;Bolívar
+27;Tunja;6;Boyacá
+28;Duitama;6;Boyacá
+29;Sogamoso;6;Boyacá
+30;Chiquinquirá;6;Boyacá
+31;Manizales;7;Caldas
+32;Villamaría;7;Caldas
+33;Chinchiná;7;Caldas
+34;La Dorada;7;Caldas
+35;Florencia;8;Caquetá
+36;San Vicente del Caguán;8;Caquetá
+37;Puerto Rico;8;Caquetá
+38;Yopal;9;Casanare
+39;Aguazul;9;Casanare
+40;Villanueva;9;Casanare
+41;Popayán;10;Cauca
+42;Santander de Quilichao;10;Cauca
+43;Puerto Tejada;10;Cauca
+44;Valledupar;11;Cesar
+45;Aguachica;11;Cesar
+46;Bosconia;11;Cesar
+47;Quibdó;12;Chocó
+48;Istmina;12;Chocó
+49;Montería;13;Córdoba
+50;Cereté;13;Córdoba
+51;Lorica;13;Córdoba
+52;Sahagún;13;Córdoba
+53;Bogotá;33;Bogotá D.C.
+54;Soacha;14;Cundinamarca
+55;Fusagasugá;14;Cundinamarca
+56;Facatativá;14;Cundinamarca
+57;Chía;14;Cundinamarca
+58;Zipaquirá;14;Cundinamarca
+59;Mosquera;14;Cundinamarca
+60;Madrid;14;Cundinamarca
+61;Funza;14;Cundinamarca
+62;Cajicá;14;Cundinamarca
+63;Girardot;14;Cundinamarca
+64;Inírida;15;Guainía
+65;San José del Guaviare;16;Guaviare
+66;Neiva;17;Huila
+67;Pitalito;17;Huila
+68;Garzón;17;Huila
+69;La Plata;17;Huila
+70;Riohacha;18;La Guajira
+71;Maicao;18;La Guajira
+72;Uribia;18;La Guajira
+73;Santa Marta;19;Magdalena
+74;Ciénaga;19;Magdalena
+75;Santa Ana;19;Magdalena
+76;Villavicencio;20;Meta
+77;Acacías;20;Meta
+78;Granada;20;Meta
+79;Pasto;21;Nariño
+80;Tumaco;21;Nariño
+81;Ipiales;21;Nariño
+82;Cúcuta;22;Norte de Santander
+83;Ocaña;22;Norte de Santander
+84;Villa del Rosario;22;Norte de Santander
+85;Los Patios;22;Norte de Santander
+86;Mocoa;23;Putumayo
+87;Puerto Asís;23;Putumayo
+88;Armenia;24;Quindío
+89;Calarcá;24;Quindío
+90;La Tebaida;24;Quindío
+91;Montenegro;24;Quindío
+92;Pereira;25;Risaralda
+93;Dosquebradas;25;Risaralda
+94;La Virginia;25;Risaralda
+95;Santa Rosa de Cabal;25;Risaralda
+96;San Andrés;26;San Andrés y Providencia
+97;Providencia;26;San Andrés y Providencia
+98;Bucaramanga;27;Santander
+99;Floridablanca;27;Santander
+100;Girón;27;Santander
+101;Piedecuesta;27;Santander
+102;Barrancabermeja;27;Santander
+103;San Gil;27;Santander
+104;Socorro;27;Santander
+105;Sincelejo;28;Sucre
+106;Corozal;28;Sucre
+107;Ibagué;29;Tolima
+108;Espinal;29;Tolima
+109;Honda;29;Tolima
+110;Cali;30;Valle del Cauca
+111;Palmira;30;Valle del Cauca
+112;Buenaventura;30;Valle del Cauca
+113;Tuluá;30;Valle del Cauca
+114;Cartago;30;Valle del Cauca
+115;Buga;30;Valle del Cauca
+116;Jamundí;30;Valle del Cauca
+117;Yumbo;30;Valle del Cauca
+118;Mitú;31;Vaupés
+119;Puerto Carreño;32;Vichada

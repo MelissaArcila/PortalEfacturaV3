@@ -1,0 +1,17 @@
+Code;Name;Description;Type;Producto_Code;Aplica_A
+1;Administrador de Portal;Administrador principal del portal con acceso total;ADMIN_PORTAL;NULL;INTERNO
+2;Administrador de Cliente;Administrador de empresa cliente con permisos de gestión de usuarios;ADMIN_CLIENTE;NULL;CLIENTE
+3;Gestor Emisión FE;Gestor con permisos para emisión de facturas electrónicas de venta;GESTOR;1;CLIENTE
+4;Gestor Emisión POS;Gestor con permisos para emisión de facturas POS;GESTOR;2;CLIENTE
+5;Gestor Emisión Documento Equivalente;Gestor con permisos para emisión de documentos equivalentes;GESTOR;3;CLIENTE
+6;Gestor Recepción FE;Gestor con permisos para recepción de facturas de proveedores;GESTOR;4;CLIENTE
+7;Gestor Nómina Electrónica;Gestor con permisos para emisión de nómina electrónica;GESTOR;5;CLIENTE
+8;Gestor Emisión Documento Soporte;Gestor con permisos para emisión de documentos soporte;GESTOR;6;CLIENTE
+9;Gestor RADIAN;Gestor con permisos para eventos RADIAN (aceptación, rechazo, endoso);GESTOR;7;CLIENTE
+10;Gestor Notas Crédito;Gestor con permisos para emisión de notas crédito;GESTOR;8;CLIENTE
+11;Gestor Notas Débito;Gestor con permisos para emisión de notas débito;GESTOR;9;CLIENTE
+12;Analista Interno;Rol interno para análisis de datos y reportes;INTERNO;NULL;INTERNO
+13;Soporte Técnico;Rol interno para soporte técnico a clientes;INTERNO;NULL;INTERNO
+14;Auditor Interno;Rol interno para revisión de auditoría y cumplimiento;INTERNO;NULL;INTERNO
+15;Desarrollador;Rol interno para desarrollo y mantenimiento del sistema;INTERNO;NULL;INTERNO
+16;Consultor Funcional;Rol interno para consultoría y capacitación a clientes;INTERNO;NULL;INTERNO

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HU002 - Estado de Enlace - Portal Unificado Efactura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 520px;
+            padding: 56px 40px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            border-radius: 50%;
+            margin: 0 auto 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .warning-icon {
+            font-size: 80px;
+            color: #ff9800;
+            margin-bottom: 24px;
+        }
+
+        h3 {
+            font-size: 28px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 16px;
+        }
+
+        .description {
+            font-size: 16px;
+            color: #616161;
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .info-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        .info-box .material-icons {
+            color: #ff9800;
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        .info-box p {
+            font-size: 14px;
+            color: #e65100;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Roboto', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(74, 90, 158, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-text {
+            background: transparent;
+            color: #4A5A9E;
+            border: none;
+            font-weight: 500;
+        }
+
+        .btn-text:hover {
+            background: #f5f5f5;
+        }
+
+        /* Demo selector */
+        .demo-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            max-width: 250px;
+        }
+
+        .demo-selector h4 {
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .demo-selector button {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .demo-selector button:hover {
+            background: #e0e0e0;
+        }
+
+        .demo-selector button.active {
+            background: #4A5A9E;
+            color: white;
+            border-color: #4A5A9E;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 24px;
+            }
+
+            .demo-selector {
+                position: static;
+                margin-bottom: 20px;
+                max-width: 100%;
+            }
+
+            h3 {
+                font-size: 24px;
+            }
+
+            .warning-icon {
+                font-size: 64px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo selector -->
+    <div class="demo-selector">
+        <h4>Estados del Mockup</h4>
+        <button onclick="setState('expired', this)" class="active">Enlace Expirado</button>
+        <button onclick="setState('used', this)">Enlace Ya Utilizado</button>
+        <button onclick="setState('invalid', this)">Enlace Inválido</button>
+    </div>
+
+    <div class="container">
+        <div class="logo">E</div>
+
+        <div class="material-icons warning-icon" id="icon">warning_amber</div>
+
+        <h3 id="title">Enlace expirado</h3>
+
+        <p class="description" id="description">
+            Este enlace ha expirado. Por favor, solicita uno nuevo.
+        </p>
+
+        <div class="info-box" id="infoBox">
+            <p>
+                <span class="material-icons">info</span>
+                Los enlaces de recuperación son válidos por 15 minutos por tu seguridad.
+            </p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="handleRequestNew()">
+                Solicitar nuevo enlace
+            </button>
+            <button class="btn btn-text" onclick="handleBackToLogin()">
+                Volver a inicio de sesión
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const icon = document.getElementById('icon');
+        const title = document.getElementById('title');
+        const description = document.getElementById('description');
+        const infoBox = document.getElementById('infoBox');
+
+        // Configuración de estados
+        const stateConfig = {
+            expired: {
+                icon: 'warning_amber',
+                iconColor: '#ff9800',
+                title: 'Enlace expirado',
+                description: 'Este enlace ha expirado. Por favor, solicita uno nuevo.',
+                info: 'Los enlaces de recuperación son válidos por 15 minutos por tu seguridad.',
+                boxColor: '#fff3e0',
+                boxBorder: '#ff9800',
+                textColor: '#e65100'
+            },
+            used: {
+                icon: 'check_circle',
+                iconColor: '#4caf50',
+                title: 'Enlace ya utilizado',
+                description: 'Este enlace ya fue utilizado y no es válido. Si necesitas restablecer tu contraseña nuevamente, solicita un nuevo enlace.',
+                info: 'Cada enlace de recuperación solo puede usarse una vez para mantener tu cuenta segura.',
+                boxColor: '#e8f5e9',
+                boxBorder: '#4caf50',
+                textColor: '#2e7d32'
+            },
+            invalid: {
+                icon: 'error_outline',
+                iconColor: '#f44336',
+                title: 'Enlace inválido',
+                description: 'Este enlace no es válido. Verifica que lo hayas copiado correctamente o solicita uno nuevo.',
+                info: 'Si copiaste el enlace manualmente, asegúrate de que esté completo y sin espacios adicionales.',
+                boxColor: '#ffebee',
+                boxBorder: '#f44336',
+                textColor: '#c62828'
+            }
+        };
+
+        // Función para cambiar estados del demo
+        function setState(state, buttonElement) {
+            // Actualizar botones activos
+            document.querySelectorAll('.demo-selector button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            buttonElement.classList.add('active');
+
+            // Obtener configuración del estado
+            const config = stateConfig[state];
+
+            // Aplicar cambios
+            icon.textContent = config.icon;
+            icon.style.color = config.iconColor;
+            title.textContent = config.title;
+            description.textContent = config.description;
+
+            // Actualizar info box
+            infoBox.style.backgroundColor = config.boxColor;
+            infoBox.style.borderLeftColor = config.boxBorder;
+            infoBox.querySelector('p').style.color = config.textColor;
+            infoBox.querySelector('.material-icons').style.color = config.boxBorder;
+            infoBox.querySelector('p').innerHTML = `
+                <span class="material-icons">info</span>
+                ${config.info}
+            `;
+        }
+
+        // Handlers de botones
+        function handleRequestNew() {
+            alert('Esta es una demostración. En producción, redirigirá a la pantalla de solicitud de recuperación.');
+        }
+
+        function handleBackToLogin() {
+            alert('Esta es una demostración. En producción, redirigirá a la pantalla de inicio de sesión.');
+        }
+
+        // Inicializar con estado expirado por defecto
+        window.addEventListener('DOMContentLoaded', () => {
+            const activeButton = document.querySelector('.demo-selector button.active');
+            if (activeButton) {
+                setState('expired', activeButton);
+            }
+        });
+    </script>
+</body>
+</html>

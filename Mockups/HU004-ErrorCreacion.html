@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HU004 - Error al Crear Empresa - Portal Unificado Efactura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #FAFAFA;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 560px;
+            padding: 56px 40px;
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+        }
+
+        .error-icon {
+            width: 100px;
+            height: 100px;
+            background-color: #FFEBEE;
+            border-radius: 50%;
+            margin: 0 auto 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: shake 0.5s;
+        }
+
+        .error-icon .material-icons {
+            font-size: 64px;
+            color: #F44336;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #212121;
+            margin-bottom: 16px;
+        }
+
+        .message {
+            font-size: 1rem;
+            color: #616161;
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 440px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .error-details {
+            background-color: #FFF3E0;
+            border-left: 4px solid #FF9800;
+            padding: 16px 20px;
+            border-radius: 4px;
+            margin: 24px 0;
+            text-align: left;
+        }
+
+        .error-details p {
+            font-size: 14px;
+            color: #E65100;
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .error-details strong {
+            color: #BF360C;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            border: none;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(74, 90, 158, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #4A5A9E;
+            border: 1px solid #4A5A9E;
+            margin-left: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: #F5F5F5;
+        }
+
+        .button-group {
+            margin-top: 32px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 24px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn-secondary {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img
+                src="../Contexto/Guia de estilos/CDN.facturación.png"
+                alt="CDN Facturación"
+                class="logo"
+                onerror="this.style.display='none'"
+            />
+        </div>
+
+        <div class="error-icon">
+            <span class="material-icons">error_outline</span>
+        </div>
+
+        <h2>Error al Crear Empresa</h2>
+
+        <p class="message">
+            Ocurrió un error al crear la empresa. Por favor, intente nuevamente.
+            Si el problema persiste, contacte a soporte técnico.
+        </p>
+
+        <div class="error-details">
+            <p><strong>¿Qué puedes hacer?</strong></p>
+            <p>• Haz clic en "Aceptar" para volver al formulario con tus datos guardados</p>
+            <p>• Verifica que todos los campos estén correctos</p>
+            <p>• Intenta enviar el formulario nuevamente</p>
+            <p>• Si el error continúa, contacta a soporte con el código de error</p>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="handleAccept()">
+                Aceptar
+            </button>
+            <button class="btn btn-secondary" onclick="handleSupport()">
+                Contactar Soporte
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function handleAccept() {
+            alert('Esta es una demostración. En producción, regresará al formulario manteniendo todos los datos ingresados.');
+        }
+
+        function handleSupport() {
+            alert('Esta es una demostración. En producción, abrirá el módulo de soporte o enviará email a soporte técnico.');
+        }
+    </script>
+</body>
+</html>

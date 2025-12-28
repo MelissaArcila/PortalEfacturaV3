@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HU004 - Empresa Creada Exitosamente - Portal Unificado Efactura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #FAFAFA;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 640px;
+            padding: 56px 40px;
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background-color: #E8F5E9;
+            border-radius: 50%;
+            margin: 0 auto 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .success-icon .material-icons {
+            font-size: 72px;
+            color: #4CAF50;
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #212121;
+            margin-bottom: 16px;
+        }
+
+        .message {
+            font-size: 1rem;
+            color: #616161;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .message strong {
+            color: #4A5A9E;
+            font-weight: 600;
+        }
+
+        .summary-box {
+            background-color: #F5F5F5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 24px 0 32px;
+            text-align: left;
+        }
+
+        .summary-box h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #424242;
+            margin-bottom: 16px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item .label {
+            font-size: 14px;
+            color: #757575;
+            font-weight: 500;
+        }
+
+        .summary-item .value {
+            font-size: 14px;
+            color: #212121;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            border: none;
+            font-family: 'Roboto', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(74, 90, 158, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #4A5A9E;
+            border: 1px solid #4A5A9E;
+        }
+
+        .btn-secondary:hover {
+            background: #F5F5F5;
+        }
+
+        .btn-text {
+            background: transparent;
+            color: #4A5A9E;
+            border: none;
+        }
+
+        .btn-text:hover {
+            background: #F5F5F5;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 24px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .summary-item {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img
+                src="../Contexto/Guia de estilos/CDN.facturación.png"
+                alt="CDN Facturación"
+                class="logo"
+                onerror="this.style.display='none'"
+            />
+        </div>
+
+        <div class="success-icon">
+            <span class="material-icons">check_circle</span>
+        </div>
+
+        <h2>¡Empresa Creada Exitosamente!</h2>
+
+        <p class="message">
+            La empresa <strong id="nombreEmpresa">Ejemplo S.A.S.</strong> con NIT <strong id="nitEmpresa">900123456-7</strong>
+            ha sido registrada en el sistema correctamente.
+        </p>
+
+        <div class="summary-box">
+            <h3>Resumen de Datos</h3>
+            <div class="summary-item">
+                <span class="label">Tipo de Identificación:</span>
+                <span class="value" id="tipoId">NIT</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Número de Identificación:</span>
+                <span class="value" id="numeroId">900123456-7</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Razón Social:</span>
+                <span class="value" id="razonSocial">Ejemplo S.A.S.</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Tipo de Sociedad:</span>
+                <span class="value" id="tipoSociedad">Sociedad por acciones simplificada</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">País:</span>
+                <span class="value" id="pais">Colombia</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Ciudad:</span>
+                <span class="value" id="ciudad">Bogotá D.C.</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Fecha de Creación:</span>
+                <span class="value" id="fechaCreacion">23 de diciembre de 2025, 10:30 AM</span>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="handleViewEmpresa()">
+                <span class="material-icons">visibility</span>
+                Ver Empresa
+            </button>
+            <button class="btn btn-secondary" onclick="handleCreateAnother()">
+                <span class="material-icons">add_circle</span>
+                Crear Otra Empresa
+            </button>
+            <button class="btn btn-text" onclick="handleBackToAdmin()">
+                <span class="material-icons">arrow_back</span>
+                Volver a Administración de Empresas
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function handleViewEmpresa() {
+            alert('Esta es una demostración. En producción, navegará a la pantalla de detalle de la empresa creada.');
+        }
+
+        function handleCreateAnother() {
+            alert('Esta es una demostración. En producción, limpiará el formulario y permitirá crear una nueva empresa.');
+        }
+
+        function handleBackToAdmin() {
+            alert('Esta es una demostración. En producción, navegará al módulo de Administración de Empresas.');
+        }
+
+        // Datos mockeados para demostración
+        window.addEventListener('DOMContentLoaded', function() {
+            // Los datos ya están en el HTML, pero aquí podrían reemplazarse dinámicamente
+            console.log('Empresa creada con éxito');
+        });
+    </script>
+</body>
+</html>

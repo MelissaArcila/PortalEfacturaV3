@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HU004 - Resumen de Empresa - Portal Unificado Efactura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #FAFAFA;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        .header {
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #212121;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #757575;
+        }
+
+        .section {
+            margin-bottom: 24px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background-color: #F5F5F5;
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .section-header:hover {
+            background-color: #EEEEEE;
+        }
+
+        .section-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #424242;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-header .material-icons {
+            font-size: 20px;
+            color: #4A5A9E;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s;
+        }
+
+        .expand-icon.expanded {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .section-content.expanded {
+            max-height: 2000px;
+        }
+
+        .section-body {
+            padding: 20px;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .data-item {
+            margin-bottom: 12px;
+        }
+
+        .data-item .label {
+            font-size: 12px;
+            color: #757575;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .data-item .value {
+            font-size: 14px;
+            color: #212121;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+
+        th {
+            background-color: #F5F5F5;
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #424242;
+            border-bottom: 2px solid #E0E0E0;
+        }
+
+        td {
+            padding: 12px;
+            font-size: 14px;
+            color: #616161;
+            border-bottom: 1px solid #F5F5F5;
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            background-color: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #E0E0E0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(74, 90, 158, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #4A5A9E;
+            border: 1px solid #4A5A9E;
+        }
+
+        .btn-secondary:hover {
+            background: #F5F5F5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px;
+            }
+
+            .button-group {
+                flex-direction: column-reverse;
+            }
+
+            .data-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Resumen de la Empresa a Crear</h1>
+            <p>Revise cuidadosamente la información antes de confirmar la creación</p>
+        </div>
+
+        <!-- Sección 1: Datos de la Empresa -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>
+                    <span class="material-icons">business</span>
+                    Datos de la Empresa
+                </h3>
+                <span class="material-icons expand-icon expanded">expand_more</span>
+            </div>
+            <div class="section-content expanded">
+                <div class="section-body">
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <div class="label">Tipo de Identificación</div>
+                            <div class="value">NIT</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="label">Número de Identificación</div>
+                            <div class="value">900123456-7</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="label">Razón Social</div>
+                            <div class="value">Ejemplo Empresa S.A.S.</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="label">Nombre Abreviado</div>
+                            <div class="value">Ejemplo SAS</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="label">Tipo de Sociedad</div>
+                            <div class="value">Sociedad por acciones simplificada</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="label">Tipo de Contribuyente</div>
+                            <div class="value">Jurídico</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="label">Tipo de Régimen</div>
+                            <div class="value">Común (Impuesto sobre las ventas)</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="label">Correo Electrónico Emisor</div>
+                            <div class="value">facturacion@ejemplo.com</div>
+                        </div>
+                        <div class="data-item" style="grid-column: 1 / -1;">
+                            <div class="label">Actividad Económica</div>
+                            <div class="value">Desarrollo de software y servicios tecnológicos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección 2: Ubicación -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>
+                    <span class="material-icons">location_on</span>
+                    Ubicación
+                </h3>
+                <span class="material-icons expand-icon expanded">expand_more</span>
+            </div>
+            <div class="section-content expanded">
+                <div class="section-body">
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <div class="label">País</div>
+                            <div class="value">Colombia</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="label">Departamento</div>
+                            <div class="value">Cundinamarca</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="label">Ciudad</div>
+                            <div class="value">Bogotá D.C.</div>
+                        </div>
+                        <div class="data-item" style="grid-column: 1 / -1;">
+                            <div class="label">Dirección Principal</div>
+                            <div class="value">Calle 100 # 20-30, Oficina 502</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección 3: Centros de Costos -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>
+                    <span class="material-icons">account_balance</span>
+                    Centros de Costos
+                    <span class="chip">3 centros</span>
+                </h3>
+                <span class="material-icons expand-icon expanded">expand_more</span>
+            </div>
+            <div class="section-content expanded">
+                <div class="section-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Centro de Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>10001</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>20002</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>30003</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección 4: Registros Mercantiles -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>
+                    <span class="material-icons">description</span>
+                    Registros Mercantiles
+                    <span class="chip">2 registros</span>
+                </h3>
+                <span class="material-icons expand-icon expanded">expand_more</span>
+            </div>
+            <div class="section-content expanded">
+                <div class="section-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Matrícula</th>
+                                <th>Nombre</th>
+                                <th>País</th>
+                                <th>Departamento</th>
+                                <th>Ciudad</th>
+                                <th>Dirección</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>MAT-2024-001</td>
+                                <td>Ejemplo S.A.S. - Sede Principal</td>
+                                <td>Colombia</td>
+                                <td>Cundinamarca</td>
+                                <td>Bogotá D.C.</td>
+                                <td>Calle 100 # 20-30</td>
+                            </tr>
+                            <tr>
+                                <td>MAT-2024-002</td>
+                                <td>Ejemplo S.A.S. - Sucursal Medellín</td>
+                                <td>Colombia</td>
+                                <td>Antioquia</td>
+                                <td>Medellín</td>
+                                <td>Carrera 43A # 1-50</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-secondary" onclick="handleEdit()">
+                Volver y Editar
+            </button>
+            <button class="btn btn-primary" onclick="handleConfirm()">
+                Confirmar Creación
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.expand-icon');
+
+            content.classList.toggle('expanded');
+            icon.classList.toggle('expanded');
+        }
+
+        function handleEdit() {
+            alert('Esta es una demostración. En producción, regresará al formulario manteniendo todos los datos.');
+        }
+
+        function handleConfirm() {
+            alert('Esta es una demostración. En producción, enviará los datos al servidor y creará la empresa.');
+        }
+
+        // Expandir todas las secciones al cargar
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Resumen de empresa cargado');
+        });
+    </script>
+</body>
+</html>

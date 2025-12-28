@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario - Portal Unificado CDN Facturación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 32px;
+        }
+
+        /* Demo State Selector */
+        .demo-state-selector {
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 32px;
+        }
+
+        .demo-state-selector h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .demo-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .demo-btn.active {
+            background: #4A5A9E;
+            color: white;
+            border-color: #4A5A9E;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 32px;
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .form-section h2 {
+            font-size: 20px;
+            color: #4A5A9E;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-section p.help-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        /* Radio Buttons */
+        .radio-group {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .radio-option:hover {
+            border-color: #4A5A9E;
+            background: #f8f9ff;
+        }
+
+        .radio-option.selected {
+            border-color: #4A5A9E;
+            background: #f0f3ff;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        .radio-label {
+            flex: 1;
+        }
+
+        .radio-label .title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .radio-label .description {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group label .required {
+            color: #D4145A;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4A5A9E;
+            box-shadow: 0 0 0 3px rgba(74, 90, 158, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: #D4145A;
+        }
+
+        .form-group input.success {
+            border-color: #4caf50;
+        }
+
+        .form-group .hint-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .form-group .error-text {
+            font-size: 12px;
+            color: #D4145A;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-group .success-text {
+            font-size: 12px;
+            color: #4caf50;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-group input.error + .error-text {
+            display: block;
+        }
+
+        .form-group input.success + .success-text {
+            display: block;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4caf50;
+            display: none;
+        }
+
+        .input-with-icon input.success ~ .input-icon {
+            display: block;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .badge.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* Permissions Section */
+        .permissions-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .permissions-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .add-permission-btn {
+            padding: 12px 24px;
+            background: white;
+            color: #4A5A9E;
+            border: 2px solid #4A5A9E;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .add-permission-btn:hover {
+            background: #4A5A9E;
+            color: white;
+        }
+
+        .add-permission-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Table */
+        .table-container {
+            margin-top: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: #f5f5f5;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h3 {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .table-filters {
+            display: flex;
+            gap: 12px;
+        }
+
+        .table-filters select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            background: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #fafafa;
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .empty-state {
+            padding: 48px;
+            text-align: center;
+            color: #999;
+        }
+
+        .empty-state .material-icons {
+            font-size: 64px;
+            opacity: 0.3;
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #D4145A;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #fce4ec;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn {
+            padding: 12px 32px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outlined {
+            background: white;
+            color: #666;
+            border: 1px solid #ccc;
+        }
+
+        .btn-outlined:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-contained {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-contained:hover {
+            box-shadow: 0 4px 12px rgba(74, 90, 158, 0.3);
+        }
+
+        .btn-contained:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Error message */
+        .error-message {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-message .material-icons {
+            color: #ff9800;
+        }
+
+        @media (max-width: 768px) {
+            .permissions-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .radio-group {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Crear Nuevo Usuario</h1>
+            <p>Complete el formulario para registrar un nuevo usuario en el sistema</p>
+        </div>
+
+        <div class="content">
+            <!-- Demo State Selector -->
+            <div class="demo-state-selector">
+                <h3>
+                    <span class="material-icons" style="font-size: 16px;">science</span>
+                    Estado de Demostración
+                </h3>
+                <div class="demo-buttons">
+                    <button class="demo-btn active" onclick="showState('normal', this)">Normal</button>
+                    <button class="demo-btn" onclick="showState('id-duplicate', this)">ID Duplicado</button>
+                    <button class="demo-btn" onclick="showState('form-filled', this)">Formulario Lleno</button>
+                    <button class="demo-btn" onclick="showState('with-permissions', this)">Con Permisos</button>
+                    <button class="demo-btn" onclick="showState('ready-submit', this)">Listo para Crear</button>
+                </div>
+            </div>
+
+            <form id="createUserForm">
+                <!-- Section 1: User Type -->
+                <div class="form-section">
+                    <h2>
+                        <span class="material-icons">person</span>
+                        Tipo de Usuario
+                    </h2>
+                    <p class="help-text">Seleccione el tipo de usuario que desea crear</p>
+
+                    <div class="radio-group">
+                        <label class="radio-option" id="option-client">
+                            <input type="radio" name="userType" value="client" onchange="handleUserTypeChange(this)">
+                            <div class="radio-label">
+                                <div class="title">Usuario de Cliente</div>
+                                <div class="description">Personal de empresa contratante que utiliza los servicios de facturación electrónica</div>
+                            </div>
+                        </label>
+                        <label class="radio-option" id="option-internal">
+                            <input type="radio" name="userType" value="internal" onchange="handleUserTypeChange(this)">
+                            <div class="radio-label">
+                                <div class="title">Usuario Interno</div>
+                                <div class="description">Personal de CDN Facturación que opera y soporta la plataforma</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Section 2: Personal Data -->
+                <div class="form-section">
+                    <h2>
+                        <span class="material-icons">badge</span>
+                        Datos Personales
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><span class="required">*</span>Número de Identificación</label>
+                            <div class="input-with-icon">
+                                <input
+                                    type="text"
+                                    id="idNumber"
+                                    maxlength="15"
+                                    placeholder="Ingrese el número de identificación"
+                                    oninput="validateIdNumber(this)"
+                                    onblur="checkIdUniqueness(this)"
+                                >
+                                <span class="material-icons input-icon">check_circle</span>
+                            </div>
+                            <span class="hint-text">Solo números, máximo 15 dígitos</span>
+                            <span class="error-text" id="idNumberError"></span>
+                            <span class="success-text" id="idNumberSuccess">Número de identificación válido y único</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span>Primer Apellido</label>
+                            <input
+                                type="text"
+                                id="firstLastName"
+                                maxlength="50"
+                                placeholder="Ingrese el primer apellido"
+                                oninput="validateNameField(this)"
+                            >
+                            <span class="hint-text">Solo letras, espacios, guiones y apóstrofes</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Segundo Apellido</label>
+                            <input
+                                type="text"
+                                id="secondLastName"
+                                maxlength="50"
+                                placeholder="Ingrese el segundo apellido (opcional)"
+                                oninput="validateNameField(this)"
+                            >
+                            <span class="hint-text">Opcional</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span>Primer Nombre</label>
+                            <input
+                                type="text"
+                                id="firstName"
+                                maxlength="50"
+                                placeholder="Ingrese el primer nombre"
+                                oninput="validateNameField(this)"
+                            >
+                            <span class="hint-text">Solo letras, espacios, guiones y apóstrofes</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Segundo Nombre</label>
+                            <input
+                                type="text"
+                                id="secondName"
+                                maxlength="50"
+                                placeholder="Ingrese el segundo nombre (opcional)"
+                                oninput="validateNameField(this)"
+                            >
+                            <span class="hint-text">Opcional</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Correo Electrónico</label>
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="usuario@dominio.com"
+                                oninput="validateEmail(this)"
+                            >
+                            <span class="hint-text">Opcional</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <div>
+                                <span class="badge success">
+                                    <span class="material-icons" style="font-size: 16px;">check_circle</span>
+                                    Activo
+                                </span>
+                                <div class="badge-info">El usuario se creará en estado Activo por defecto</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Permissions -->
+                <div class="form-section">
+                    <h2>
+                        <span class="material-icons">lock</span>
+                        Asignación de Permisos
+                    </h2>
+                    <p class="help-text" id="permissionsHelpText">Asigne al menos un permiso seleccionando Cliente y Rol</p>
+
+                    <div class="error-message" id="permissionError">
+                        <span class="material-icons">warning</span>
+                        <span id="permissionErrorText"></span>
+                    </div>
+
+                    <div class="permissions-form">
+                        <div class="permissions-inputs">
+                            <div class="form-group">
+                                <label><span class="required">*</span>Selección de Empresa</label>
+                                <select id="companySelect" onchange="handleCompanyChange()" disabled>
+                                    <option value="">Seleccione una empresa</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label><span class="required">*</span>Selección de Rol</label>
+                                <select id="roleSelect" disabled>
+                                    <option value="">Seleccione un rol</option>
+                                </select>
+                            </div>
+
+                            <button type="button" class="add-permission-btn" onclick="addPermission()" id="addPermissionBtn" disabled>
+                                <span class="material-icons">add</span>
+                                Agregar Permiso
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>Permisos Asignados (<span id="permissionCount">0</span>)</h3>
+                            <div class="table-filters" id="tableFilters" style="display: none;">
+                                <select id="filterCompany" onchange="filterPermissions()">
+                                    <option value="">Todas las empresas</option>
+                                </select>
+                                <select id="filterRole" onchange="filterPermissions()">
+                                    <option value="">Todos los roles</option>
+                                </select>
+                            </div>
+                        </div>
+                        <table id="permissionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Empresa</th>
+                                    <th>Rol</th>
+                                    <th style="width: 100px;">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="permissionsTableBody">
+                                <tr class="empty-state">
+                                    <td colspan="3">
+                                        <div class="empty-state">
+                                            <span class="material-icons">lock_open</span>
+                                            <p>No hay permisos asignados. Agregue al menos uno para continuar</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outlined" onclick="cancelCreation()">
+                        <span class="material-icons">close</span>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-contained" id="createBtn" onclick="goToSummary()" disabled>
+                        <span class="material-icons">add_circle</span>
+                        Crear Usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Mock data
+        const mockCompanies = [
+            { id: 1, name: 'Empresa ABC S.A.S.', products: [1, 2, 7] }, // FE, POS, RADIAN
+            { id: 2, name: 'Industrias XYZ Ltda.', products: [1, 7] }, // FE, RADIAN
+            { id: 3, name: 'Comercializadora DEF', products: [1] }, // Solo FE
+            { id: 4, name: 'Servicios GHI Corp.', products: [1, 2, 3, 7] }, // FE, POS, Nómina, RADIAN
+            { id: 5, name: 'Tecnología JKL S.A.', products: [] } // Sin productos
+        ];
+
+        const mockRoles = {
+            internal: [
+                { id: 1, name: 'Administrador de Portal' },
+                { id: 2, name: 'Analista Interno' },
+                { id: 3, name: 'Soporte Técnico' },
+                { id: 4, name: 'Auditor Interno' },
+                { id: 5, name: 'Desarrollador' },
+                { id: 6, name: 'Consultor Funcional' }
+            ],
+            client: [
+                { id: 10, name: 'Administrador de Cliente', productId: null }, // Always available
+                { id: 11, name: 'Gestor Emisión FE', productId: 1 },
+                { id: 12, name: 'Gestor Emisión POS', productId: 2 },
+                { id: 13, name: 'Gestor Nómina Electrónica', productId: 3 },
+                { id: 14, name: 'Gestor RADIAN', productId: 7 }
+            ]
+        };
+
+        const existingUsers = [
+            { id: '12345678', name: 'Juan Carlos Pérez López' },
+            { id: '87654321', name: 'María Fernanda Gómez Ruiz' }
+        ];
+
+        let permissions = [];
+        let currentUserType = null;
+
+        // Demo state functions
+        function showState(state, buttonElement) {
+            document.querySelectorAll('.demo-btn').forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
+
+            // Reset form
+            resetForm();
+
+            switch(state) {
+                case 'normal':
+                    // Clean state
+                    break;
+                case 'id-duplicate':
+                    selectUserType('client');
+                    document.getElementById('idNumber').value = '12345678';
+                    checkIdUniqueness(document.getElementById('idNumber'));
+                    break;
+                case 'form-filled':
+                    selectUserType('client');
+                    fillFormData();
+                    break;
+                case 'with-permissions':
+                    selectUserType('client');
+                    fillFormData();
+                    addMockPermissions();
+                    break;
+                case 'ready-submit':
+                    selectUserType('internal');
+                    fillFormData();
+                    addMockPermissions();
+                    document.getElementById('idNumber').value = '99988877';
+                    checkIdUniqueness(document.getElementById('idNumber'));
+                    validateForm();
+                    break;
+            }
+        }
+
+        function selectUserType(type) {
+            const radio = document.querySelector(`input[value="${type}"]`);
+            radio.checked = true;
+            handleUserTypeChange(radio);
+        }
+
+        function fillFormData() {
+            document.getElementById('idNumber').value = '11122233';
+            document.getElementById('firstLastName').value = 'Rodríguez';
+            document.getElementById('secondLastName').value = 'Martínez';
+            document.getElementById('firstName').value = 'Carlos';
+            document.getElementById('secondName').value = 'Alberto';
+            document.getElementById('email').value = 'carlos.rodriguez@empresa.com';
+        }
+
+        function addMockPermissions() {
+            permissions = [
+                { companyId: 1, companyName: 'Empresa ABC S.A.S.', roleId: 11, roleName: 'Gestor Emisión FE' },
+                { companyId: 1, companyName: 'Empresa ABC S.A.S.', roleId: 14, roleName: 'Gestor RADIAN' },
+                { companyId: 2, companyName: 'Industrias XYZ Ltda.', roleId: 10, roleName: 'Administrador de Cliente' }
+            ];
+            renderPermissionsTable();
+            updateFilters();
+            validateForm();
+        }
+
+        function resetForm() {
+            document.getElementById('createUserForm').reset();
+            permissions = [];
+            currentUserType = null;
+            document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('companySelect').disabled = true;
+            document.getElementById('roleSelect').disabled = true;
+            document.getElementById('addPermissionBtn').disabled = true;
+            document.getElementById('createBtn').disabled = true;
+            document.querySelectorAll('input').forEach(input => {
+                input.classList.remove('error', 'success');
+            });
+            renderPermissionsTable();
+            hideError();
+        }
+
+        // User type handling
+        function handleUserTypeChange(radio) {
+            currentUserType = radio.value;
+
+            document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+            radio.closest('.radio-option').classList.add('selected');
+
+            loadCompanies();
+
+            document.getElementById('companySelect').disabled = false;
+
+            if (currentUserType === 'internal') {
+                document.getElementById('permissionsHelpText').textContent =
+                    'Asigne roles internos o roles de cliente para soporte';
+            } else {
+                document.getElementById('permissionsHelpText').textContent =
+                    'Asigne al menos un permiso seleccionando Cliente y Rol';
+            }
+        }
+
+        function loadCompanies() {
+            const select = document.getElementById('companySelect');
+            select.innerHTML = '<option value="">Seleccione una empresa</option>';
+
+            if (currentUserType === 'internal') {
+                const internalOption = document.createElement('option');
+                internalOption.value = 'internal';
+                internalOption.textContent = 'Sin Cliente (Rol Interno)';
+                select.appendChild(internalOption);
+            }
+
+            mockCompanies.forEach(company => {
+                const option = document.createElement('option');
+                option.value = company.id;
+                option.textContent = company.name;
+                option.dataset.products = JSON.stringify(company.products);
+                select.appendChild(option);
+            });
+        }
+
+        function handleCompanyChange() {
+            const companySelect = document.getElementById('companySelect');
+            const roleSelect = document.getElementById('roleSelect');
+            const selectedValue = companySelect.value;
+
+            roleSelect.innerHTML = '<option value="">Seleccione un rol</option>';
+            roleSelect.disabled = false;
+
+            if (selectedValue === 'internal') {
+                // Load internal roles
+                mockRoles.internal.forEach(role => {
+                    const option = document.createElement('option');
+                    option.value = role.id;
+                    option.textContent = role.name;
+                    option.dataset.companyName = 'Interno';
+                    roleSelect.appendChild(option);
+                });
+            } else if (selectedValue) {
+                // Load client roles based on company products
+                const selectedOption = companySelect.options[companySelect.selectedIndex];
+                const products = JSON.parse(selectedOption.dataset.products || '[]');
+
+                // Always add Administrador de Cliente
+                const adminRole = mockRoles.client.find(r => r.productId === null);
+                const adminOption = document.createElement('option');
+                adminOption.value = adminRole.id;
+                adminOption.textContent = adminRole.name;
+                adminOption.dataset.companyName = selectedOption.textContent;
+                roleSelect.appendChild(adminOption);
+
+                // Add roles for contracted products
+                mockRoles.client.filter(r => r.productId && products.includes(r.productId)).forEach(role => {
+                    const option = document.createElement('option');
+                    option.value = role.id;
+                    option.textContent = role.name;
+                    option.dataset.companyName = selectedOption.textContent;
+                    roleSelect.appendChild(option);
+                });
+
+                // Show info if no products
+                if (products.length === 0 && roleSelect.options.length === 2) {
+                    const infoOption = document.createElement('option');
+                    infoOption.disabled = true;
+                    infoOption.textContent = 'Esta empresa no tiene productos contratados';
+                    roleSelect.appendChild(infoOption);
+                }
+            }
+
+            document.getElementById('addPermissionBtn').disabled = !selectedValue;
+        }
+
+        // Validation functions
+        function validateIdNumber(input) {
+            input.value = input.value.replace(/\D/g, '');
+            input.classList.remove('error', 'success');
+        }
+
+        function checkIdUniqueness(input) {
+            const value = input.value.trim();
+            const errorSpan = document.getElementById('idNumberError');
+
+            if (!value) return;
+
+            const existing = existingUsers.find(u => u.id === value);
+
+            if (existing) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                errorSpan.textContent = `Este número de identificación ya está registrado en el sistema. Usuario existente: ${existing.name}`;
+            } else {
+                input.classList.remove('error');
+                input.classList.add('success');
+            }
+
+            validateForm();
+        }
+
+        function validateNameField(input) {
+            input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s\-']/g, '');
+        }
+
+        function validateEmail(input) {
+            if (!input.value) return;
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(input.value)) {
+                input.classList.add('success');
+                input.classList.remove('error');
+            } else {
+                input.classList.add('error');
+                input.classList.remove('success');
+            }
+        }
+
+        // Permissions management
+        function addPermission() {
+            const companySelect = document.getElementById('companySelect');
+            const roleSelect = document.getElementById('roleSelect');
+
+            hideError();
+
+            if (!companySelect.value || !roleSelect.value) {
+                showError('Debe seleccionar una empresa y un rol');
+                return;
+            }
+
+            const companyId = companySelect.value;
+            const companyName = companySelect.value === 'internal' ?
+                'Interno' :
+                companySelect.options[companySelect.selectedIndex].textContent;
+
+            const roleId = roleSelect.value;
+            const roleName = roleSelect.options[roleSelect.selectedIndex].textContent;
+
+            // Check duplicate
+            const isDuplicate = permissions.some(p =>
+                p.companyId == companyId && p.roleId == roleId
+            );
+
+            if (isDuplicate) {
+                showError(`Este permiso ya fue agregado. El usuario ya tiene el rol ${roleName} en ${companyName}`);
+                return;
+            }
+
+            // Add permission
+            permissions.push({
+                companyId,
+                companyName,
+                roleId,
+                roleName
+            });
+
+            renderPermissionsTable();
+            updateFilters();
+
+            // Reset selects
+            companySelect.value = '';
+            roleSelect.innerHTML = '<option value="">Seleccione un rol</option>';
+            roleSelect.disabled = true;
+
+            validateForm();
+        }
+
+        function removePermission(index) {
+            const permission = permissions[index];
+
+            if (confirm(`¿Está seguro que desea eliminar el permiso ${permission.roleName} en ${permission.companyName}?`)) {
+                permissions.splice(index, 1);
+                renderPermissionsTable();
+                updateFilters();
+                validateForm();
+            }
+        }
+
+        function renderPermissionsTable() {
+            const tbody = document.getElementById('permissionsTableBody');
+            const count = document.getElementById('permissionCount');
+
+            count.textContent = permissions.length;
+
+            if (permissions.length === 0) {
+                tbody.innerHTML = `
+                    <tr class="empty-state">
+                        <td colspan="3">
+                            <div class="empty-state">
+                                <span class="material-icons">lock_open</span>
+                                <p>No hay permisos asignados. Agregue al menos uno para continuar</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('tableFilters').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('tableFilters').style.display = 'flex';
+
+            tbody.innerHTML = permissions.map((p, index) => `
+                <tr>
+                    <td>${p.companyName}</td>
+                    <td>${p.roleName}</td>
+                    <td>
+                        <button type="button" class="delete-btn" onclick="removePermission(${index})">
+                            <span class="material-icons" style="font-size: 16px;">delete</span>
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateFilters() {
+            const filterCompany = document.getElementById('filterCompany');
+            const filterRole = document.getElementById('filterRole');
+
+            // Get unique companies and roles
+            const companies = [...new Set(permissions.map(p => p.companyName))];
+            const roles = [...new Set(permissions.map(p => p.roleName))];
+
+            filterCompany.innerHTML = '<option value="">Todas las empresas</option>' +
+                companies.map(c => `<option value="${c}">${c}</option>`).join('');
+
+            filterRole.innerHTML = '<option value="">Todos los roles</option>' +
+                roles.map(r => `<option value="${r}">${r}</option>`).join('');
+        }
+
+        function filterPermissions() {
+            // This would filter the table in a real implementation
+            // For demo purposes, we just show all
+            renderPermissionsTable();
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('permissionError');
+            const errorText = document.getElementById('permissionErrorText');
+            errorText.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        function hideError() {
+            document.getElementById('permissionError').classList.remove('show');
+        }
+
+        // Form validation
+        function validateForm() {
+            const idNumber = document.getElementById('idNumber');
+            const firstLastName = document.getElementById('firstLastName');
+            const firstName = document.getElementById('firstName');
+            const createBtn = document.getElementById('createBtn');
+
+            const isValid =
+                currentUserType &&
+                idNumber.value.trim() &&
+                !idNumber.classList.contains('error') &&
+                idNumber.classList.contains('success') &&
+                firstLastName.value.trim() &&
+                firstName.value.trim() &&
+                permissions.length > 0;
+
+            createBtn.disabled = !isValid;
+        }
+
+        // Listen to input changes
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', validateForm);
+            input.addEventListener('blur', validateForm);
+        });
+
+        // Form actions
+        function cancelCreation() {
+            if (confirm('¿Está seguro que desea cancelar? Se perderán todos los datos ingresados.')) {
+                window.location.href = 'HU005-GestionUsuarios.html';
+            }
+        }
+
+        function goToSummary() {
+            // Store data in sessionStorage for the summary page
+            const formData = {
+                userType: currentUserType,
+                idNumber: document.getElementById('idNumber').value,
+                firstLastName: document.getElementById('firstLastName').value,
+                secondLastName: document.getElementById('secondLastName').value,
+                firstName: document.getElementById('firstName').value,
+                secondName: document.getElementById('secondName').value,
+                email: document.getElementById('email').value,
+                permissions: permissions
+            };
+
+            sessionStorage.setItem('newUserData', JSON.stringify(formData));
+            window.location.href = 'HU006-ResumenUsuario.html';
+        }
+    </script>
+</body>
+</html>

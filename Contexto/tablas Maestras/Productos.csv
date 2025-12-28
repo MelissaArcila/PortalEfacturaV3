@@ -1,0 +1,10 @@
+Code;Name;Description;Modulo_DIAN
+1;Emisión Factura Electrónica (FE);Emisión de facturas de venta electrónicas DIAN;FACTURACION_VENTA
+2;Emisión POS;Emisión de facturas de venta POS (punto de venta);FACTURACION_POS
+3;Emisión Documento Equivalente;Emisión de documentos equivalentes electrónicos;DOCUMENTO_EQUIVALENTE
+4;Recepción FE;Recepción y validación de facturas electrónicas de proveedores;RECEPCION_FE
+5;Nómina Electrónica;Emisión de nómina electrónica DIAN;NOMINA_ELECTRONICA
+6;Emisión Documento Soporte;Emisión de documentos soporte de pago de nómina;DOCUMENTO_SOPORTE
+7;RADIAN;Registro de eventos de facturas como título valor (aceptación, rechazo, endoso);RADIAN
+8;Notas Crédito;Emisión de notas crédito electrónicas;NOTA_CREDITO
+9;Notas Débito;Emisión de notas débito electrónicas;NOTA_DEBITO

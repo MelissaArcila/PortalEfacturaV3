@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HU004 - Administración de Empresas - Portal Unificado Efactura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #FAFAFA;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            padding: 16px 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #212121;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-family: 'Roboto', Arial, sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(74, 90, 158, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-bar .material-icons {
+            color: #757575;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #F5F5F5;
+            padding: 16px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: #424242;
+            border-bottom: 2px solid #E0E0E0;
+        }
+
+        td {
+            padding: 16px;
+            font-size: 14px;
+            color: #616161;
+            border-bottom: 1px solid #F5F5F5;
+        }
+
+        tr:hover {
+            background-color: #FAFAFA;
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .chip-success {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .chip-warning {
+            background-color: #FFF3E0;
+            color: #E65100;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .icon-btn:hover {
+            background-color: #F5F5F5;
+        }
+
+        .icon-btn .material-icons {
+            font-size: 20px;
+            color: #757575;
+        }
+
+        .icon-btn:hover .material-icons {
+            color: #4A5A9E;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: white;
+            border-top: 1px solid #E0E0E0;
+        }
+
+        .pagination-info {
+            font-size: 14px;
+            color: #757575;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .pagination-btn {
+            padding: 8px 16px;
+            border: 1px solid #E0E0E0;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Roboto', Arial, sans-serif;
+            transition: all 0.2s;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background-color: #F5F5F5;
+            border-color: #4A5A9E;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Portal Unificado CDN - Administración</h1>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h2>Administración de Empresas</h2>
+            <a href="#" class="btn btn-primary" onclick="handleCreateEmpresa(event)">
+                <span class="material-icons">add_circle</span>
+                Crear Nueva Empresa
+            </a>
+        </div>
+
+        <div class="search-bar">
+            <span class="material-icons">search</span>
+            <input
+                type="text"
+                placeholder="Buscar por NIT, razón social o nombre..."
+                id="searchInput"
+                oninput="handleSearch()"
+            />
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Número ID</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>Fecha Creación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td>900123456-7</td>
+                        <td>Ejemplo Empresa S.A.S.</td>
+                        <td><span class="chip chip-success">Activo</span></td>
+                        <td>15/12/2025</td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" onclick="handleView('900123456-7')" title="Ver">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleEdit('900123456-7')" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleMore('900123456-7')" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>800654321-2</td>
+                        <td>Comercializadora ABC Ltda.</td>
+                        <td><span class="chip chip-success">Activo</span></td>
+                        <td>10/12/2025</td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" onclick="handleView('800654321-2')" title="Ver">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleEdit('800654321-2')" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleMore('800654321-2')" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>900987654-3</td>
+                        <td>Tecnología e Innovación SAS</td>
+                        <td><span class="chip chip-warning">Pendiente</span></td>
+                        <td>05/12/2025</td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" onclick="handleView('900987654-3')" title="Ver">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleEdit('900987654-3')" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleMore('900987654-3')" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>800111222-1</td>
+                        <td>Distribuidora Nacional S.A.</td>
+                        <td><span class="chip chip-success">Activo</span></td>
+                        <td>01/12/2025</td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" onclick="handleView('800111222-1')" title="Ver">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleEdit('800111222-1')" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleMore('800111222-1')" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>900333444-5</td>
+                        <td>Servicios Profesionales del Sur</td>
+                        <td><span class="chip chip-success">Activo</span></td>
+                        <td>28/11/2025</td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" onclick="handleView('900333444-5')" title="Ver">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleEdit('900333444-5')" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="handleMore('900333444-5')" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <div class="pagination-info">
+                    Mostrando 1-5 de 25 empresas
+                </div>
+                <div class="pagination-controls">
+                    <button class="pagination-btn" disabled onclick="handlePrevPage()">Anterior</button>
+                    <button class="pagination-btn" onclick="handleNextPage()">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleCreateEmpresa(event) {
+            event.preventDefault();
+            alert('Esta es una demostración. En producción, navegará al formulario de creación de empresas.');
+        }
+
+        function handleView(nit) {
+            alert(`Ver detalles de la empresa con NIT: ${nit}`);
+        }
+
+        function handleEdit(nit) {
+            alert(`Editar empresa con NIT: ${nit}`);
+        }
+
+        function handleMore(nit) {
+            alert(`Más opciones para empresa con NIT: ${nit}`);
+        }
+
+        function handleSearch() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            console.log('Buscando:', searchValue);
+            // En producción, esto filtraría la tabla o haría una llamada al backend
+        }
+
+        function handlePrevPage() {
+            alert('Página anterior');
+        }
+
+        function handleNextPage() {
+            alert('Página siguiente');
+        }
+    </script>
+</body>
+</html>

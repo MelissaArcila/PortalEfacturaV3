@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen del Nuevo Usuario - Portal Unificado CDN Facturación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 32px;
+        }
+
+        .summary-section {
+            margin-bottom: 32px;
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .summary-section h2 {
+            font-size: 18px;
+            color: #4A5A9E;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .badge.client {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge.internal {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .badge.mixed {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .badge.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .data-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .data-item {
+            display: flex;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 12px;
+        }
+
+        .data-item:last-child {
+            border-bottom: none;
+        }
+
+        .data-label {
+            flex: 0 0 200px;
+            font-weight: 500;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .data-value {
+            flex: 1;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .data-value.empty {
+            color: #999;
+            font-style: italic;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        thead {
+            background: #f5f5f5;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        .permissions-summary {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .permissions-summary .material-icons {
+            color: #4A5A9E;
+            font-size: 24px;
+        }
+
+        .permissions-summary-text {
+            flex: 1;
+        }
+
+        .permissions-summary-text strong {
+            color: #4A5A9E;
+            font-size: 16px;
+        }
+
+        .permissions-summary-text p {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn {
+            padding: 12px 32px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outlined {
+            background: white;
+            color: #666;
+            border: 1px solid #ccc;
+        }
+
+        .btn-outlined:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-contained {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-contained:hover {
+            box-shadow: 0 4px 12px rgba(74, 90, 158, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .data-item {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .data-label {
+                flex: none;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Resumen del Nuevo Usuario</h1>
+            <p>Revise la información antes de confirmar la creación</p>
+        </div>
+
+        <div class="content" id="summaryContent">
+            <!-- Content will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Load data from sessionStorage
+        const userData = JSON.parse(sessionStorage.getItem('newUserData') || '{}');
+
+        // If no data, redirect back
+        if (!userData.userType) {
+            alert('No hay datos para mostrar');
+            window.location.href = 'HU006-CrearUsuario.html';
+        }
+
+        function getUserTypeBadge() {
+            const hasInternalPermissions = userData.permissions.some(p => p.companyName === 'Interno');
+            const hasClientPermissions = userData.permissions.some(p => p.companyName !== 'Interno');
+
+            if (userData.userType === 'internal' && hasClientPermissions) {
+                return '<span class="badge mixed"><span class="material-icons" style="font-size: 16px;">people</span>Usuario Interno con permisos de Cliente</span>';
+            } else if (userData.userType === 'internal') {
+                return '<span class="badge internal"><span class="material-icons" style="font-size: 16px;">admin_panel_settings</span>Usuario Interno</span>';
+            } else {
+                return '<span class="badge client"><span class="material-icons" style="font-size: 16px;">business</span>Usuario de Cliente</span>';
+            }
+        }
+
+        function getFullName() {
+            const parts = [
+                userData.firstName,
+                userData.secondName,
+                userData.firstLastName,
+                userData.secondLastName
+            ].filter(p => p && p.trim());
+
+            return parts.join(' ');
+        }
+
+        function renderSummary() {
+            const content = document.getElementById('summaryContent');
+
+            const html = `
+                <!-- Type Section -->
+                <div class="summary-section">
+                    <h2>
+                        <span class="material-icons">person</span>
+                        Tipo de Usuario
+                    </h2>
+                    ${getUserTypeBadge()}
+                </div>
+
+                <!-- Personal Data Section -->
+                <div class="summary-section">
+                    <h2>
+                        <span class="material-icons">badge</span>
+                        Datos Personales
+                    </h2>
+                    <div class="data-list">
+                        <div class="data-item">
+                            <div class="data-label">Número de Identificación:</div>
+                            <div class="data-value">${userData.idNumber}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Nombre Completo:</div>
+                            <div class="data-value">${getFullName()}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Primer Apellido:</div>
+                            <div class="data-value">${userData.firstLastName}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Segundo Apellido:</div>
+                            <div class="data-value ${!userData.secondLastName ? 'empty' : ''}">
+                                ${userData.secondLastName || 'No especificado'}
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Primer Nombre:</div>
+                            <div class="data-value">${userData.firstName}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Segundo Nombre:</div>
+                            <div class="data-value ${!userData.secondName ? 'empty' : ''}">
+                                ${userData.secondName || 'No especificado'}
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Correo Electrónico:</div>
+                            <div class="data-value ${!userData.email ? 'empty' : ''}">
+                                ${userData.email || 'No especificado'}
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Estado:</div>
+                            <div class="data-value">
+                                <span class="badge success">
+                                    <span class="material-icons" style="font-size: 16px;">check_circle</span>
+                                    Activo
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Permissions Section -->
+                <div class="summary-section">
+                    <h2>
+                        <span class="material-icons">lock</span>
+                        Permisos Asignados
+                    </h2>
+
+                    <div class="permissions-summary">
+                        <span class="material-icons">verified_user</span>
+                        <div class="permissions-summary-text">
+                            <strong>${userData.permissions.length} ${userData.permissions.length === 1 ? 'permiso asignado' : 'permisos asignados'}</strong>
+                            <p>El usuario tendrá acceso a las siguientes combinaciones de Empresa + Rol</p>
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Empresa</th>
+                                <th>Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${userData.permissions.map(p => `
+                                <tr>
+                                    <td>${p.companyName}</td>
+                                    <td>${p.roleName}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outlined" onclick="goBack()">
+                        <span class="material-icons">arrow_back</span>
+                        Volver y Editar
+                    </button>
+                    <button type="button" class="btn btn-contained" onclick="confirmCreation()">
+                        <span class="material-icons">check_circle</span>
+                        Confirmar Creación
+                    </button>
+                </div>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        function goBack() {
+            window.location.href = 'HU006-CrearUsuario.html';
+        }
+
+        function confirmCreation() {
+            // Simulate API call
+            // In real implementation, this would send data to backend
+
+            // For demo, we'll just redirect to success page
+            window.location.href = 'HU006-CreacionExitosa.html';
+        }
+
+        // Render on load
+        renderSummary();
+    </script>
+</body>
+</html>

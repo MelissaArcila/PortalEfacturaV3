@@ -204,3 +204,72 @@ Proceso mediante el cual una cuenta de usuario bloqueada por intentos fallidos d
 Conjunto de información, permisos y configuraciones específicas asociadas a un cliente particular, que determinan el alcance de acceso y funcionalidades disponibles para un usuario durante su sesión en el sistema.
 
 ---
+
+## Rol
+
+Conjunto predefinido de permisos y capacidades que determinan las acciones que un usuario puede realizar en el sistema. Los roles se clasifican en dos tipos principales: roles de cliente (asociados a empresas contratantes) y roles internos (para personal de la organización).
+
+---
+
+## Administrador de Portal
+
+Rol interno con máximo nivel de privilegios en el Portal Unificado. Tiene capacidad para crear y gestionar usuarios de cualquier tipo, administrar empresas, configurar productos, y acceder a todas las funcionalidades del sistema sin restricciones.
+
+---
+
+## Administrador de Cliente
+
+Rol asignado a usuarios de una empresa cliente que tienen capacidad para gestionar usuarios de su propia organización, asignar permisos a sus colaboradores, y administrar la configuración de su empresa en el portal, pero sin acceso a funcionalidades de administración global del sistema.
+
+---
+
+## Gestor
+
+Rol operativo asignado a usuarios de cliente que tienen permisos para ejecutar acciones específicas sobre uno o más productos contratados (emisión de facturas, recepción de documentos, generación de eventos RADIAN, etc.). Cada producto tiene su propio rol de gestor específico.
+
+---
+
+## Usuario Interno
+
+Usuario que pertenece al personal de la organización proveedora del servicio (CDN Facturación) y tiene asignados roles internos como Administrador de Portal, Soporte Técnico, Auditor Interno, Desarrollador, o Consultor Funcional. Los usuarios internos pueden también tener roles de cliente asignados para propósitos de soporte.
+
+---
+
+## Usuario de Cliente
+
+Usuario que pertenece a una empresa contratante del servicio y tiene asignados uno o más roles de cliente (Administrador de Cliente, Gestor) para acceder y operar sobre los productos contratados por su organización.
+
+---
+
+## Permiso
+
+Asignación específica de un rol a un usuario para un cliente determinado. Un usuario puede tener múltiples permisos que le permiten acceder a diferentes clientes con diferentes roles en cada uno. Por ejemplo, un usuario puede ser Gestor Emisión FE en la Empresa A y Gestor RADIAN en la Empresa B.
+
+---
+
+## Producto
+
+Servicio o módulo funcional del ecosistema de facturación electrónica DIAN que un cliente puede contratar. Los productos incluyen: Emisión Factura Electrónica (FE), Emisión POS, Emisión Documento Equivalente, Recepción FE, Nómina Electrónica, Emisión Documento Soporte, RADIAN, Notas Crédito, Notas Débito.
+
+---
+
+## Número de Identificación
+
+Identificador único asociado a un usuario en el sistema, generalmente correspondiente a su documento de identidad (cédula, pasaporte, etc.). Este número debe ser único en toda la plataforma y se utiliza para autenticación y trazabilidad de acciones.
+
+---
+
+## Estado de Usuario
+
+Indicador del estado operativo de una cuenta de usuario en el sistema. Los estados posibles son:
+- **Activo**: El usuario puede autenticarse y acceder al sistema según sus permisos.
+- **Inactivo**: El usuario no puede autenticarse ni acceder al sistema, pero su cuenta se mantiene en el sistema para fines de auditoría.
+- **Bloqueado**: Estado temporal que impide el acceso debido a múltiples intentos fallidos de autenticación.
+
+---
+
+## Asignación de Permisos
+
+Proceso mediante el cual un Administrador de Portal otorga acceso a un usuario sobre uno o más clientes con roles específicos, determinando las capacidades y alcance de acceso del usuario en el sistema. Cada asignación se registra con detalle de quién, cuándo y qué permiso fue otorgado para fines de auditoría.
+
+---

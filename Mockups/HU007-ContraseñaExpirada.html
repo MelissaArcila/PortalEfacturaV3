@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contraseña Temporal Expirada - Portal Unificado CDN Facturación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .logo-section {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            padding: 40px 32px;
+            text-align: center;
+        }
+
+        .logo-section img {
+            max-width: 180px;
+            height: auto;
+        }
+
+        .content {
+            padding: 32px;
+        }
+
+        .title {
+            font-size: 24px;
+            color: #4A5A9E;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .alert-error {
+            background: #ffebee;
+            border-left: 4px solid #D4145A;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px);
+            }
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .alert-error .material-icons {
+            color: #D4145A;
+            font-size: 24px;
+        }
+
+        .alert-error-content {
+            flex: 1;
+        }
+
+        .alert-error-content h4 {
+            color: #D4145A;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .alert-error-content p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4A5A9E;
+            box-shadow: 0 0 0 3px rgba(74, 90, 158, 0.1);
+        }
+
+        .form-group input:disabled {
+            background: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .password-input-wrapper input {
+            padding-right: 48px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toggle-password:hover {
+            color: #4A5A9E;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-contained {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .btn-contained:hover {
+            box-shadow: 0 4px 12px rgba(74, 90, 158, 0.3);
+        }
+
+        .btn-outlined {
+            background: white;
+            color: #666;
+            border: 1px solid #ccc;
+        }
+
+        .btn-outlined:hover {
+            background: #f5f5f5;
+        }
+
+        .support-section {
+            background: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 24px;
+        }
+
+        .support-section h4 {
+            color: #1976d2;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .support-section p {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .support-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .support-section strong {
+            color: #1976d2;
+        }
+
+        .info-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #e65100;
+            line-height: 1.6;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 24px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 24px 20px;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <img src="../Contexto/Guia de estilos/CDN.facturación.png" alt="CDN Facturación">
+        </div>
+
+        <div class="content">
+            <h1 class="title">Iniciar Sesión</h1>
+            <p class="subtitle">Portal Unificado de CDN Facturación</p>
+
+            <!-- Error Alert -->
+            <div class="alert-error">
+                <span class="material-icons">error</span>
+                <div class="alert-error-content">
+                    <h4>Su contraseña temporal ha expirado</h4>
+                    <p>La contraseña temporal proporcionada ya no es válida. Por favor, contacte al administrador para solicitar una nueva contraseña temporal.</p>
+                </div>
+            </div>
+
+            <!-- Login Form (disabled to show state) -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Número de Identificación</label>
+                    <input
+                        type="text"
+                        id="idNumber"
+                        placeholder="Ingrese su número de identificación"
+                        value="123456789"
+                        disabled
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <div class="password-input-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Ingrese su contraseña"
+                            value="Kj8mL@pQ3z#W"
+                            disabled
+                        >
+                        <button type="button" class="toggle-password" onclick="togglePassword()" disabled>
+                            <span class="material-icons">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-contained" onclick="retry()">
+                    <span class="material-icons">refresh</span>
+                    Volver a Intentar
+                </button>
+
+                <button type="button" class="btn btn-outlined" onclick="contactSupport()">
+                    <span class="material-icons">support_agent</span>
+                    Contactar Soporte
+                </button>
+            </form>
+
+            <div class="divider"></div>
+
+            <!-- Support Section -->
+            <div class="support-section">
+                <h4>
+                    <span class="material-icons" style="font-size: 20px;">help_outline</span>
+                    Información de Contacto
+                </h4>
+                <p><strong>Teléfono:</strong> +57 (1) 234-5678</p>
+                <p><strong>Email:</strong> soporte@cdnfacturacion.com</p>
+                <p><strong>Horario:</strong> Lunes a Viernes de 8:00 AM a 6:00 PM</p>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <strong>¿Por qué expiró mi contraseña?</strong><br>
+                Las contraseñas temporales expiran después de 72 horas (3 días) por razones de seguridad. El administrador puede generar una nueva contraseña temporal para usted en cualquier momento.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function retry() {
+            // Clear form and enable inputs
+            document.getElementById('idNumber').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('idNumber').disabled = false;
+            document.getElementById('password').disabled = false;
+
+            // Hide error alert
+            document.querySelector('.alert-error').style.display = 'none';
+
+            // Focus on first input
+            document.getElementById('idNumber').focus();
+
+            // In real implementation, this would reload the login page
+            // window.location.href = 'HU001-Login.html';
+        }
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.querySelector('.toggle-password .material-icons');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.textContent = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.textContent = 'visibility';
+            }
+        }
+
+        function contactSupport() {
+            alert('Funcionalidad "Contactar Soporte":\n\n' +
+                  'En implementación real, esto:\n' +
+                  '- Abriría un formulario de contacto\n' +
+                  '- O enviaría un correo a soporte@cdnfacturacion.com\n' +
+                  '- O abriría un chat de soporte en vivo\n\n' +
+                  'El mensaje incluiría automáticamente:\n' +
+                  '- Número de identificación del usuario\n' +
+                  '- Razón del contacto: "Contraseña temporal expirada"\n' +
+                  '- Fecha y hora del problema');
+        }
+    </script>
+</body>
+</html>

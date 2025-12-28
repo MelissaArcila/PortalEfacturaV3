@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error al Crear Usuario - Portal Unificado CDN Facturación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px);
+            }
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+            color: white;
+            padding: 48px 32px;
+            text-align: center;
+        }
+
+        .error-icon {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .error-icon .material-icons {
+            font-size: 48px;
+            color: #ff6b6b;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 15px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .content {
+            padding: 32px;
+        }
+
+        .error-details {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .error-details h3 {
+            font-size: 16px;
+            color: #e65100;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-details p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .error-details ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+
+        .error-details li {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .info-box .material-icons {
+            color: #1976d2;
+            font-size: 24px;
+        }
+
+        .info-box-content {
+            flex: 1;
+        }
+
+        .info-box-content h4 {
+            font-size: 14px;
+            color: #1976d2;
+            margin-bottom: 4px;
+        }
+
+        .info-box-content p {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(74, 90, 158, 0.3);
+        }
+
+        .btn-outlined {
+            background: white;
+            color: #666;
+            border: 1px solid #ccc;
+        }
+
+        .btn-outlined:hover {
+            background: #f5f5f5;
+        }
+
+        /* Demo State Selector */
+        .demo-state-selector {
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .demo-state-selector h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .demo-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .demo-btn.active {
+            background: #4A5A9E;
+            color: white;
+            border-color: #4A5A9E;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 32px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="error-icon">
+                <span class="material-icons">error</span>
+            </div>
+            <h1>Error al Crear Usuario</h1>
+            <p id="errorMessage">Ocurrió un error al crear el usuario. Por favor, intente nuevamente.</p>
+        </div>
+
+        <div class="content">
+            <!-- Demo State Selector -->
+            <div class="demo-state-selector">
+                <h3>
+                    <span class="material-icons" style="font-size: 16px;">science</span>
+                    Tipo de Error de Demostración
+                </h3>
+                <div class="demo-buttons">
+                    <button class="demo-btn active" onclick="showError('generic', this)">Error Genérico</button>
+                    <button class="demo-btn" onclick="showError('timeout', this)">Timeout</button>
+                    <button class="demo-btn" onclick="showError('validation', this)">Validación Backend</button>
+                    <button class="demo-btn" onclick="showError('database', this)">Error de BD</button>
+                </div>
+            </div>
+
+            <div class="error-details" id="errorDetails">
+                <!-- Content will be updated by JavaScript -->
+            </div>
+
+            <div class="info-box">
+                <span class="material-icons">info</span>
+                <div class="info-box-content">
+                    <h4>Sus datos han sido preservados</h4>
+                    <p>No se perderá ninguna información ingresada. Al hacer clic en "Aceptar", podrá revisar y corregir los datos antes de intentar nuevamente.</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="goBackToForm()">
+                    <span class="material-icons">refresh</span>
+                    Aceptar
+                </button>
+                <button class="btn btn-outlined" onclick="contactSupport()">
+                    <span class="material-icons">support_agent</span>
+                    Contactar Soporte Técnico
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const errorTypes = {
+            generic: {
+                message: 'Ocurrió un error al crear el usuario. Por favor, intente nuevamente.',
+                title: 'Error General',
+                icon: 'error',
+                details: `
+                    <h3>
+                        <span class="material-icons">warning</span>
+                        Detalles del Error
+                    </h3>
+                    <p>Se produjo un error inesperado durante el proceso de creación del usuario.</p>
+                    <p><strong>Qué puede hacer:</strong></p>
+                    <ul>
+                        <li>Verifique que todos los datos ingresados sean correctos</li>
+                        <li>Intente nuevamente en unos momentos</li>
+                        <li>Si el problema persiste, contacte a soporte técnico</li>
+                    </ul>
+                `
+            },
+            timeout: {
+                message: 'La solicitud excedió el tiempo de espera. Por favor, intente nuevamente.',
+                title: 'Tiempo de Espera Agotado',
+                icon: 'schedule',
+                details: `
+                    <h3>
+                        <span class="material-icons">schedule</span>
+                        Tiempo de Espera Agotado
+                    </h3>
+                    <p>La conexión con el servidor tardó demasiado tiempo y la operación se canceló automáticamente.</p>
+                    <p><strong>Posibles causas:</strong></p>
+                    <ul>
+                        <li>Problemas temporales de conectividad de red</li>
+                        <li>El servidor está experimentando alta carga</li>
+                        <li>Su conexión a Internet es inestable</li>
+                    </ul>
+                    <p><strong>Recomendación:</strong> Espere unos segundos y vuelva a intentar.</p>
+                `
+            },
+            validation: {
+                message: 'Los datos enviados no cumplen con los requisitos del sistema.',
+                title: 'Error de Validación',
+                icon: 'rule',
+                details: `
+                    <h3>
+                        <span class="material-icons">rule</span>
+                        Error de Validación Backend
+                    </h3>
+                    <p>El servidor rechazó la creación del usuario debido a que algunos datos no cumplen con las reglas de negocio.</p>
+                    <p><strong>Posibles problemas:</strong></p>
+                    <ul>
+                        <li>El número de identificación ya existe en el sistema (validación de integridad)</li>
+                        <li>Uno o más roles asignados no son válidos para las empresas seleccionadas</li>
+                        <li>La empresa seleccionada ya no está activa</li>
+                        <li>Los permisos asignados tienen conflictos de seguridad</li>
+                    </ul>
+                    <p><strong>Recomendación:</strong> Revise los datos ingresados, especialmente el número de identificación y los permisos asignados.</p>
+                `
+            },
+            database: {
+                message: 'Error de conexión con la base de datos. Por favor, contacte a soporte técnico.',
+                title: 'Error de Base de Datos',
+                icon: 'storage',
+                details: `
+                    <h3>
+                        <span class="material-icons">storage</span>
+                        Error de Base de Datos
+                    </h3>
+                    <p>Se produjo un error al intentar guardar la información en la base de datos del sistema.</p>
+                    <p><strong>Esto puede deberse a:</strong></p>
+                    <ul>
+                        <li>Problemas temporales de conectividad con la base de datos</li>
+                        <li>Mantenimiento programado del sistema</li>
+                        <li>Error técnico en el servidor de base de datos</li>
+                    </ul>
+                    <p><strong>Recomendación:</strong> Si el problema persiste después de varios intentos, contacte inmediatamente al equipo de soporte técnico proporcionando la fecha y hora del error.</p>
+                `
+            }
+        };
+
+        function showError(type, buttonElement) {
+            // Update active button
+            document.querySelectorAll('.demo-btn').forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
+
+            const errorData = errorTypes[type];
+
+            // Update header message
+            document.getElementById('errorMessage').textContent = errorData.message;
+
+            // Update error icon
+            document.querySelector('.error-icon .material-icons').textContent = errorData.icon;
+
+            // Update error details
+            document.getElementById('errorDetails').innerHTML = errorData.details;
+        }
+
+        function goBackToForm() {
+            // In real implementation, this would go back to the form maintaining all data
+            // For demo, we'll go back to the creation form
+            window.location.href = 'HU006-CrearUsuario.html';
+        }
+
+        function contactSupport() {
+            alert('Funcionalidad "Contactar Soporte Técnico":\n\n' +
+                  'En implementación real, esto:\n' +
+                  '- Abriría un formulario de soporte\n' +
+                  '- O enviaría un correo a soporte@cdn.com\n' +
+                  '- O abriría un chat de soporte en vivo\n\n' +
+                  'Incluiría automáticamente:\n' +
+                  '- Timestamp del error\n' +
+                  '- Tipo de error\n' +
+                  '- Usuario que experimentó el error\n' +
+                  '- Stack trace (si está disponible)');
+        }
+
+        // Initialize with generic error on load
+        window.onload = function() {
+            const errorData = errorTypes.generic;
+            document.getElementById('errorDetails').innerHTML = errorData.details;
+        };
+    </script>
+</body>
+</html>

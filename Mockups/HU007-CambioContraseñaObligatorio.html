@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de Contraseña Requerido - Portal Unificado CDN Facturación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .logo-section {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            padding: 32px;
+            text-align: center;
+        }
+
+        .logo-section img {
+            max-width: 180px;
+            height: auto;
+        }
+
+        .content {
+            padding: 32px;
+        }
+
+        .title {
+            font-size: 24px;
+            color: #4A5A9E;
+            font-weight: 500;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .alert-info .material-icons {
+            color: #1976d2;
+            font-size: 24px;
+        }
+
+        .alert-info-content {
+            flex: 1;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .alert-success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            display: none;
+            gap: 12px;
+        }
+
+        .alert-success.show {
+            display: flex;
+        }
+
+        .alert-success .material-icons {
+            color: #4caf50;
+            font-size: 24px;
+        }
+
+        .alert-success-content {
+            flex: 1;
+            font-size: 14px;
+            color: #2e7d32;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .password-input-wrapper input {
+            width: 100%;
+            padding: 14px 48px 14px 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .password-input-wrapper input:focus {
+            outline: none;
+            border-color: #4A5A9E;
+            box-shadow: 0 0 0 3px rgba(74, 90, 158, 0.1);
+        }
+
+        .password-input-wrapper input.error {
+            border-color: #D4145A;
+        }
+
+        .password-input-wrapper input.success {
+            border-color: #4caf50;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toggle-password:hover {
+            color: #4A5A9E;
+        }
+
+        .requirements-list {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .requirements-list h4 {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .requirement-item .material-icons {
+            font-size: 18px;
+        }
+
+        .requirement-item.invalid .material-icons {
+            color: #D4145A;
+        }
+
+        .requirement-item.valid .material-icons {
+            color: #4caf50;
+        }
+
+        .requirement-item.valid {
+            color: #2e7d32;
+        }
+
+        .strength-bar-container {
+            margin-top: 12px;
+        }
+
+        .strength-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .strength-text {
+            font-weight: 500;
+        }
+
+        .strength-text.weak {
+            color: #D4145A;
+        }
+
+        .strength-text.medium {
+            color: #ff9800;
+        }
+
+        .strength-text.strong {
+            color: #4caf50;
+        }
+
+        .strength-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .strength-bar-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s;
+            border-radius: 3px;
+        }
+
+        .strength-bar-fill.weak {
+            width: 33%;
+            background: #D4145A;
+        }
+
+        .strength-bar-fill.medium {
+            width: 66%;
+            background: #ff9800;
+        }
+
+        .strength-bar-fill.strong {
+            width: 100%;
+            background: #4caf50;
+        }
+
+        .error-text {
+            font-size: 12px;
+            color: #D4145A;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-text.show {
+            display: block;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 32px;
+        }
+
+        .btn-contained {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+        }
+
+        .btn-contained:hover:not(:disabled) {
+            box-shadow: 0 4px 12px rgba(74, 90, 158, 0.3);
+        }
+
+        .btn-contained:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .security-note {
+            margin-top: 24px;
+            padding: 12px;
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #e65100;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .security-note .material-icons {
+            color: #ff9800;
+            font-size: 20px;
+        }
+
+        /* Demo State Selector */
+        .demo-state-selector {
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .demo-state-selector h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .demo-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .demo-btn.active {
+            background: #4A5A9E;
+            color: white;
+            border-color: #4A5A9E;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 24px 20px;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <img src="../Contexto/Guia de estilos/CDN.facturación.png" alt="CDN Facturación">
+        </div>
+
+        <div class="content">
+            <!-- Demo State Selector -->
+            <div class="demo-state-selector">
+                <h3>
+                    <span class="material-icons" style="font-size: 16px;">science</span>
+                    Estado de Demostración
+                </h3>
+                <div class="demo-buttons">
+                    <button class="demo-btn active" onclick="showState('initial', this)">Estado Inicial</button>
+                    <button class="demo-btn" onclick="showState('weak', this)">Contraseña Débil</button>
+                    <button class="demo-btn" onclick="showState('medium', this)">Contraseña Media</button>
+                    <button class="demo-btn" onclick="showState('strong', this)">Contraseña Fuerte</button>
+                    <button class="demo-btn" onclick="showState('mismatch', this)">No Coinciden</button>
+                    <button class="demo-btn" onclick="showState('success', this)">Cambio Exitoso</button>
+                </div>
+            </div>
+
+            <h1 class="title">Cambio de Contraseña Requerido</h1>
+
+            <div class="alert-info">
+                <span class="material-icons">info</span>
+                <div class="alert-info-content">
+                    Por seguridad, debe establecer una nueva contraseña. Esta será su contraseña definitiva para acceder al Portal Unificado.
+                </div>
+            </div>
+
+            <div class="alert-success" id="successAlert">
+                <span class="material-icons">check_circle</span>
+                <div class="alert-success-content">
+                    Contraseña cambiada exitosamente. Redirigiendo al portal...
+                </div>
+            </div>
+
+            <form id="changePasswordForm">
+                <!-- New Password -->
+                <div class="form-group">
+                    <label>Nueva Contraseña</label>
+                    <div class="password-input-wrapper">
+                        <input
+                            type="password"
+                            id="newPassword"
+                            placeholder="Ingrese su nueva contraseña"
+                            oninput="validatePassword()"
+                        >
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('newPassword', this)">
+                            <span class="material-icons">visibility</span>
+                        </button>
+                    </div>
+
+                    <!-- Requirements List -->
+                    <div class="requirements-list">
+                        <h4>Su contraseña debe cumplir con los siguientes requisitos:</h4>
+                        <div class="requirement-item invalid" id="req-length">
+                            <span class="material-icons">close</span>
+                            <span>Mínimo 8 caracteres</span>
+                        </div>
+                        <div class="requirement-item invalid" id="req-uppercase">
+                            <span class="material-icons">close</span>
+                            <span>Al menos una mayúscula (A-Z)</span>
+                        </div>
+                        <div class="requirement-item invalid" id="req-lowercase">
+                            <span class="material-icons">close</span>
+                            <span>Al menos una minúscula (a-z)</span>
+                        </div>
+                        <div class="requirement-item invalid" id="req-number">
+                            <span class="material-icons">close</span>
+                            <span>Al menos un número (0-9)</span>
+                        </div>
+                        <div class="requirement-item invalid" id="req-symbol">
+                            <span class="material-icons">close</span>
+                            <span>Al menos un símbolo (!@#$%^&*)</span>
+                        </div>
+                        <div class="requirement-item invalid" id="req-not-temp">
+                            <span class="material-icons">close</span>
+                            <span>No puede ser igual a contraseña temporal</span>
+                        </div>
+                    </div>
+
+                    <!-- Strength Bar -->
+                    <div class="strength-bar-container">
+                        <div class="strength-label">
+                            <span>Fortaleza de la contraseña:</span>
+                            <span class="strength-text weak" id="strengthText">Débil</span>
+                        </div>
+                        <div class="strength-bar">
+                            <div class="strength-bar-fill weak" id="strengthFill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label>Confirmar Nueva Contraseña</label>
+                    <div class="password-input-wrapper">
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirme su nueva contraseña"
+                            oninput="validateConfirmPassword()"
+                        >
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)">
+                            <span class="material-icons">visibility</span>
+                        </button>
+                    </div>
+                    <div class="error-text" id="confirmError">Las contraseñas no coinciden</div>
+                </div>
+
+                <button type="button" class="btn btn-contained" id="submitBtn" onclick="changePassword()" disabled>
+                    <span class="material-icons">lock_reset</span>
+                    Cambiar Contraseña
+                </button>
+            </form>
+
+            <div class="security-note">
+                <span class="material-icons">security</span>
+                <div>
+                    Esta acción es obligatoria. No podrá acceder al portal sin establecer una contraseña segura.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock temporary password (in real app, this would come from backend)
+        const TEMP_PASSWORD = 'Kj8mL@pQ3z#W';
+
+        // Common passwords blacklist
+        const COMMON_PASSWORDS = [
+            'Password1!', 'Qwerty123!', 'Admin123!', '12345678!', 'Welcome1!',
+            'Passw0rd!', 'Secret123!', 'Test1234!', 'Hello123!'
+        ];
+
+        const requirements = {
+            length: (pwd) => pwd.length >= 8,
+            uppercase: (pwd) => /[A-Z]/.test(pwd),
+            lowercase: (pwd) => /[a-z]/.test(pwd),
+            number: (pwd) => /[0-9]/.test(pwd),
+            symbol: (pwd) => /[!@#$%^&*]/.test(pwd),
+            notTemp: (pwd) => pwd !== TEMP_PASSWORD
+        };
+
+        function validatePassword() {
+            const password = document.getElementById('newPassword').value;
+            const checks = {
+                length: requirements.length(password),
+                uppercase: requirements.uppercase(password),
+                lowercase: requirements.lowercase(password),
+                number: requirements.number(password),
+                symbol: requirements.symbol(password),
+                notTemp: requirements.notTemp(password)
+            };
+
+            // Update requirement indicators
+            updateRequirement('req-length', checks.length);
+            updateRequirement('req-uppercase', checks.uppercase);
+            updateRequirement('req-lowercase', checks.lowercase);
+            updateRequirement('req-number', checks.number);
+            updateRequirement('req-symbol', checks.symbol);
+            updateRequirement('req-not-temp', checks.notTemp);
+
+            // Calculate strength
+            const validCount = Object.values(checks).filter(v => v).length;
+            updateStrength(validCount);
+
+            // Validate confirm password
+            validateConfirmPassword();
+
+            // Update submit button
+            updateSubmitButton();
+        }
+
+        function updateRequirement(id, isValid) {
+            const element = document.getElementById(id);
+            const icon = element.querySelector('.material-icons');
+
+            if (isValid) {
+                element.classList.remove('invalid');
+                element.classList.add('valid');
+                icon.textContent = 'check';
+            } else {
+                element.classList.remove('valid');
+                element.classList.add('invalid');
+                icon.textContent = 'close';
+            }
+        }
+
+        function updateStrength(validCount) {
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+
+            // Remove all classes
+            strengthFill.classList.remove('weak', 'medium', 'strong');
+            strengthText.classList.remove('weak', 'medium', 'strong');
+
+            if (validCount <= 3) {
+                strengthFill.classList.add('weak');
+                strengthText.classList.add('weak');
+                strengthText.textContent = 'Débil';
+            } else if (validCount <= 5) {
+                strengthFill.classList.add('medium');
+                strengthText.classList.add('medium');
+                strengthText.textContent = 'Media';
+            } else {
+                strengthFill.classList.add('strong');
+                strengthText.classList.add('strong');
+                strengthText.textContent = 'Fuerte';
+            }
+        }
+
+        function validateConfirmPassword() {
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmError = document.getElementById('confirmError');
+            const confirmInput = document.getElementById('confirmPassword');
+
+            if (!confirmPassword) {
+                confirmError.classList.remove('show');
+                confirmInput.classList.remove('error', 'success');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                confirmError.classList.add('show');
+                confirmInput.classList.add('error');
+                confirmInput.classList.remove('success');
+                return false;
+            } else {
+                confirmError.classList.remove('show');
+                confirmInput.classList.remove('error');
+                confirmInput.classList.add('success');
+                return true;
+            }
+        }
+
+        function updateSubmitButton() {
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const submitBtn = document.getElementById('submitBtn');
+
+            const allRequirementsMet =
+                requirements.length(password) &&
+                requirements.uppercase(password) &&
+                requirements.lowercase(password) &&
+                requirements.number(password) &&
+                requirements.symbol(password) &&
+                requirements.notTemp(password) &&
+                password === confirmPassword &&
+                confirmPassword.length > 0;
+
+            submitBtn.disabled = !allRequirementsMet;
+        }
+
+        function togglePasswordVisibility(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('.material-icons');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
+        function changePassword() {
+            const password = document.getElementById('newPassword').value;
+
+            // Check against common passwords
+            if (COMMON_PASSWORDS.includes(password)) {
+                alert('Esta contraseña es muy común. Por favor, elija una contraseña más segura y única.');
+                return;
+            }
+
+            // Show success message
+            document.getElementById('successAlert').classList.add('show');
+
+            // Disable form
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('newPassword').disabled = true;
+            document.getElementById('confirmPassword').disabled = true;
+
+            // Simulate redirect after 2 seconds
+            setTimeout(() => {
+                alert('En implementación real, redirigirá a:\n- HU001 Selección de Cliente (si tiene múltiples clientes)\n- HU001 Ingreso Directo (si tiene un solo cliente)');
+                // window.location.href = 'HU001-ClientSelection.html';
+            }, 2000);
+        }
+
+        // Demo state functions
+        function showState(state, buttonElement) {
+            // Update active button
+            document.querySelectorAll('.demo-btn').forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
+
+            // Reset form
+            document.getElementById('changePasswordForm').reset();
+            document.getElementById('successAlert').classList.remove('show');
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('newPassword').disabled = false;
+            document.getElementById('confirmPassword').disabled = false;
+
+            switch(state) {
+                case 'initial':
+                    // Clean state
+                    break;
+                case 'weak':
+                    document.getElementById('newPassword').value = 'abc123';
+                    validatePassword();
+                    break;
+                case 'medium':
+                    document.getElementById('newPassword').value = 'Abc123';
+                    validatePassword();
+                    break;
+                case 'strong':
+                    document.getElementById('newPassword').value = 'SecureP@ss123';
+                    document.getElementById('confirmPassword').value = 'SecureP@ss123';
+                    validatePassword();
+                    break;
+                case 'mismatch':
+                    document.getElementById('newPassword').value = 'SecureP@ss123';
+                    document.getElementById('confirmPassword').value = 'SecureP@ss456';
+                    validatePassword();
+                    break;
+                case 'success':
+                    document.getElementById('successAlert').classList.add('show');
+                    document.getElementById('submitBtn').disabled = true;
+                    document.getElementById('newPassword').disabled = true;
+                    document.getElementById('confirmPassword').disabled = true;
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

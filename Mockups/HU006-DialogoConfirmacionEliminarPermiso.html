@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación Eliminar Permiso - Portal Unificado CDN Facturación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .demo-container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
+            color: white;
+            padding: 24px 32px;
+            text-align: center;
+        }
+
+        .demo-header h1 {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .demo-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .demo-content {
+            padding: 32px;
+        }
+
+        /* Demo State Selector */
+        .demo-state-selector {
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 32px;
+        }
+
+        .demo-state-selector h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .demo-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .demo-btn.active {
+            background: #4A5A9E;
+            color: white;
+            border-color: #4A5A9E;
+        }
+
+        /* Sample table to show context */
+        .sample-table {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f5f5f5;
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #D4145A;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #fce4ec;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Modal Dialog */
+        .modal-dialog {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 24px 24px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .modal-header .material-icons {
+            color: #D4145A;
+            font-size: 32px;
+        }
+
+        .modal-title-section {
+            flex: 1;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .modal-body {
+            padding: 0 24px 24px 72px;
+        }
+
+        .modal-message {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .permission-info {
+            background: #f8f9fa;
+            border-left: 4px solid #D4145A;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        .permission-info-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .permission-info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .permission-info-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .permission-info-value {
+            color: #333;
+        }
+
+        .modal-warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 16px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #e65100;
+        }
+
+        .modal-warning .material-icons {
+            font-size: 20px;
+            color: #ff9800;
+        }
+
+        .modal-actions {
+            padding: 16px 24px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-text {
+            background: transparent;
+            color: #666;
+        }
+
+        .btn-text:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-error {
+            background: #D4145A;
+            color: white;
+        }
+
+        .btn-error:hover {
+            background: #b01147;
+            box-shadow: 0 4px 12px rgba(212, 20, 90, 0.3);
+        }
+
+        .instruction-box {
+            background: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .instruction-box h3 {
+            font-size: 14px;
+            color: #1976d2;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instruction-box p {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .modal-dialog {
+                width: 95%;
+                margin: 20px;
+            }
+
+            .modal-body {
+                padding-left: 24px;
+            }
+
+            .modal-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>Diálogo de Confirmación - Eliminar Permiso</h1>
+            <p>Este componente se muestra cuando el usuario intenta eliminar un permiso asignado</p>
+        </div>
+
+        <div class="demo-content">
+            <!-- Demo Instructions -->
+            <div class="instruction-box">
+                <h3>
+                    <span class="material-icons" style="font-size: 16px;">info</span>
+                    Demostración Interactiva
+                </h3>
+                <p>Haga clic en el botón "Eliminar" de cualquier permiso en la tabla para ver el diálogo de confirmación. Use los botones de estado para probar diferentes escenarios.</p>
+            </div>
+
+            <!-- Demo State Selector -->
+            <div class="demo-state-selector">
+                <h3>
+                    <span class="material-icons" style="font-size: 16px;">science</span>
+                    Tipo de Permiso a Eliminar
+                </h3>
+                <div class="demo-buttons">
+                    <button class="demo-btn active" onclick="setPermissionType('client-role', this)">Rol de Cliente</button>
+                    <button class="demo-btn" onclick="setPermissionType('internal-role', this)">Rol Interno</button>
+                    <button class="demo-btn" onclick="setPermissionType('last-permission', this)">Último Permiso</button>
+                </div>
+            </div>
+
+            <!-- Sample Table -->
+            <div class="sample-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Rol</th>
+                            <th style="width: 100px;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="permissionsTableBody">
+                        <tr>
+                            <td>Empresa ABC S.A.S.</td>
+                            <td>Gestor Emisión FE</td>
+                            <td>
+                                <button type="button" class="delete-btn" onclick="showDeleteDialog('Empresa ABC S.A.S.', 'Gestor Emisión FE', false)">
+                                    <span class="material-icons" style="font-size: 16px;">delete</span>
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Empresa ABC S.A.S.</td>
+                            <td>Gestor RADIAN</td>
+                            <td>
+                                <button type="button" class="delete-btn" onclick="showDeleteDialog('Empresa ABC S.A.S.', 'Gestor RADIAN', false)">
+                                    <span class="material-icons" style="font-size: 16px;">delete</span>
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Interno</td>
+                            <td>Soporte Técnico</td>
+                            <td>
+                                <button type="button" class="delete-btn" onclick="showDeleteDialog('Interno', 'Soporte Técnico', false)">
+                                    <span class="material-icons" style="font-size: 16px;">delete</span>
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Dialog -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-dialog" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="material-icons">delete_outline</span>
+                <div class="modal-title-section">
+                    <div class="modal-title">¿Eliminar Permiso?</div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-message" id="modalMessage">
+                    ¿Está seguro que desea eliminar este permiso?
+                </div>
+
+                <div class="permission-info" id="permissionInfo">
+                    <!-- Content will be filled by JavaScript -->
+                </div>
+
+                <div class="modal-warning" id="modalWarning" style="display: none;">
+                    <span class="material-icons">warning</span>
+                    <span>Este es el último permiso asignado. El usuario debe tener al menos un permiso.</span>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-text" onclick="closeModal()">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-error" id="confirmBtn" onclick="confirmDelete()">
+                    <span class="material-icons" style="font-size: 18px;">delete</span>
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPermissionType = 'client-role';
+        let currentCompany = '';
+        let currentRole = '';
+
+        const permissionSets = {
+            'client-role': [
+                { company: 'Empresa ABC S.A.S.', role: 'Gestor Emisión FE' },
+                { company: 'Empresa ABC S.A.S.', role: 'Gestor RADIAN' },
+                { company: 'Industrias XYZ Ltda.', role: 'Administrador de Cliente' }
+            ],
+            'internal-role': [
+                { company: 'Interno', role: 'Soporte Técnico' },
+                { company: 'Interno', role: 'Analista Interno' },
+                { company: 'Empresa ABC S.A.S.', role: 'Gestor Emisión FE' }
+            ],
+            'last-permission': [
+                { company: 'Empresa ABC S.A.S.', role: 'Gestor Emisión FE' }
+            ]
+        };
+
+        function setPermissionType(type, buttonElement) {
+            currentPermissionType = type;
+
+            // Update active button
+            document.querySelectorAll('.demo-btn').forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
+
+            // Update table
+            updateTable();
+        }
+
+        function updateTable() {
+            const tbody = document.getElementById('permissionsTableBody');
+            const permissions = permissionSets[currentPermissionType];
+
+            tbody.innerHTML = permissions.map((p, index) => `
+                <tr>
+                    <td>${p.company}</td>
+                    <td>${p.role}</td>
+                    <td>
+                        <button type="button" class="delete-btn" onclick="showDeleteDialog('${p.company}', '${p.role}', ${currentPermissionType === 'last-permission' && index === 0})">
+                            <span class="material-icons" style="font-size: 16px;">delete</span>
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function showDeleteDialog(company, role, isLastPermission) {
+            currentCompany = company;
+            currentRole = role;
+
+            // Update modal content
+            const message = `¿Está seguro que desea eliminar el permiso <strong>${role}</strong> en <strong>${company}</strong>?`;
+            document.getElementById('modalMessage').innerHTML = message;
+
+            // Update permission info
+            const permissionInfo = `
+                <div class="permission-info-row">
+                    <span class="permission-info-label">Empresa:</span>
+                    <span class="permission-info-value">${company}</span>
+                </div>
+                <div class="permission-info-row">
+                    <span class="permission-info-label">Rol:</span>
+                    <span class="permission-info-value">${role}</span>
+                </div>
+            `;
+            document.getElementById('permissionInfo').innerHTML = permissionInfo;
+
+            // Show/hide warning for last permission
+            const warningElement = document.getElementById('modalWarning');
+            const confirmBtn = document.getElementById('confirmBtn');
+
+            if (isLastPermission) {
+                warningElement.style.display = 'flex';
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.5';
+                confirmBtn.style.cursor = 'not-allowed';
+            } else {
+                warningElement.style.display = 'none';
+                confirmBtn.disabled = false;
+                confirmBtn.style.opacity = '1';
+                confirmBtn.style.cursor = 'pointer';
+            }
+
+            // Show modal
+            document.getElementById('modalOverlay').classList.add('show');
+        }
+
+        function closeModal(event) {
+            // Only close if clicking on overlay or called directly
+            if (!event || event.target === document.getElementById('modalOverlay')) {
+                document.getElementById('modalOverlay').classList.remove('show');
+            }
+        }
+
+        function confirmDelete() {
+            // In real implementation, this would remove the permission from the array
+            alert(`Permiso eliminado:\nEmpresa: ${currentCompany}\nRol: ${currentRole}`);
+            closeModal();
+        }
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Initialize table
+        updateTable();
+    </script>
+</body>
+</html>
