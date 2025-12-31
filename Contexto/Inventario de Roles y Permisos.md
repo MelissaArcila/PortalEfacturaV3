@@ -78,7 +78,10 @@ Limitado al contexto del cliente al cual pertenece. Solo puede operar sobre la i
 | **CONFIGURAR_CLIENTE** | Modificar configuraciones y parámetros operativos de su cliente | Configuración | Pendiente | Pendiente |
 | **CONSULTAR_DOCUMENTOS_CLIENTE** | Consultar todos los documentos electrónicos de su cliente | Documentos | Pendiente | Pendiente |
 | **DESCARGAR_DOCUMENTOS_CLIENTE** | Descargar archivos (XML, PDF, AttachedDocument) de documentos de su cliente | Documentos | Pendiente | Pendiente |
-| **GESTIONAR_RESOLUCIONES** | Crear, modificar y consultar resoluciones de facturación de su cliente | Facturación | Pendiente | Pendiente |
+| **CREAR_RESOLUCION** | Crear nuevas resoluciones de facturación para su cliente | Facturación | HU002 | Activo |
+| **CONSULTAR_RESOLUCIONES** | Consultar y listar resoluciones de facturación de su cliente | Facturación | HU003 | Activo |
+| **MODIFICAR_ESTADO_RESOLUCION** | Activar o inactivar resoluciones de facturación de su cliente | Facturación | HU003 | Activo |
+| **VER_DETALLE_RESOLUCION** | Ver el detalle completo de una resolución de facturación | Facturación | HU003 | Activo |
 | **CONSULTAR_REPORTES_CLIENTE** | Generar y consultar reportes operativos de su cliente | Reportes | Pendiente | Pendiente |
 | **REENVIAR_CORREOS** | Reenviar correos electrónicos asociados a documentos de su cliente | Documentos | Pendiente | Pendiente |
 
@@ -150,7 +153,14 @@ Todos los permisos definidos en el sistema, organizados por módulo:
 |---------|-------------|-----------------|-----------|
 | CONFIGURAR_PARAMETROS_GLOBALES | Configurar parámetros globales | Administrador del Sistema | Pendiente |
 | CONFIGURAR_CLIENTE | Configurar parámetros de cliente | Administrador de Cliente | Pendiente |
-| GESTIONAR_RESOLUCIONES | Gestionar resoluciones de facturación | Administrador de Cliente | Pendiente |
+
+#### Módulo: Facturación
+| Permiso | Descripción | Roles Asignados | HU Origen |
+|---------|-------------|-----------------|-----------|
+| CREAR_RESOLUCION | Crear nuevas resoluciones de facturación | Administrador de Cliente | HU002 |
+| CONSULTAR_RESOLUCIONES | Consultar y listar resoluciones de facturación | Administrador de Cliente | HU003 |
+| MODIFICAR_ESTADO_RESOLUCION | Activar o inactivar resoluciones de facturación | Administrador de Cliente | HU003 |
+| VER_DETALLE_RESOLUCION | Ver detalle completo de resolución de facturación | Administrador de Cliente | HU003 |
 
 #### Módulo: Reportes
 | Permiso | Descripción | Roles Asignados | HU Origen |
@@ -211,7 +221,11 @@ Los permisos siguen esta convención de nomenclatura:
 | REENVIAR_CORREOS | ✅ | ⏳ | ⏳ | ❌ |
 | **Configuración** |
 | CONFIGURAR_PARAMETROS_GLOBALES | ⏳ | ❌ | ❌ | ❌ |
-| GESTIONAR_RESOLUCIONES | ❌ | ⏳ | ❌ | ❌ |
+| **Facturación** |
+| CREAR_RESOLUCION | ❌ | ✅ | ❌ | ❌ |
+| CONSULTAR_RESOLUCIONES | ❌ | ✅ | ❌ | ❌ |
+| MODIFICAR_ESTADO_RESOLUCION | ❌ | ✅ | ❌ | ❌ |
+| VER_DETALLE_RESOLUCION | ❌ | ✅ | ❌ | ❌ |
 | **Reportes** |
 | CONSULTAR_REPORTES_CLIENTE | ✅ | ⏳ | ⏳ | ⏳ |
 | EXPORTAR_REPORTES | ✅ | ⏳ | ⏳ | ❌ |
@@ -281,7 +295,7 @@ Según el Estándar de Auditoría Funcional, las siguientes acciones relacionada
 ---
 
 **Última actualización:** 2025-12-17
-**Versión:** 1.0
+**Versión:** 1.1
 **Roles definidos:** 2
-**Permisos activos:** 3
-**Permisos pendientes:** 24
+**Permisos activos:** 7
+**Permisos pendientes:** 23

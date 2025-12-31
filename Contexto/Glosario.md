@@ -112,6 +112,40 @@ Autorización otorgada por la DIAN que define los rangos de numeración, prefijo
 
 ---
 
+## Estado de Resolución
+
+Indicador del estado operativo de una resolución de facturación en el sistema. Los estados posibles son:
+- **Activa**: La resolución está habilitada para la emisión de documentos electrónicos.
+- **Inactiva**: La resolución fue desactivada manualmente y no puede usarse para emisión de documentos.
+- **Vencida**: La resolución alcanzó su fecha final de vigencia y ya no puede usarse (estado automático).
+- **Agotada**: La resolución utilizó todos los consecutivos de su rango numérico y ya no puede usarse (estado automático).
+
+---
+
+## Prefijo de Resolución
+
+Código alfanumérico de hasta 4 caracteres (letras mayúsculas y/o números) que identifica una serie de numeración de facturas electrónicas autorizada por la DIAN. El prefijo se antepone al número consecutivo para formar el número completo del documento.
+
+---
+
+## Rango de Consecutivos
+
+Intervalo numérico definido por un consecutivo inicial y un consecutivo final que delimita los números disponibles para la emisión de documentos bajo una resolución de facturación específica.
+
+---
+
+## Traslape de Rangos
+
+Situación no permitida en la cual dos resoluciones del mismo tipo de documento y prefijo tienen rangos de consecutivos que se superponen parcial o totalmente, independientemente de su estado.
+
+---
+
+## Punto de Venta o Sede
+
+Ubicación física o lógica desde la cual un cliente emite documentos electrónicos. Cada resolución puede estar asociada opcionalmente a un punto de venta específico.
+
+---
+
 ## Reenvío de Correo
 
 Funcionalidad que permite volver a enviar al destinatario los correos asociados a una factura electrónica, incluyendo archivos como PDF y XML.
