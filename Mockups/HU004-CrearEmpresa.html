@@ -720,11 +720,29 @@
                 // Simular actualización del endpoint con tenantId real
                 const tenantId = 'TENANT' + Math.floor(Math.random() * 10000);
                 document.getElementById('endpointSCIM').value = `https://plataforma.com/scim/v2/${tenantId}/Users`;
+
+                // Recalcular altura de la sección padre
+                updateSectionHeight(checkbox);
             } else {
                 configSection.style.display = 'none';
                 if (!confirm('¿Está seguro que desea desactivar la integración SCIM? Esto puede afectar la sincronización de usuarios.')) {
                     checkbox.checked = true;
+                    configSection.style.display = 'block';
+                } else {
+                    // Recalcular altura de la sección padre
+                    updateSectionHeight(checkbox);
                 }
+            }
+        }
+
+        function updateSectionHeight(element) {
+            // Encontrar la sección-content padre más cercana
+            let sectionContent = element.closest('.section-content');
+            if (sectionContent && !sectionContent.classList.contains('collapsed')) {
+                // Pequeño delay para que el DOM se actualice
+                setTimeout(() => {
+                    sectionContent.style.maxHeight = sectionContent.scrollHeight + 'px';
+                }, 10);
             }
         }
 
