@@ -38,7 +38,7 @@
         }
 
         .logo {
-            width: 100px;
+            width: 250px;
             height: 100px;
             margin: 0 auto;
         }
@@ -83,25 +83,6 @@
             margin-right: auto;
         }
 
-        .error-details {
-            background-color: #FFF3E0;
-            border-left: 4px solid #FF9800;
-            padding: 16px 20px;
-            border-radius: 4px;
-            margin: 24px 0;
-            text-align: left;
-        }
-
-        .error-details p {
-            font-size: 14px;
-            color: #E65100;
-            margin: 8px 0;
-            line-height: 1.6;
-        }
-
-        .error-details strong {
-            color: #BF360C;
-        }
 
         .btn {
             display: inline-block;
@@ -129,17 +110,6 @@
             transform: translateY(-2px);
         }
 
-        .btn-secondary {
-            background: white;
-            color: #4A5A9E;
-            border: 1px solid #4A5A9E;
-            margin-left: 12px;
-        }
-
-        .btn-secondary:hover {
-            background: #F5F5F5;
-        }
-
         .button-group {
             margin-top: 32px;
             display: flex;
@@ -159,10 +129,6 @@
 
             .button-group {
                 flex-direction: column;
-            }
-
-            .btn-secondary {
-                margin-left: 0;
             }
         }
     </style>
@@ -189,20 +155,9 @@
             Si el problema persiste, contacte a soporte técnico.
         </p>
 
-        <div class="error-details">
-            <p><strong>¿Qué puedes hacer?</strong></p>
-            <p>• Haz clic en "Aceptar" para volver al formulario con tus datos guardados</p>
-            <p>• Verifica que todos los campos estén correctos</p>
-            <p>• Intenta enviar el formulario nuevamente</p>
-            <p>• Si el error continúa, contacta a soporte con el código de error</p>
-        </div>
-
         <div class="button-group">
             <button class="btn btn-primary" onclick="handleAccept()">
                 Aceptar
-            </button>
-            <button class="btn btn-secondary" onclick="handleSupport()">
-                Contactar Soporte
             </button>
         </div>
     </div>
@@ -210,10 +165,6 @@
     <script>
         function handleAccept() {
             alert('Esta es una demostración. En producción, regresará al formulario manteniendo todos los datos ingresados.');
-        }
-
-        function handleSupport() {
-            alert('Esta es una demostración. En producción, abrirá el módulo de soporte o enviará email a soporte técnico.');
         }
     </script>
 </body>

@@ -76,8 +76,6 @@
         .context-menu-item .material-icons { font-size: 18px; color: #757575; }
         .context-menu-item.danger { color: #F44336; }
         .context-menu-item.danger .material-icons { color: #F44336; }
-        .no-email { color: #BDBDBD; font-style: italic; display: flex; align-items: center; gap: 4px; }
-        .no-email .material-icons { font-size: 16px; }
         @media (max-width: 768px) { .filter-row { grid-template-columns: 1fr; } .results-counter { flex-direction: column; align-items: flex-start; gap: 8px; } .table-container { overflow-x: auto; } table { min-width: 900px; } }
     </style>
 </head>
@@ -111,7 +109,7 @@
             <div class="filter-row">
                 <div class="filter-group">
                     <label for="filterEstado">Estado</label>
-                    <select id="filterEstado" onchange="applyFilters()">
+                    <select id="filterEstado">
                         <option value="">Todos</option>
                         <option value="activo">Activo</option>
                         <option value="inactivo">Inactivo</option>
@@ -120,7 +118,7 @@
                 </div>
                 <div class="filter-group">
                     <label for="filterTipo">Tipo de Usuario</label>
-                    <select id="filterTipo" onchange="applyFilters()">
+                    <select id="filterTipo">
                         <option value="">Todos</option>
                         <option value="interno">Usuario Interno</option>
                         <option value="cliente">Usuario de Cliente</option>
@@ -128,7 +126,7 @@
                 </div>
                 <div class="filter-group">
                     <label for="filterCliente">Cliente</label>
-                    <select id="filterCliente" onchange="applyFilters()">
+                    <select id="filterCliente">
                         <option value="">Todos</option>
                         <option value="sin-cliente">Solo Internos (Sin Cliente)</option>
                         <option value="empresa-abc">Empresa ABC S.A.S.</option>
@@ -139,15 +137,15 @@
 
             <div class="filter-actions">
                 <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-primary" onclick="applyFilters()">
+                        <span class="material-icons">filter_list</span>
+                        Aplicar Filtros
+                    </button>
                     <button class="btn btn-text" onclick="clearFilters()">
                         <span class="material-icons">clear</span>
                         Limpiar Filtros
                     </button>
                 </div>
-                <button class="btn btn-outlined" onclick="handleExport()">
-                    <span class="material-icons">download</span>
-                    Exportar
-                </button>
             </div>
         </div>
 
@@ -220,10 +218,7 @@
                     <tr>
                         <td>555888999</td>
                         <td>Carlos Eduardo Ramírez Silva</td>
-                        <td class="no-email">
-                            <span class="material-icons">warning</span>
-                            No registrado
-                        </td>
+                        <td>carlos.ramirez@empresaxyz.com</td>
                         <td><span class="badge badge-secondary">Cliente</span></td>
                         <td><span class="chip chip-default">Inactivo</span></td>
                         <td><a href="#" class="permission-link" onclick="showPermissions(event, 3)">1 permiso</a></td>
@@ -478,9 +473,6 @@
             alert(`Editar usuario con ID: ${numeroId}`);
         }
 
-        function handleExport() {
-            alert('Exportando lista de usuarios a CSV...');
-        }
 
         function handleRefresh() {
             alert('Actualizando lista de usuarios...');

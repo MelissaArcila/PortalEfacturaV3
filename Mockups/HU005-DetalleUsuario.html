@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HU005 - Detalle de Usuario - Portal Unificado Efactura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', Arial, sans-serif; background-color: #FAFAFA; }
+        .navbar { background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%); color: white; padding: 16px 24px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+        .navbar h1 { font-size: 1.25rem; font-weight: 600; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; font-size: 14px; color: #757575; }
+        .breadcrumb a { color: #4A5A9E; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb .material-icons { font-size: 16px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+        .header-left h2 { font-size: 2rem; font-weight: 600; color: #212121; margin-bottom: 8px; }
+        .header-left .subtitle { font-size: 16px; color: #757575; display: flex; align-items: center; gap: 12px; }
+        .header-actions { display: flex; gap: 12px; }
+        .btn { padding: 12px 24px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 8px; cursor: pointer; transition: all 0.3s; border: none; font-family: 'Roboto', Arial, sans-serif; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn-primary { background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%); color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .btn-primary:hover { box-shadow: 0 6px 16px rgba(74, 90, 158, 0.3); transform: translateY(-2px); }
+        .btn-outlined { background: white; color: #4A5A9E; border: 1px solid #4A5A9E; }
+        .btn-outlined:hover { background: #F5F5F5; }
+        .btn-text { background: transparent; color: #4A5A9E; padding: 8px 16px; }
+        .btn-text:hover { background: #F5F5F5; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; }
+        .badge-primary { background-color: #E3F2FD; color: #1565C0; }
+        .badge-secondary { background-color: #FCE4EC; color: #C2185B; }
+        .chip { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; }
+        .chip-success { background-color: #E8F5E9; color: #2E7D32; }
+        .chip-default { background-color: #E0E0E0; color: #616161; }
+        .chip-error { background-color: #FFEBEE; color: #C62828; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .grid-1 { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); padding: 24px; }
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid #F5F5F5; }
+        .card-header .material-icons { font-size: 24px; color: #4A5A9E; }
+        .card-header h3 { font-size: 1.25rem; font-weight: 600; color: #212121; }
+        .info-row { display: grid; grid-template-columns: 200px 1fr; padding: 12px 0; border-bottom: 1px solid #F5F5F5; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { font-size: 14px; font-weight: 500; color: #757575; }
+        .info-value { font-size: 14px; color: #424242; display: flex; align-items: center; gap: 8px; }
+        .timeline { position: relative; padding-left: 32px; }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: #E0E0E0; }
+        .timeline-item { position: relative; padding-bottom: 24px; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-item::before { content: ''; position: absolute; left: -28px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #4A5A9E; border: 2px solid white; box-shadow: 0 0 0 2px #E0E0E0; }
+        .timeline-date { font-size: 12px; color: #9E9E9E; margin-bottom: 4px; }
+        .timeline-content { background: #FAFAFA; padding: 12px; border-radius: 4px; border-left: 3px solid #4A5A9E; }
+        .timeline-title { font-size: 14px; font-weight: 600; color: #424242; margin-bottom: 4px; }
+        .timeline-description { font-size: 13px; color: #757575; }
+        .timeline-meta { font-size: 12px; color: #9E9E9E; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+        .status-alert { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 8px; margin-bottom: 24px; }
+        .status-alert.error { background-color: #FFEBEE; border-left: 4px solid #F44336; }
+        .status-alert.success { background-color: #E8F5E9; border-left: 4px solid #4CAF50; }
+        .status-alert.warning { background-color: #FFF3E0; border-left: 4px solid #FF9800; }
+        .status-alert .material-icons { color: inherit; font-size: 24px; }
+        .status-alert-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .status-alert-content p { font-size: 13px; }
+        .client-card { background: #F5F5F5; border-radius: 8px; padding: 16px; margin-bottom: 12px; border: 1px solid #E0E0E0; }
+        .client-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .client-card-title { font-size: 15px; font-weight: 600; color: #424242; }
+        .client-card-roles { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .role-tag { background: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; color: #616161; border: 1px solid #E0E0E0; }
+        .empty-state { text-align: center; padding: 40px 20px; color: #9E9E9E; }
+        .empty-state .material-icons { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background-color: #F5F5F5; padding: 12px; text-align: left; font-size: 12px; font-weight: 600; color: #424242; border-bottom: 2px solid #E0E0E0; }
+        td { padding: 12px; font-size: 13px; color: #616161; border-bottom: 1px solid #F5F5F5; }
+        tr:hover { background-color: #FAFAFA; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .info-row { grid-template-columns: 1fr; } .header { flex-direction: column; gap: 16px; } .header-actions { width: 100%; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Portal Unificado CDN - Administración</h1>
+    </nav>
+
+    <div class="container">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="#" onclick="handleBack()">Gestión de Usuarios</a>
+            <span class="material-icons">chevron_right</span>
+            <span>Detalle de Usuario</span>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <h2>Juan Carlos Pérez Gómez</h2>
+                <div class="subtitle">
+                    <span class="badge badge-primary">Interno</span>
+                    <span class="chip chip-success">Activo</span>
+                    <span style="color: #9E9E9E;">•</span>
+                    <span>ID: 123456789</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-outlined" onclick="handleEdit()">
+                    <span class="material-icons">edit</span>
+                    Editar Usuario
+                </button>
+                <button class="btn btn-text" onclick="handleBack()">
+                    <span class="material-icons">arrow_back</span>
+                    Volver
+                </button>
+            </div>
+        </div>
+
+        <!-- Grid layout -->
+        <div class="grid-2">
+            <!-- Datos Personales -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="material-icons">person</span>
+                    <h3>Datos Personales</h3>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Número de Identificación</div>
+                    <div class="info-value">123456789</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Primer Nombre</div>
+                    <div class="info-value">Juan Carlos</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Primer Apellido</div>
+                    <div class="info-value">Pérez</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Segundo Apellido</div>
+                    <div class="info-value">Gómez</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Correo Electrónico</div>
+                    <div class="info-value">
+                        <span class="material-icons" style="font-size: 16px; color: #757575;">email</span>
+                        juan.perez@cdnfacturacion.com
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Tipo de Usuario</div>
+                    <div class="info-value"><span class="badge badge-primary">Interno</span></div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Estado</div>
+                    <div class="info-value"><span class="chip chip-success">Activo</span></div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Fecha de Creación</div>
+                    <div class="info-value">15/10/2024 14:32</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Creado por</div>
+                    <div class="info-value">María López (Admin Portal)</div>
+                </div>
+            </div>
+
+            <!-- Información de Sesión -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="material-icons">schedule</span>
+                    <h3>Información de Sesión</h3>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Último Acceso</div>
+                    <div class="info-value">
+                        <span class="material-icons" style="font-size: 16px; color: #4CAF50;">check_circle</span>
+                        03/01/2026 16:45
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">IP del Último Acceso</div>
+                    <div class="info-value">192.168.1.105 (IP Local: 10.0.0.45)</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Total de Accesos</div>
+                    <div class="info-value">142 sesiones</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Intentos Fallidos</div>
+                    <div class="info-value">0</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Contraseña Actualizada</div>
+                    <div class="info-value">20/12/2025 10:15</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes Asociados y Permisos -->
+        <div class="grid-1">
+            <div class="card">
+                <div class="card-header">
+                    <span class="material-icons">business</span>
+                    <h3>Clientes Asociados y Permisos</h3>
+                </div>
+
+                <div class="client-card">
+                    <div class="client-card-header">
+                        <div class="client-card-title">
+                            <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">business_center</span>
+                            Empresa ABC S.A.S.
+                        </div>
+                        <span class="badge badge-secondary">3 permisos</span>
+                    </div>
+                    <div class="client-card-roles">
+                        <span class="role-tag">
+                            <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">admin_panel_settings</span>
+                            Administrador de Cliente
+                        </span>
+                        <span class="role-tag">
+                            <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">description</span>
+                            Gestor Emisión FE
+                        </span>
+                        <span class="role-tag">
+                            <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">visibility</span>
+                            Consultor
+                        </span>
+                    </div>
+                </div>
+
+                <div class="client-card">
+                    <div class="client-card-header">
+                        <div class="client-card-title">
+                            <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">business_center</span>
+                            Comercializadora XYZ Ltda.
+                        </div>
+                        <span class="badge badge-secondary">1 permiso</span>
+                    </div>
+                    <div class="client-card-roles">
+                        <span class="role-tag">
+                            <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">visibility</span>
+                            Consultor
+                        </span>
+                    </div>
+                </div>
+
+                <div class="client-card">
+                    <div class="client-card-header">
+                        <div class="client-card-title">
+                            <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">settings</span>
+                            Roles Internos
+                        </div>
+                        <span class="badge badge-primary">1 permiso</span>
+                    </div>
+                    <div class="client-card-roles">
+                        <span class="role-tag">
+                            <span class="material-icons" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">admin_panel_settings</span>
+                            Administrador del Portal
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <!-- Historial de Permisos -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="material-icons">history</span>
+                    <h3>Historial de Permisos</h3>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">03/01/2026 09:15</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Permiso Asignado</div>
+                            <div class="timeline-description">
+                                Empresa ABC S.A.S. - <strong>Consultor</strong>
+                            </div>
+                            <div class="timeline-meta">
+                                <span class="material-icons" style="font-size: 14px;">person</span>
+                                Asignado por: Roberto Hernández
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">28/12/2025 14:20</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Permiso Revocado</div>
+                            <div class="timeline-description">
+                                Empresa XYZ Ltda. - <strong>Gestor Emisión FE</strong>
+                            </div>
+                            <div class="timeline-meta">
+                                <span class="material-icons" style="font-size: 14px;">person</span>
+                                Revocado por: María López
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">15/11/2025 11:30</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Permiso Asignado</div>
+                            <div class="timeline-description">
+                                Comercializadora XYZ Ltda. - <strong>Consultor</strong>
+                            </div>
+                            <div class="timeline-meta">
+                                <span class="material-icons" style="font-size: 14px;">person</span>
+                                Asignado por: Roberto Hernández
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">15/10/2024 14:35</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Permisos Iniciales Asignados</div>
+                            <div class="timeline-description">
+                                • Empresa ABC - Administrador de Cliente<br>
+                                • Empresa ABC - Gestor Emisión FE<br>
+                                • Administrador del Portal
+                            </div>
+                            <div class="timeline-meta">
+                                <span class="material-icons" style="font-size: 14px;">person</span>
+                                Asignado por: María López
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historial de Cambios de Estado -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="material-icons">swap_horiz</span>
+                    <h3>Historial de Cambios de Estado</h3>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">02/01/2026 08:00</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Usuario Activado</div>
+                            <div class="timeline-description">
+                                Estado cambiado de <span class="chip chip-default">Inactivo</span> a <span class="chip chip-success">Activo</span>
+                            </div>
+                            <div class="timeline-meta">
+                                <span class="material-icons" style="font-size: 14px;">person</span>
+                                Modificado por: Roberto Hernández
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">22/12/2025 16:45</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Usuario Inactivado</div>
+                            <div class="timeline-description">
+                                Estado cambiado de <span class="chip chip-success">Activo</span> a <span class="chip chip-default">Inactivo</span><br>
+                                <em>Razón: Vacaciones programadas</em>
+                            </div>
+                            <div class="timeline-meta">
+                                <span class="material-icons" style="font-size: 14px;">person</span>
+                                Modificado por: María López
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">15/10/2024 14:32</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Usuario Creado</div>
+                            <div class="timeline-description">
+                                Estado inicial: <span class="chip chip-success">Activo</span>
+                            </div>
+                            <div class="timeline-meta">
+                                <span class="material-icons" style="font-size: 14px;">person</span>
+                                Creado por: María López
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auditoría de Acciones del Usuario -->
+        <div class="grid-1">
+            <div class="card">
+                <div class="card-header">
+                    <span class="material-icons">assignment</span>
+                    <h3>Auditoría de Acciones del Usuario (Últimas 10)</h3>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha y Hora</th>
+                                <th>Acción</th>
+                                <th>Módulo</th>
+                                <th>Resultado</th>
+                                <th>IP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>03/01/2026 16:45:32</td>
+                                <td>Acceso al Sistema</td>
+                                <td>Autenticación</td>
+                                <td><span class="chip chip-success">Exitoso</span></td>
+                                <td>192.168.1.105</td>
+                            </tr>
+                            <tr>
+                                <td>03/01/2026 16:30:15</td>
+                                <td>Emisión de Factura Electrónica</td>
+                                <td>Facturación</td>
+                                <td><span class="chip chip-success">Exitoso</span></td>
+                                <td>192.168.1.105</td>
+                            </tr>
+                            <tr>
+                                <td>03/01/2026 15:20:45</td>
+                                <td>Consulta de Resoluciones</td>
+                                <td>Resoluciones</td>
+                                <td><span class="chip chip-success">Exitoso</span></td>
+                                <td>192.168.1.105</td>
+                            </tr>
+                            <tr>
+                                <td>03/01/2026 14:10:22</td>
+                                <td>Creación de Usuario</td>
+                                <td>Administración</td>
+                                <td><span class="chip chip-success">Exitoso</span></td>
+                                <td>192.168.1.105</td>
+                            </tr>
+                            <tr>
+                                <td>03/01/2026 13:05:10</td>
+                                <td>Asignación de Permiso</td>
+                                <td>Permisos</td>
+                                <td><span class="chip chip-success">Exitoso</span></td>
+                                <td>192.168.1.105</td>
+                            </tr>
+                            <tr>
+                                <td>02/01/2026 17:30:00</td>
+                                <td>Generación de Reporte</td>
+                                <td>Reportes</td>
+                                <td><span class="chip chip-success">Exitoso</span></td>
+                                <td>192.168.1.88</td>
+                            </tr>
+                            <tr>
+                                <td>02/01/2026 16:15:45</td>
+                                <td>Emisión de Factura Electrónica</td>
+                                <td>Facturación</td>
+                                <td><span class="chip chip-success">Exitoso</span></td>
+                                <td>192.168.1.88</td>
+                            </tr>
+                            <tr>
+                                <td>02/01/2026 14:25:30</td>
+                                <td>Consulta de Auditoría</td>
+                                <td>Auditoría</td>
+                                <td><span class="chip chip-success">Exitoso</span></td>
+                                <td>192.168.1.88</td>
+                            </tr>
+                            <tr>
+                                <td>02/01/2026 11:40:12</td>
+                                <td>Modificación de Perfil</td>
+                                <td>Perfil</td>
+                                <td><span class="chip chip-success">Exitoso</span></td>
+                                <td>192.168.1.88</td>
+                            </tr>
+                            <tr>
+                                <td>02/01/2026 08:00:05</td>
+                                <td>Acceso al Sistema</td>
+                                <td>Autenticación</td>
+                                <td><span class="chip chip-success">Exitoso</span></td>
+                                <td>192.168.1.88</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align: center; margin-top: 16px;">
+                    <button class="btn btn-text" onclick="handleViewFullAudit()">
+                        <span class="material-icons">open_in_new</span>
+                        Ver Auditoría Completa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleBack() {
+            alert('Volviendo a la pantalla de Gestión de Usuarios...');
+            // window.location.href = 'HU005-GestionUsuarios.html';
+        }
+
+        function handleEdit() {
+            alert('Navegando a pantalla de Edición de Usuario...');
+        }
+
+        function handleViewFullAudit() {
+            alert('Abriendo vista completa de auditoría del usuario...');
+        }
+    </script>
+</body>
+</html>
