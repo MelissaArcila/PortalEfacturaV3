@@ -14,7 +14,12 @@
         .header p { font-size: 14px; color: #757575; margin-bottom: 32px; }
         .section { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid #E0E0E0; }
         .section:last-of-type { border-bottom: none; }
-        .section-title { font-size: 1.25rem; font-weight: 600; color: #4A5A9E; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+        .section-title { font-size: 1.25rem; font-weight: 600; color: #4A5A9E; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; transition: color 0.3s; }
+        .section-title:hover { color: #D4145A; }
+        .section-title .collapse-icon { margin-left: auto; transition: transform 0.3s; }
+        .section-title .collapse-icon.collapsed { transform: rotate(-90deg); }
+        .section-content { overflow: hidden; transition: max-height 0.3s ease-out; }
+        .section-content.collapsed { max-height: 0 !important; }
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px; }
         .form-group { display: flex; flex-direction: column; }
         label { font-size: 14px; font-weight: 500; color: #424242; margin-bottom: 8px; }
@@ -55,8 +60,13 @@
         <form id="empresaForm">
             <!-- Sección 1: Datos de la Empresa -->
             <div class="section">
-                <h2 class="section-title"><span class="material-icons">business</span> Datos de la Empresa</h2>
+                <h2 class="section-title" onclick="toggleSection(this)">
+                    <span class="material-icons">business</span>
+                    Datos de la Empresa
+                    <span class="material-icons collapse-icon">expand_more</span>
+                </h2>
 
+                <div class="section-content">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="tipoId" class="required">Tipo de Identificación</label>
@@ -160,12 +170,18 @@
                         <tbody id="centrosCostosBody"></tbody>
                     </table>
                 </div>
+                </div>
             </div>
 
             <!-- Sección 2: Ubicación -->
             <div class="section">
-                <h2 class="section-title"><span class="material-icons">location_on</span> Ubicación</h2>
+                <h2 class="section-title" onclick="toggleSection(this)">
+                    <span class="material-icons">location_on</span>
+                    Ubicación
+                    <span class="material-icons collapse-icon">expand_more</span>
+                </h2>
 
+                <div class="section-content">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="pais" class="required">País</label>
@@ -196,12 +212,18 @@
                         <input type="text" id="direccionPrincipal" placeholder="Calle 100 # 20-30, Oficina 502" required />
                     </div>
                 </div>
+                </div>
             </div>
 
             <!-- Sección 3: Registro Mercantil -->
             <div class="section">
-                <h2 class="section-title"><span class="material-icons">description</span> Registro Mercantil</h2>
+                <h2 class="section-title" onclick="toggleSection(this)">
+                    <span class="material-icons">description</span>
+                    Registro Mercantil
+                    <span class="material-icons collapse-icon">expand_more</span>
+                </h2>
 
+                <div class="section-content">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="matriculaMercantil" class="required">Matrícula Mercantil</label>
@@ -251,12 +273,18 @@
                     <thead><tr><th>Matrícula</th><th>Nombre</th><th>País</th><th>Dirección</th><th>Acciones</th></tr></thead>
                     <tbody id="registrosMercantilesBody"></tbody>
                 </table>
+                </div>
             </div>
 
             <!-- Sección 4: Configuración SCIM -->
             <div class="section">
-                <h2 class="section-title"><span class="material-icons">security</span> Configuración SCIM</h2>
+                <h2 class="section-title" onclick="toggleSection(this)">
+                    <span class="material-icons">security</span>
+                    Configuración SCIM
+                    <span class="material-icons collapse-icon">expand_more</span>
+                </h2>
 
+                <div class="section-content">
                 <div class="form-row">
                     <div class="form-group">
                         <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
@@ -356,6 +384,7 @@
                             Guardar Configuración SCIM
                         </button>
                     </div>
+                </div>
                 </div>
             </div>
 
@@ -638,6 +667,42 @@
             document.getElementById('submitBtn').disabled = !numeroId || !tipoId;
         }, 500);
 
+        // ========== FUNCIONES DE COLAPSO DE SECCIONES ==========
+
+        function toggleSection(titleElement) {
+            const contentDiv = titleElement.nextElementSibling;
+            const icon = titleElement.querySelector('.collapse-icon');
+
+            if (contentDiv.classList.contains('collapsed')) {
+                // Expandir
+                contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+                contentDiv.classList.remove('collapsed');
+                icon.classList.remove('collapsed');
+            } else {
+                // Colapsar
+                contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+                // Forzar reflow
+                contentDiv.offsetHeight;
+                contentDiv.style.maxHeight = '0px';
+                contentDiv.classList.add('collapsed');
+                icon.classList.add('collapsed');
+            }
+        }
+
+        // Inicializar altura máxima de las secciones al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                if (!content.classList.contains('collapsed')) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+
+            // Event listeners para validación SCIM
+            document.getElementById('urlIdpSAML')?.addEventListener('blur', validateURL);
+            document.getElementById('certificadoSAML')?.addEventListener('blur', validateCertificate);
+            document.getElementById('duracionSesion')?.addEventListener('blur', validateDuracion);
+        });
+
         // ========== FUNCIONES SCIM ==========
 
         let tokenVisible = false;
@@ -861,13 +926,6 @@
                 document.getElementById('tokenVisibilityIcon').textContent = 'visibility';
             }, 3000);
         }
-
-        // Validar formulario SCIM al cambiar cualquier campo
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('urlIdpSAML')?.addEventListener('blur', validateURL);
-            document.getElementById('certificadoSAML')?.addEventListener('blur', validateCertificate);
-            document.getElementById('duracionSesion')?.addEventListener('blur', validateDuracion);
-        });
     </script>
 </body>
 </html>
