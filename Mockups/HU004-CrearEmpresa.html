@@ -253,6 +253,112 @@
                 </table>
             </div>
 
+            <!-- Sección 4: Configuración SCIM -->
+            <div class="section">
+                <h2 class="section-title"><span class="material-icons">security</span> Configuración SCIM</h2>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                            <input type="checkbox" id="scimActivo" onchange="handleSCIMToggle()" style="width: 20px; height: 20px; cursor: pointer;" />
+                            <span style="font-weight: 600;">Integración SCIM Activa</span>
+                        </label>
+                        <div class="helper-text">Active esta opción para habilitar la sincronización de usuarios mediante SCIM</div>
+                    </div>
+                </div>
+
+                <div id="scimConfigSection" style="display: none;">
+                    <!-- Endpoint SCIM -->
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="endpointSCIM" class="required">Endpoint SCIM de la Plataforma</label>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <input type="text" id="endpointSCIM" value="https://plataforma.com/scim/v2/{tenantId}/Users" readonly
+                                    style="flex: 1; background-color: #F5F5F5;" />
+                                <button type="button" class="btn btn-secondary btn-small" onclick="copyToClipboard('endpointSCIM')" title="Copiar al portapapeles">
+                                    <span class="material-icons" style="font-size: 18px;">content_copy</span>
+                                </button>
+                            </div>
+                            <div class="helper-text">Este endpoint será utilizado por su Identity Provider para sincronizar usuarios</div>
+                        </div>
+                    </div>
+
+                    <!-- Bearer Token -->
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="bearerToken" class="required">Bearer Token SCIM</label>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <input type="password" id="bearerToken" value="" readonly
+                                    style="flex: 1; background-color: #F5F5F5; font-family: monospace;" />
+                                <button type="button" class="btn btn-secondary btn-small" onclick="toggleTokenVisibility()" title="Mostrar/Ocultar token">
+                                    <span class="material-icons" style="font-size: 18px;" id="tokenVisibilityIcon">visibility</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-small" onclick="copyToClipboard('bearerToken')" title="Copiar al portapapeles">
+                                    <span class="material-icons" style="font-size: 18px;">content_copy</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-small" onclick="regenerateToken()" title="Regenerar token">
+                                    <span class="material-icons" style="font-size: 18px;">refresh</span>
+                                </button>
+                            </div>
+                            <div class="helper-text" style="color: #F57C00; display: flex; align-items: center; gap: 4px;">
+                                <span class="material-icons" style="font-size: 16px;">warning</span>
+                                Guarde este token en un lugar seguro. Solo se muestra una vez en formato claro.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fecha de Expiración -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fechaExpiracion">Fecha de Expiración del Token</label>
+                            <input type="text" id="fechaExpiracion" value="" readonly style="background-color: #F5F5F5;" />
+                            <div class="helper-text" id="expiracionHelper">El token expirará en 90 días</div>
+                        </div>
+                    </div>
+
+                    <!-- URL del IdP SAML -->
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="urlIdpSAML" class="required">URL del Identity Provider (IdP) SAML</label>
+                            <input type="url" id="urlIdpSAML" placeholder="https://adfs.empresa.com/adfs/ls"
+                                pattern="https://.*" oninput="validateURL()" required />
+                            <div class="helper-text" id="urlIdpHelper">Ingrese la URL HTTPS de su Identity Provider SAML</div>
+                        </div>
+                    </div>
+
+                    <!-- Certificado SAML -->
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="certificadoSAML" class="required">Certificado SAML (Certificado Público del IdP)</label>
+                            <textarea id="certificadoSAML" rows="8" placeholder="-----BEGIN CERTIFICATE-----&#10;MIIDXTCCAkWgAwIBAgIJAKL0UG...&#10;-----END CERTIFICATE-----"
+                                oninput="validateCertificate()" required style="font-family: monospace; font-size: 12px;"></textarea>
+                            <div class="helper-text" id="certificadoHelper">Pegue el certificado X.509 público de su Identity Provider</div>
+                        </div>
+                    </div>
+
+                    <!-- Duración de Sesión -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="duracionSesion" class="required">Duración de Sesión (Token JWT)</label>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <input type="number" id="duracionSesion" value="4" min="1" max="24" required
+                                    oninput="validateDuracion()" style="flex: 0.3;" />
+                                <span style="color: #757575;">horas</span>
+                            </div>
+                            <div class="helper-text" id="duracionHelper">Valor entre 1 y 24 horas (por defecto: 4 horas)</div>
+                        </div>
+                    </div>
+
+                    <!-- Botón Guardar Configuración SCIM -->
+                    <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #E0E0E0;">
+                        <button type="button" class="btn btn-primary" onclick="saveScimConfig()" id="saveScimBtn" disabled>
+                            <span class="material-icons" style="font-size: 18px; vertical-align: middle;">save</span>
+                            Guardar Configuración SCIM
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="button-group">
                 <button type="button" class="btn btn-secondary" onclick="handleCancel()">Cancelar</button>
                 <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Crear Empresa</button>
@@ -531,6 +637,237 @@
             const tipoId = document.getElementById('tipoId').value;
             document.getElementById('submitBtn').disabled = !numeroId || !tipoId;
         }, 500);
+
+        // ========== FUNCIONES SCIM ==========
+
+        let tokenVisible = false;
+        let currentToken = '';
+
+        function handleSCIMToggle() {
+            const checkbox = document.getElementById('scimActivo');
+            const configSection = document.getElementById('scimConfigSection');
+
+            if (checkbox.checked) {
+                // Generar token automáticamente al activar
+                generateInitialToken();
+                configSection.style.display = 'block';
+
+                // Simular actualización del endpoint con tenantId real
+                const tenantId = 'TENANT' + Math.floor(Math.random() * 10000);
+                document.getElementById('endpointSCIM').value = `https://plataforma.com/scim/v2/${tenantId}/Users`;
+            } else {
+                configSection.style.display = 'none';
+                if (!confirm('¿Está seguro que desea desactivar la integración SCIM? Esto puede afectar la sincronización de usuarios.')) {
+                    checkbox.checked = true;
+                }
+            }
+        }
+
+        function generateInitialToken() {
+            // Generar token aleatorio de 32 caracteres
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let token = '';
+            for (let i = 0; i < 32; i++) {
+                token += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            currentToken = token;
+            document.getElementById('bearerToken').value = token;
+
+            // Establecer fecha de expiración (90 días)
+            const expDate = new Date();
+            expDate.setDate(expDate.getDate() + 90);
+            document.getElementById('fechaExpiracion').value = expDate.toLocaleString('es-CO');
+            document.getElementById('expiracionHelper').textContent = 'El token expirará en 90 días';
+            document.getElementById('expiracionHelper').style.color = '#4CAF50';
+        }
+
+        function toggleTokenVisibility() {
+            const tokenInput = document.getElementById('bearerToken');
+            const icon = document.getElementById('tokenVisibilityIcon');
+
+            tokenVisible = !tokenVisible;
+            tokenInput.type = tokenVisible ? 'text' : 'password';
+            icon.textContent = tokenVisible ? 'visibility_off' : 'visibility';
+        }
+
+        function copyToClipboard(fieldId) {
+            const input = document.getElementById(fieldId);
+            input.select();
+            input.setSelectionRange(0, 99999); // Para móviles
+
+            try {
+                navigator.clipboard.writeText(input.value).then(() => {
+                    // Mostrar feedback visual
+                    const originalBg = input.style.backgroundColor;
+                    input.style.backgroundColor = '#E8F5E9';
+                    setTimeout(() => {
+                        input.style.backgroundColor = originalBg;
+                    }, 500);
+                    alert('Copiado al portapapeles');
+                });
+            } catch (err) {
+                alert('No se pudo copiar. Por favor, copie manualmente.');
+            }
+        }
+
+        function regenerateToken() {
+            if (!confirm('¿Está seguro que desea regenerar el token? El token anterior dejará de funcionar y deberá actualizar la configuración en su Identity Provider.')) {
+                return;
+            }
+
+            generateInitialToken();
+            alert('Token regenerado exitosamente. Asegúrese de actualizar la configuración en su Identity Provider.');
+
+            // El token anterior se guarda en historial (simulación)
+            console.log('Token anterior guardado en historial:', currentToken);
+        }
+
+        function validateURL() {
+            const input = document.getElementById('urlIdpSAML');
+            const helper = document.getElementById('urlIdpHelper');
+            const url = input.value.trim();
+
+            if (!url) {
+                input.classList.remove('error', 'success');
+                helper.className = 'helper-text';
+                helper.textContent = 'Ingrese la URL HTTPS de su Identity Provider SAML';
+                return;
+            }
+
+            // Validar que comience con https://
+            if (!url.startsWith('https://')) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'Ingrese una URL HTTPS válida del Identity Provider';
+                return;
+            }
+
+            // Validar formato de URL
+            try {
+                new URL(url);
+                input.classList.remove('error');
+                input.classList.add('success');
+                helper.className = 'helper-text success';
+                helper.innerHTML = '<span class="material-icons" style="font-size:16px;">check_circle</span> URL válida';
+            } catch (e) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'Formato de URL inválido';
+            }
+
+            checkScimFormValidity();
+        }
+
+        function validateCertificate() {
+            const input = document.getElementById('certificadoSAML');
+            const helper = document.getElementById('certificadoHelper');
+            const cert = input.value.trim();
+
+            if (!cert) {
+                input.classList.remove('error', 'success');
+                helper.className = 'helper-text';
+                helper.textContent = 'Pegue el certificado X.509 público de su Identity Provider';
+                return;
+            }
+
+            // Validar que contenga BEGIN y END CERTIFICATE
+            if (!cert.includes('-----BEGIN CERTIFICATE-----') || !cert.includes('-----END CERTIFICATE-----')) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'Certificado SAML no válido. Debe contener los bloques BEGIN/END CERTIFICATE';
+                return;
+            }
+
+            // Validación simplificada de formato base64
+            const certContent = cert.replace('-----BEGIN CERTIFICATE-----', '')
+                                   .replace('-----END CERTIFICATE-----', '')
+                                   .replace(/\s/g, '');
+
+            const base64Regex = /^[A-Za-z0-9+/=]+$/;
+            if (!base64Regex.test(certContent)) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'El contenido del certificado no es válido';
+                return;
+            }
+
+            input.classList.remove('error');
+            input.classList.add('success');
+            helper.className = 'helper-text success';
+            helper.innerHTML = '<span class="material-icons" style="font-size:16px;">check_circle</span> Certificado válido';
+
+            checkScimFormValidity();
+        }
+
+        function validateDuracion() {
+            const input = document.getElementById('duracionSesion');
+            const helper = document.getElementById('duracionHelper');
+            const valor = parseInt(input.value);
+
+            if (isNaN(valor) || valor < 1 || valor > 24) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'La duración debe estar entre 1 y 24 horas';
+                return;
+            }
+
+            input.classList.remove('error');
+            input.classList.add('success');
+            helper.className = 'helper-text';
+            helper.textContent = `Duración configurada: ${valor} hora${valor > 1 ? 's' : ''}`;
+
+            checkScimFormValidity();
+        }
+
+        function checkScimFormValidity() {
+            const urlValida = document.getElementById('urlIdpSAML').classList.contains('success');
+            const certValido = document.getElementById('certificadoSAML').classList.contains('success');
+            const duracionValida = document.getElementById('duracionSesion').classList.contains('success');
+            const scimActivo = document.getElementById('scimActivo').checked;
+
+            const saveBtn = document.getElementById('saveScimBtn');
+            saveBtn.disabled = !(scimActivo && urlValida && certValido && duracionValida);
+        }
+
+        function saveScimConfig() {
+            const config = {
+                scimActivo: document.getElementById('scimActivo').checked,
+                endpoint: document.getElementById('endpointSCIM').value,
+                bearerToken: currentToken,
+                fechaExpiracion: document.getElementById('fechaExpiracion').value,
+                urlIdp: document.getElementById('urlIdpSAML').value,
+                certificado: document.getElementById('certificadoSAML').value,
+                duracionSesion: document.getElementById('duracionSesion').value
+            };
+
+            console.log('Configuración SCIM a guardar:', config);
+
+            // Simulación de guardado exitoso
+            alert('Configuración SCIM guardada exitosamente.\n\n' +
+                  'Endpoint: ' + config.endpoint + '\n' +
+                  'Token generado: ' + config.bearerToken.substring(0, 10) + '...\n' +
+                  'Duración de sesión: ' + config.duracionSesion + ' horas\n\n' +
+                  'Configure estos valores en su Identity Provider.');
+
+            // Ocultar token después del primer guardado (simulación)
+            setTimeout(() => {
+                document.getElementById('bearerToken').type = 'password';
+                tokenVisible = false;
+                document.getElementById('tokenVisibilityIcon').textContent = 'visibility';
+            }, 3000);
+        }
+
+        // Validar formulario SCIM al cambiar cualquier campo
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('urlIdpSAML')?.addEventListener('blur', validateURL);
+            document.getElementById('certificadoSAML')?.addEventListener('blur', validateCertificate);
+            document.getElementById('duracionSesion')?.addEventListener('blur', validateDuracion);
+        });
     </script>
 </body>
 </html>
