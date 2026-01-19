@@ -428,10 +428,8 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Código</th>
                                     <th>Nombre</th>
                                     <th>Descripción</th>
-                                    <th style="text-align: right;">Precio</th>
                                     <th style="text-align: center; width: 100px;">Acciones</th>
                                 </tr>
                             </thead>
@@ -476,12 +474,7 @@
                     <input type="hidden" id="productIndex" value="-1">
 
                     <div class="form-row">
-                        <div class="form-group">
-                            <label for="productCodigo" class="required">Código</label>
-                            <input type="text" id="productCodigo" placeholder="Ej: PROD001" maxlength="20" required />
-                            <div class="helper-text" id="codigoHelper"></div>
-                        </div>
-                        <div class="form-group">
+                        <div class="form-group" style="grid-column: 1/-1;">
                             <label for="productNombre" class="required">Nombre</label>
                             <input type="text" id="productNombre" placeholder="Nombre del producto" maxlength="100" required />
                         </div>
@@ -492,17 +485,6 @@
                             <label for="productDescripcion">Descripción</label>
                             <textarea id="productDescripcion" rows="3" placeholder="Descripción del producto" maxlength="200"></textarea>
                             <div class="character-counter" id="descripcionCounter">0/200 caracteres</div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="productPrecio" class="required">Precio</label>
-                            <div style="display: flex; gap: 8px; align-items: center;">
-                                <span style="color: #757575;">$</span>
-                                <input type="number" id="productPrecio" placeholder="0.00" step="0.01" min="0" required style="flex: 1;" />
-                            </div>
-                            <div class="helper-text">Precio unitario del producto</div>
                         </div>
                     </div>
                 </form>
@@ -1076,9 +1058,9 @@
 
         // Cargar algunos productos de ejemplo (puedes comentar esto para empezar sin productos)
         // productos = [
-        //     { codigo: 'PROD001', nombre: 'Servicio de Consultoría', descripcion: 'Consultoría especializada en tecnología', precio: 150000 },
-        //     { codigo: 'PROD002', nombre: 'Licencia Software Anual', descripcion: 'Licencia de uso del software por un año', precio: 500000 },
-        //     { codigo: 'PROD003', nombre: 'Soporte Técnico Premium', descripcion: 'Soporte técnico 24/7', precio: 250000 }
+        //     { nombre: 'Servicio de Consultoría', descripcion: 'Consultoría especializada en tecnología' },
+        //     { nombre: 'Licencia Software Anual', descripcion: 'Licencia de uso del software por un año' },
+        //     { nombre: 'Soporte Técnico Premium', descripcion: 'Soporte técnico 24/7' }
         // ];
 
         function openProductModal(mode, index = -1) {
@@ -1088,15 +1070,12 @@
 
             // Resetear formulario
             form.reset();
-            document.getElementById('productCodigo').classList.remove('error', 'success');
-            document.getElementById('codigoHelper').textContent = '';
             document.getElementById('descripcionCounter').textContent = '0/200 caracteres';
 
             if (mode === 'add') {
                 modalTitle.textContent = 'Agregar Producto';
                 editingProductIndex = -1;
                 document.getElementById('productIndex').value = '-1';
-                document.getElementById('productCodigo').disabled = false;
             } else if (mode === 'edit' && index >= 0) {
                 modalTitle.textContent = 'Editar Producto';
                 editingProductIndex = index;
@@ -1104,11 +1083,8 @@
 
                 // Cargar datos del producto
                 const product = productos[index];
-                document.getElementById('productCodigo').value = product.codigo;
-                document.getElementById('productCodigo').disabled = true; // No permitir editar código
                 document.getElementById('productNombre').value = product.nombre;
                 document.getElementById('productDescripcion').value = product.descripcion || '';
-                document.getElementById('productPrecio').value = product.precio;
 
                 // Actualizar contador
                 const descLen = (product.descripcion || '').length;
@@ -1132,60 +1108,19 @@
             }
         }
 
-        function validateProductCodigo() {
-            const codigo = document.getElementById('productCodigo').value.trim();
-            const helper = document.getElementById('codigoHelper');
-            const input = document.getElementById('productCodigo');
-
-            if (!codigo) {
-                input.classList.remove('error', 'success');
-                helper.className = 'helper-text';
-                helper.textContent = '';
-                return false;
-            }
-
-            // Verificar duplicados (excepto cuando estamos editando)
-            const isDuplicate = productos.some((p, idx) =>
-                p.codigo.toUpperCase() === codigo.toUpperCase() && idx !== editingProductIndex
-            );
-
-            if (isDuplicate) {
-                input.classList.add('error');
-                input.classList.remove('success');
-                helper.className = 'helper-text error';
-                helper.textContent = 'Este código ya existe';
-                return false;
-            } else {
-                input.classList.remove('error');
-                input.classList.add('success');
-                helper.className = 'helper-text success';
-                helper.innerHTML = '<span class="material-icons" style="font-size:16px;">check_circle</span> Código disponible';
-                return true;
-            }
-        }
-
         function saveProduct() {
-            const codigo = document.getElementById('productCodigo').value.trim();
             const nombre = document.getElementById('productNombre').value.trim();
             const descripcion = document.getElementById('productDescripcion').value.trim();
-            const precio = parseFloat(document.getElementById('productPrecio').value);
 
             // Validaciones básicas
-            if (!codigo || !nombre || !precio || precio <= 0) {
-                alert('Por favor complete todos los campos obligatorios correctamente');
-                return;
-            }
-
-            // Validar código no duplicado
-            if (!validateProductCodigo() && editingProductIndex === -1) {
+            if (!nombre) {
+                alert('Por favor ingrese el nombre del producto');
                 return;
             }
 
             const producto = {
-                codigo: codigo.toUpperCase(),
                 nombre: nombre,
-                descripcion: descripcion,
-                precio: precio
+                descripcion: descripcion
             };
 
             if (editingProductIndex >= 0) {
@@ -1252,10 +1187,8 @@
                 const realIndex = startIndex + idx;
                 const row = `
                     <tr>
-                        <td><strong>${product.codigo}</strong></td>
-                        <td>${product.nombre}</td>
+                        <td><strong>${product.nombre}</strong></td>
                         <td>${product.descripcion || '<span style="color: #9E9E9E;">Sin descripción</span>'}</td>
-                        <td style="text-align: right;">$${product.precio.toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                         <td style="text-align: center;">
                             <button type="button" class="icon-btn" onclick="openProductModal('edit', ${realIndex})" title="Editar producto" style="color: #4A5A9E;">
                                 <span class="material-icons">edit</span>
@@ -1307,9 +1240,6 @@
                 const counter = document.getElementById('descripcionCounter');
                 counter.textContent = `${this.value.length}/200 caracteres`;
             });
-
-            document.getElementById('productCodigo')?.addEventListener('input', validateProductCodigo);
-            document.getElementById('productCodigo')?.addEventListener('blur', validateProductCodigo);
 
             // Renderizar tabla inicial
             renderProductsTable();
