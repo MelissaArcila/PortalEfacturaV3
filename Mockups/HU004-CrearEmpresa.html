@@ -47,6 +47,17 @@
         td { padding: 12px; font-size: 14px; color: #616161; border-top: 1px solid #F5F5F5; }
         .icon-btn { background: transparent; border: none; cursor: pointer; padding: 4px; color: #F44336; }
         .button-group { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid #E0E0E0; }
+
+        /* Estilos del modal */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 0; border-radius: 12px; width: 90%; max-width: 600px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .modal-header { padding: 24px; border-bottom: 1px solid #E0E0E0; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { margin: 0; font-size: 1.5rem; color: #4A5A9E; display: flex; align-items: center; gap: 8px; }
+        .modal-body { padding: 24px; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid #E0E0E0; display: flex; justify-content: flex-end; gap: 12px; }
+        .close-modal { color: #9E9E9E; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.3s; }
+        .close-modal:hover { color: #D4145A; }
+
         @media (max-width: 768px) { .container { padding: 24px; } .form-row { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -388,11 +399,122 @@
                 </div>
             </div>
 
+            <!-- Sección 5: Productos -->
+            <div class="section">
+                <h2 class="section-title" onclick="toggleSection(this)">
+                    <span class="material-icons">inventory_2</span>
+                    Productos
+                    <span class="material-icons collapse-icon">expand_more</span>
+                </h2>
+
+                <div class="section-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <p style="color: #757575; margin: 0;">Gestione los productos de la empresa</p>
+                        <button type="button" class="btn btn-primary btn-small" onclick="openProductModal('add')">
+                            <span class="material-icons" style="font-size: 16px; vertical-align: middle;">add</span>
+                            Agregar Producto
+                        </button>
+                    </div>
+
+                    <!-- Mensaje cuando no hay productos -->
+                    <div id="noProductsMessage" style="text-align: center; padding: 48px 24px; background-color: #FAFAFA; border-radius: 8px; border: 1px dashed #BDBDBD;">
+                        <span class="material-icons" style="font-size: 64px; color: #BDBDBD;">inventory_2</span>
+                        <p style="color: #757575; margin: 16px 0 0 0; font-size: 16px;">No hay productos registrados</p>
+                        <p style="color: #9E9E9E; margin: 8px 0 0 0; font-size: 14px;">Haga clic en "Agregar Producto" para crear el primer producto</p>
+                    </div>
+
+                    <!-- Tabla de productos -->
+                    <div id="productsTableContainer" style="display: none;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th style="text-align: right;">Precio</th>
+                                    <th style="text-align: center; width: 100px;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody"></tbody>
+                        </table>
+
+                        <!-- Paginación -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #E0E0E0;">
+                            <div style="color: #757575; font-size: 14px;" id="paginationInfo"></div>
+                            <div style="display: flex; gap: 8px;">
+                                <button type="button" class="btn btn-secondary btn-small" onclick="changePage(-1)" id="prevPageBtn" disabled>
+                                    <span class="material-icons" style="font-size: 16px;">chevron_left</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-small" onclick="changePage(1)" id="nextPageBtn" disabled>
+                                    <span class="material-icons" style="font-size: 16px;">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="button-group">
                 <button type="button" class="btn btn-secondary" onclick="handleCancel()">Cancelar</button>
                 <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Crear Empresa</button>
             </div>
         </form>
+    </div>
+
+    <!-- Modal de Producto -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>
+                    <span class="material-icons">inventory_2</span>
+                    <span id="modalTitle">Agregar Producto</span>
+                </h2>
+                <span class="close-modal" onclick="closeProductModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productIndex" value="-1">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productCodigo" class="required">Código</label>
+                            <input type="text" id="productCodigo" placeholder="Ej: PROD001" maxlength="20" required />
+                            <div class="helper-text" id="codigoHelper"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="productNombre" class="required">Nombre</label>
+                            <input type="text" id="productNombre" placeholder="Nombre del producto" maxlength="100" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="productDescripcion">Descripción</label>
+                            <textarea id="productDescripcion" rows="3" placeholder="Descripción del producto" maxlength="200"></textarea>
+                            <div class="character-counter" id="descripcionCounter">0/200 caracteres</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productPrecio" class="required">Precio</label>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <span style="color: #757575;">$</span>
+                                <input type="number" id="productPrecio" placeholder="0.00" step="0.01" min="0" required style="flex: 1;" />
+                            </div>
+                            <div class="helper-text">Precio unitario del producto</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="saveProduct()" id="saveProductBtn">
+                    <span class="material-icons" style="font-size: 16px; vertical-align: middle;">save</span>
+                    Guardar
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -944,6 +1066,254 @@
                 document.getElementById('tokenVisibilityIcon').textContent = 'visibility';
             }, 3000);
         }
+
+        // ========== FUNCIONES DE PRODUCTOS ==========
+
+        let productos = [];
+        let currentPage = 1;
+        const productsPerPage = 5;
+        let editingProductIndex = -1;
+
+        // Cargar algunos productos de ejemplo (puedes comentar esto para empezar sin productos)
+        // productos = [
+        //     { codigo: 'PROD001', nombre: 'Servicio de Consultoría', descripcion: 'Consultoría especializada en tecnología', precio: 150000 },
+        //     { codigo: 'PROD002', nombre: 'Licencia Software Anual', descripcion: 'Licencia de uso del software por un año', precio: 500000 },
+        //     { codigo: 'PROD003', nombre: 'Soporte Técnico Premium', descripcion: 'Soporte técnico 24/7', precio: 250000 }
+        // ];
+
+        function openProductModal(mode, index = -1) {
+            const modal = document.getElementById('productModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const form = document.getElementById('productForm');
+
+            // Resetear formulario
+            form.reset();
+            document.getElementById('productCodigo').classList.remove('error', 'success');
+            document.getElementById('codigoHelper').textContent = '';
+            document.getElementById('descripcionCounter').textContent = '0/200 caracteres';
+
+            if (mode === 'add') {
+                modalTitle.textContent = 'Agregar Producto';
+                editingProductIndex = -1;
+                document.getElementById('productIndex').value = '-1';
+                document.getElementById('productCodigo').disabled = false;
+            } else if (mode === 'edit' && index >= 0) {
+                modalTitle.textContent = 'Editar Producto';
+                editingProductIndex = index;
+                document.getElementById('productIndex').value = index;
+
+                // Cargar datos del producto
+                const product = productos[index];
+                document.getElementById('productCodigo').value = product.codigo;
+                document.getElementById('productCodigo').disabled = true; // No permitir editar código
+                document.getElementById('productNombre').value = product.nombre;
+                document.getElementById('productDescripcion').value = product.descripcion || '';
+                document.getElementById('productPrecio').value = product.precio;
+
+                // Actualizar contador
+                const descLen = (product.descripcion || '').length;
+                document.getElementById('descripcionCounter').textContent = `${descLen}/200 caracteres`;
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('productModal');
+            modal.style.display = 'none';
+            editingProductIndex = -1;
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target === modal) {
+                closeProductModal();
+            }
+        }
+
+        function validateProductCodigo() {
+            const codigo = document.getElementById('productCodigo').value.trim();
+            const helper = document.getElementById('codigoHelper');
+            const input = document.getElementById('productCodigo');
+
+            if (!codigo) {
+                input.classList.remove('error', 'success');
+                helper.className = 'helper-text';
+                helper.textContent = '';
+                return false;
+            }
+
+            // Verificar duplicados (excepto cuando estamos editando)
+            const isDuplicate = productos.some((p, idx) =>
+                p.codigo.toUpperCase() === codigo.toUpperCase() && idx !== editingProductIndex
+            );
+
+            if (isDuplicate) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'Este código ya existe';
+                return false;
+            } else {
+                input.classList.remove('error');
+                input.classList.add('success');
+                helper.className = 'helper-text success';
+                helper.innerHTML = '<span class="material-icons" style="font-size:16px;">check_circle</span> Código disponible';
+                return true;
+            }
+        }
+
+        function saveProduct() {
+            const codigo = document.getElementById('productCodigo').value.trim();
+            const nombre = document.getElementById('productNombre').value.trim();
+            const descripcion = document.getElementById('productDescripcion').value.trim();
+            const precio = parseFloat(document.getElementById('productPrecio').value);
+
+            // Validaciones básicas
+            if (!codigo || !nombre || !precio || precio <= 0) {
+                alert('Por favor complete todos los campos obligatorios correctamente');
+                return;
+            }
+
+            // Validar código no duplicado
+            if (!validateProductCodigo() && editingProductIndex === -1) {
+                return;
+            }
+
+            const producto = {
+                codigo: codigo.toUpperCase(),
+                nombre: nombre,
+                descripcion: descripcion,
+                precio: precio
+            };
+
+            if (editingProductIndex >= 0) {
+                // Editar producto existente
+                productos[editingProductIndex] = producto;
+                alert('Producto actualizado correctamente');
+            } else {
+                // Agregar nuevo producto
+                productos.push(producto);
+                alert('Producto agregado correctamente');
+            }
+
+            closeProductModal();
+            renderProductsTable();
+
+            // Recalcular altura de la sección
+            const sectionContent = document.querySelector('#productsTableContainer').closest('.section-content');
+            if (sectionContent && !sectionContent.classList.contains('collapsed')) {
+                setTimeout(() => {
+                    sectionContent.style.maxHeight = sectionContent.scrollHeight + 'px';
+                }, 10);
+            }
+        }
+
+        function deleteProduct(index) {
+            const product = productos[index];
+            if (confirm(`¿Está seguro que desea eliminar el producto "${product.nombre}"?`)) {
+                productos.splice(index, 1);
+
+                // Ajustar página actual si es necesario
+                const totalPages = Math.ceil(productos.length / productsPerPage);
+                if (currentPage > totalPages && currentPage > 1) {
+                    currentPage = totalPages;
+                }
+
+                renderProductsTable();
+                alert('Producto eliminado correctamente');
+            }
+        }
+
+        function renderProductsTable() {
+            const noProductsMsg = document.getElementById('noProductsMessage');
+            const tableContainer = document.getElementById('productsTableContainer');
+            const tbody = document.getElementById('productsTableBody');
+
+            if (productos.length === 0) {
+                noProductsMsg.style.display = 'block';
+                tableContainer.style.display = 'none';
+                return;
+            }
+
+            noProductsMsg.style.display = 'none';
+            tableContainer.style.display = 'block';
+
+            // Calcular paginación
+            const totalPages = Math.ceil(productos.length / productsPerPage);
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = Math.min(startIndex + productsPerPage, productos.length);
+            const currentProducts = productos.slice(startIndex, endIndex);
+
+            // Renderizar filas
+            tbody.innerHTML = '';
+            currentProducts.forEach((product, idx) => {
+                const realIndex = startIndex + idx;
+                const row = `
+                    <tr>
+                        <td><strong>${product.codigo}</strong></td>
+                        <td>${product.nombre}</td>
+                        <td>${product.descripcion || '<span style="color: #9E9E9E;">Sin descripción</span>'}</td>
+                        <td style="text-align: right;">$${product.precio.toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td style="text-align: center;">
+                            <button type="button" class="icon-btn" onclick="openProductModal('edit', ${realIndex})" title="Editar producto" style="color: #4A5A9E;">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <button type="button" class="icon-btn" onclick="deleteProduct(${realIndex})" title="Eliminar producto">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+
+            // Actualizar información de paginación
+            document.getElementById('paginationInfo').textContent =
+                `Mostrando ${startIndex + 1}-${endIndex} de ${productos.length} productos`;
+
+            // Actualizar botones de paginación
+            document.getElementById('prevPageBtn').disabled = currentPage === 1;
+            document.getElementById('nextPageBtn').disabled = currentPage === totalPages;
+        }
+
+        function changePage(direction) {
+            const totalPages = Math.ceil(productos.length / productsPerPage);
+            currentPage += direction;
+
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            renderProductsTable();
+        }
+
+        // Event listener para contador de caracteres en descripción del producto
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicialización existente...
+            document.querySelectorAll('.section-content').forEach(content => {
+                if (!content.classList.contains('collapsed')) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+
+            // Event listeners para validación SCIM
+            document.getElementById('urlIdpSAML')?.addEventListener('blur', validateURL);
+            document.getElementById('certificadoSAML')?.addEventListener('blur', validateCertificate);
+            document.getElementById('duracionSesion')?.addEventListener('blur', validateDuracion);
+
+            // Event listeners para productos
+            document.getElementById('productDescripcion')?.addEventListener('input', function() {
+                const counter = document.getElementById('descripcionCounter');
+                counter.textContent = `${this.value.length}/200 caracteres`;
+            });
+
+            document.getElementById('productCodigo')?.addEventListener('input', validateProductCodigo);
+            document.getElementById('productCodigo')?.addEventListener('blur', validateProductCodigo);
+
+            // Renderizar tabla inicial
+            renderProductsTable();
+        });
     </script>
 </body>
 </html>
