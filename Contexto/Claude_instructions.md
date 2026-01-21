@@ -79,6 +79,66 @@ Cada Historia de Usuario debe:
 - Considerar seguridad, permisos y trazabilidad desde la perspectiva funcional.
 - Permitir que arquitectura tome decisiones técnicas informadas a partir de la HU.
 
+⚛️ ATOMIZACIÓN DE HISTORIAS DE USUARIO (OBLIGATORIO)
+
+### Principio de Atomización
+Las Historias de Usuario deben ser **lo más pequeñas y autónomas posible** para facilitar entregas tempranas, testing incremental y reducir riesgos.
+
+### ¿Cuándo atomizar una HU?
+Una HU debe dividirse en HUs más pequeñas cuando:
+- ✅ Tiene **más de 15 escenarios funcionales** (sin contar auditoría)
+- ✅ Aborda **múltiples pantallas o flujos independientes**
+- ✅ Contiene **componentes que pueden entregarse y probarse de forma separada**
+- ✅ Un componente puede generar **valor de negocio por sí mismo**
+- ✅ La complejidad dificulta la comprensión, estimación o testing
+
+### ¿Cuándo NO atomizar?
+Mantener una HU unificada cuando:
+- ❌ Los componentes están **fuertemente acoplados** y no tienen sentido por separado
+- ❌ Dividirla genera **dependencias circulares** o muy complejas
+- ❌ La HU ya es **pequeña y simple** (≤10 escenarios)
+- ❌ La división genera **duplicación significativa** de contexto o escenarios de auditoría
+
+### Nomenclatura de HUs Atomizadas
+Al atomizar una HU, usar el siguiente formato:
+- **HU original**: HU002 - Recuperación de Contraseña
+- **HU atomizada 1**: HU002A - Solicitud de Recuperación de Contraseña
+- **HU atomizada 2**: HU002B - Validación de Enlace de Recuperación
+- **HU atomizada 3**: HU002C - Restablecimiento de Contraseña
+
+### Criterios de Atomización
+Al dividir una HU en partes más pequeñas:
+1. **Identificar componentes funcionales independientes** que tengan cohesión interna
+2. **Establecer dependencias claras** entre HUs atomizadas (ej: HU002A → HU002B → HU002C)
+3. **Asignar escenarios completos** a cada HU atomizada (incluyendo su auditoría correspondiente)
+4. **Mantener el contexto necesario** en cada HU para que sea comprensible por sí misma
+5. **Verificar que cada HU atomizada puede entregarse y probarse de forma independiente**
+
+### Estructura de HU Atomizada
+Cada HU atomizada debe incluir:
+- ✅ **Contexto propio** que explique su alcance específico y dependencias
+- ✅ **Enunciados de historia** enfocados en su componente funcional
+- ✅ **Escenarios funcionales** completos de su alcance
+- ✅ **Escenarios de auditoría** correspondientes
+- ✅ **Mockups/Wireframes** específicos de sus pantallas
+- ✅ **Riesgos** relevantes a su alcance
+- ✅ **Notas sobre "Fuera de Alcance"** indicando qué se cubre en otras HUs atomizadas
+- ✅ **Sección de "Dependencias"** que liste las HUs relacionadas (previas y posteriores)
+
+### Ventajas de la Atomización
+1. **Entregas tempranas**: Poder entregar valor incremental al negocio
+2. **Testing focalizado**: Cada HU es más fácil de probar exhaustivamente
+3. **Desarrollo paralelo**: Diferentes equipos pueden trabajar simultáneamente
+4. **Menor riesgo**: Problemas en una parte no bloquean las demás
+5. **Mejor priorización**: Poder decidir qué componente es más crítico
+6. **Estimaciones más precisas**: HUs pequeñas son más fáciles de estimar
+
+### Ejemplo de Atomización Correcta
+**HU002 Original** (37 escenarios) → **3 HUs atomizadas**:
+- **HU002A** - Solicitud de Recuperación (Escenarios 1-2, 12-17 + auditoría): Pantalla de solicitud, validaciones, envío de correo
+- **HU002B** - Validación de Enlace (Escenarios 3, 9-11, 17 + auditoría): Validación de token, pantallas de error
+- **HU002C** - Restablecimiento de Contraseña (Escenarios 4-8, 18-20 + auditoría): Cambio de contraseña, validaciones de requisitos
+
 🚫 RESTRICCIONES
 - No incluir detalles técnicos ni suposiciones de implementación.
 - No mencionar componentes técnicos o decisiones de diseño.
