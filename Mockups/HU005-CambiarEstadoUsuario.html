@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HU005 - Cambiar Estado de Usuario - Portal Unificado Efactura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', Arial, sans-serif; background-color: #FAFAFA; }
+        .navbar { background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%); color: white; padding: 16px 24px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+        .navbar h1 { font-size: 1.25rem; font-weight: 600; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .header h2 { font-size: 2rem; font-weight: 600; color: #212121; }
+        .btn { padding: 12px 24px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 8px; cursor: pointer; transition: all 0.3s; border: none; font-family: 'Roboto', Arial, sans-serif; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn-primary { background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%); color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .btn-primary:hover { box-shadow: 0 6px 16px rgba(74, 90, 158, 0.3); transform: translateY(-2px); }
+        .btn-outlined { background: white; color: #4A5A9E; border: 1px solid #4A5A9E; }
+        .btn-outlined:hover { background: #F5F5F5; }
+        .btn-text { background: transparent; color: #4A5A9E; }
+        .btn-text:hover { background: #F5F5F5; }
+        .btn-danger { background: #F44336; color: white; }
+        .btn-danger:hover { background: #D32F2F; box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3); }
+        .btn-success { background: #4CAF50; color: white; }
+        .btn-success:hover { background: #388E3C; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3); }
+        .table-container { background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background-color: #F5F5F5; padding: 16px; text-align: left; font-size: 13px; font-weight: 600; color: #424242; border-bottom: 2px solid #E0E0E0; }
+        td { padding: 16px; font-size: 14px; color: #616161; border-bottom: 1px solid #F5F5F5; }
+        tr:hover { background-color: #FAFAFA; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; }
+        .badge-primary { background-color: #E3F2FD; color: #1565C0; }
+        .badge-secondary { background-color: #FCE4EC; color: #C2185B; }
+        .chip { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; }
+        .chip-success { background-color: #E8F5E9; color: #2E7D32; }
+        .chip-default { background-color: #E0E0E0; color: #616161; }
+        .chip-error { background-color: #FFEBEE; color: #C62828; }
+        .actions { display: flex; gap: 8px; }
+        .icon-btn { background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 4px; transition: background-color 0.2s; }
+        .icon-btn:hover { background-color: #F5F5F5; }
+        .icon-btn .material-icons { font-size: 20px; color: #757575; }
+        .icon-btn:hover .material-icons { color: #4A5A9E; }
+
+        /* Modal Overlay */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-overlay.hidden { display: none; }
+
+        /* Modal */
+        .modal { background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; animation: modalSlideIn 0.3s ease-out; }
+        @keyframes modalSlideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* Modal Header */
+        .modal-header { padding: 24px; border-bottom: 1px solid #E0E0E0; display: flex; align-items: center; gap: 16px; }
+        .modal-header.warning { background-color: #FFF3E0; border-bottom-color: #FF9800; }
+        .modal-header.danger { background-color: #FFEBEE; border-bottom-color: #F44336; }
+        .modal-header.success { background-color: #E8F5E9; border-bottom-color: #4CAF50; }
+        .modal-header .material-icons { font-size: 32px; }
+        .modal-header.warning .material-icons { color: #FF9800; }
+        .modal-header.danger .material-icons { color: #F44336; }
+        .modal-header.success .material-icons { color: #4CAF50; }
+        .modal-header h3 { font-size: 1.5rem; font-weight: 600; color: #212121; margin: 0; flex: 1; }
+        .modal-close { background: transparent; border: none; cursor: pointer; padding: 8px; border-radius: 50%; transition: background-color 0.2s; }
+        .modal-close:hover { background-color: rgba(0, 0, 0, 0.05); }
+        .modal-close .material-icons { font-size: 24px; color: #757575; }
+
+        /* Modal Body */
+        .modal-body { padding: 24px; }
+        .modal-body p { font-size: 14px; color: #616161; line-height: 1.6; margin-bottom: 16px; }
+        .user-info-box { background: #F5F5F5; border-radius: 8px; padding: 16px; margin: 16px 0; border-left: 4px solid #4A5A9E; }
+        .user-info-box .user-name { font-size: 16px; font-weight: 600; color: #212121; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .user-info-box .user-details { font-size: 13px; color: #757575; display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin-top: 8px; }
+        .user-info-box .user-details .label { font-weight: 500; }
+
+        /* Form Group */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; color: #424242; margin-bottom: 8px; }
+        .form-group label .required { color: #F44336; }
+        .form-group textarea { width: 100%; padding: 12px; font-size: 14px; font-family: 'Roboto', Arial, sans-serif; border: 1px solid #BDBDBD; border-radius: 4px; resize: vertical; min-height: 100px; }
+        .form-group textarea:focus { outline: none; border-color: #4A5A9E; border-width: 2px; padding: 11px; }
+        .form-group .helper-text { font-size: 12px; color: #757575; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+        .form-group .helper-text .material-icons { font-size: 14px; }
+        .char-counter { font-size: 12px; color: #9E9E9E; text-align: right; margin-top: 4px; }
+
+        /* Alert Box */
+        .alert-box { padding: 16px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px; }
+        .alert-box.warning { background-color: #FFF3E0; border-left: 4px solid #FF9800; }
+        .alert-box.danger { background-color: #FFEBEE; border-left: 4px solid #F44336; }
+        .alert-box.info { background-color: #E3F2FD; border-left: 4px solid #2196F3; }
+        .alert-box .material-icons { font-size: 24px; }
+        .alert-box.warning .material-icons { color: #FF9800; }
+        .alert-box.danger .material-icons { color: #F44336; }
+        .alert-box.info .material-icons { color: #2196F3; }
+        .alert-box-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: #212121; }
+        .alert-box-content p { font-size: 13px; color: #616161; margin: 0; }
+        .alert-box-content ul { margin: 8px 0 0 20px; padding: 0; }
+        .alert-box-content li { font-size: 13px; color: #616161; margin-bottom: 4px; }
+
+        /* Modal Footer */
+        .modal-footer { padding: 16px 24px; border-top: 1px solid #E0E0E0; display: flex; gap: 12px; justify-content: flex-end; background-color: #FAFAFA; }
+
+        @media (max-width: 768px) { .modal { width: 95%; } .modal-header h3 { font-size: 1.25rem; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Portal Unificado CDN - Administración</h1>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h2>Gestión de Usuarios</h2>
+            <button class="btn btn-primary">
+                <span class="material-icons">add_circle</span>
+                Crear Nuevo Usuario
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Número ID</th>
+                        <th>Nombre Completo</th>
+                        <th>Correo Electrónico</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Permisos Asignados</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>123456789</td>
+                        <td>Juan Carlos Pérez Gómez</td>
+                        <td>juan.perez@cdnfacturacion.com</td>
+                        <td><span class="badge badge-primary">Interno</span></td>
+                        <td><span class="chip chip-success">Activo</span></td>
+                        <td><a href="#" class="permission-link">5 permisos</a></td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" title="Ver Detalle">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="showInactivateModal()" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="background-color: #FFFDE7;">
+                        <td>987654321</td>
+                        <td>María Fernanda López Torres</td>
+                        <td>maria.lopez@empresaabc.com</td>
+                        <td><span class="badge badge-secondary">Cliente</span></td>
+                        <td><span class="chip chip-default">Inactivo</span></td>
+                        <td><a href="#" class="permission-link">2 permisos</a></td>
+                        <td>
+                            <div class="actions">
+                                <button class="icon-btn" title="Ver Detalle">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button class="icon-btn" title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <button class="icon-btn" onclick="showActivateModal()" title="Más opciones">
+                                    <span class="material-icons">more_vert</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal: Inactivar Usuario -->
+    <div class="modal-overlay" id="inactivateModal">
+        <div class="modal">
+            <div class="modal-header warning">
+                <span class="material-icons">warning</span>
+                <h3>Inactivar Usuario</h3>
+                <button class="modal-close" onclick="closeModal('inactivateModal')">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>Está a punto de <strong>inactivar</strong> al siguiente usuario. El usuario no podrá acceder al sistema hasta que sea reactivado.</p>
+
+                <div class="user-info-box">
+                    <div class="user-name">
+                        <span class="material-icons" style="color: #4A5A9E;">person</span>
+                        Juan Carlos Pérez Gómez
+                    </div>
+                    <div class="user-details">
+                        <span class="label">ID:</span>
+                        <span>123456789</span>
+                        <span class="label">Correo:</span>
+                        <span>juan.perez@cdnfacturacion.com</span>
+                        <span class="label">Tipo:</span>
+                        <span><span class="badge badge-primary">Interno</span></span>
+                        <span class="label">Estado actual:</span>
+                        <span><span class="chip chip-success">Activo</span></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inactivateReason">
+                        Razón de la inactivación <span class="required">*</span>
+                    </label>
+                    <textarea
+                        id="inactivateReason"
+                        placeholder="Ingrese la razón por la cual se inactiva este usuario (ej: vacaciones programadas, cambio de rol, solicitud del cliente, etc.)"
+                        maxlength="500"
+                        oninput="updateCharCount('inactivateReason', 'inactivateCharCount')"
+                        required
+                    ></textarea>
+                    <div class="char-counter">
+                        <span id="inactivateCharCount">0</span> / 500 caracteres
+                    </div>
+                    <div class="helper-text">
+                        <span class="material-icons">info</span>
+                        Esta razón quedará registrada en la auditoría del sistema
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-text" onclick="closeModal('inactivateModal')">
+                    <span class="material-icons">close</span>
+                    Cancelar
+                </button>
+                <button class="btn btn-danger" onclick="confirmInactivate()">
+                    <span class="material-icons">block</span>
+                    Inactivar Usuario
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Activar Usuario -->
+    <div class="modal-overlay hidden" id="activateModal">
+        <div class="modal">
+            <div class="modal-header success">
+                <span class="material-icons">check_circle</span>
+                <h3>Activar Usuario</h3>
+                <button class="modal-close" onclick="closeModal('activateModal')">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>Está a punto de <strong>activar</strong> al siguiente usuario. El usuario podrá acceder nuevamente al sistema con sus permisos previamente asignados.</p>
+
+                <div class="user-info-box">
+                    <div class="user-name">
+                        <span class="material-icons" style="color: #4A5A9E;">person</span>
+                        María Fernanda López Torres
+                    </div>
+                    <div class="user-details">
+                        <span class="label">ID:</span>
+                        <span>987654321</span>
+                        <span class="label">Correo:</span>
+                        <span>maria.lopez@empresaabc.com</span>
+                        <span class="label">Tipo:</span>
+                        <span><span class="badge badge-secondary">Cliente</span></span>
+                        <span class="label">Estado actual:</span>
+                        <span><span class="chip chip-default">Inactivo</span></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="activateReason">
+                        Razón de la activación <span class="required">*</span>
+                    </label>
+                    <textarea
+                        id="activateReason"
+                        placeholder="Ingrese la razón por la cual se activa este usuario (ej: fin de vacaciones, reincorporación, solicitud del cliente, etc.)"
+                        maxlength="500"
+                        oninput="updateCharCount('activateReason', 'activateCharCount')"
+                        required
+                    ></textarea>
+                    <div class="char-counter">
+                        <span id="activateCharCount">0</span> / 500 caracteres
+                    </div>
+                    <div class="helper-text">
+                        <span class="material-icons">info</span>
+                        Esta razón quedará registrada en la auditoría del sistema
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-text" onclick="closeModal('activateModal')">
+                    <span class="material-icons">close</span>
+                    Cancelar
+                </button>
+                <button class="btn btn-success" onclick="confirmActivate()">
+                    <span class="material-icons">check_circle</span>
+                    Activar Usuario
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showInactivateModal() {
+            document.getElementById('inactivateModal').classList.remove('hidden');
+        }
+
+        function showActivateModal() {
+            document.getElementById('activateModal').classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            // Limpiar campos
+            if (modalId === 'inactivateModal') {
+                document.getElementById('inactivateReason').value = '';
+                document.getElementById('inactivateCharCount').textContent = '0';
+            } else if (modalId === 'activateModal') {
+                document.getElementById('activateReason').value = '';
+                document.getElementById('activateCharCount').textContent = '0';
+            }
+        }
+
+        function updateCharCount(textareaId, counterId) {
+            const textarea = document.getElementById(textareaId);
+            const counter = document.getElementById(counterId);
+            counter.textContent = textarea.value.length;
+        }
+
+        function confirmInactivate() {
+            const reason = document.getElementById('inactivateReason').value.trim();
+
+            if (!reason) {
+                alert('Debe ingresar una razón para la inactivación');
+                return;
+            }
+
+            if (reason.length < 10) {
+                alert('La razón debe tener al menos 10 caracteres');
+                return;
+            }
+
+            alert(`Usuario inactivado exitosamente.\n\nRazón: ${reason}\n\nSe ha registrado en la auditoría del sistema.`);
+            closeModal('inactivateModal');
+        }
+
+        function confirmActivate() {
+            const reason = document.getElementById('activateReason').value.trim();
+
+            if (!reason) {
+                alert('Debe ingresar una razón para la activación');
+                return;
+            }
+
+            if (reason.length < 10) {
+                alert('La razón debe tener al menos 10 caracteres');
+                return;
+            }
+
+            alert(`Usuario activado exitosamente.\n\nRazón: ${reason}\n\nSe ha registrado en la auditoría del sistema y se ha notificado al usuario por correo.`);
+            closeModal('activateModal');
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

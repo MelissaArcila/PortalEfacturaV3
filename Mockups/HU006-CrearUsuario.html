@@ -51,48 +51,160 @@
             padding: 32px;
         }
 
-        /* Demo State Selector */
+        /* Demo State Selector - Floating Panel */
         .demo-state-selector {
-            background: #f5f5f5;
-            border: 2px dashed #ccc;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 32px;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 320px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: white;
+            border: 2px solid #4A5A9E;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            z-index: 999;
+            transition: all 0.3s;
+        }
+
+        .demo-state-selector.collapsed {
+            width: 60px;
+            height: 60px;
+            padding: 0;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .demo-state-selector.collapsed:hover {
+            background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%);
+            transform: scale(1.05);
         }
 
         .demo-state-selector h3 {
-            font-size: 14px;
-            color: #666;
+            font-size: 15px;
+            color: #4A5A9E;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
+            font-weight: 600;
+        }
+
+        .demo-state-selector .subtitle {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.4;
         }
 
         .demo-buttons {
             display: flex;
+            flex-direction: column;
             gap: 8px;
-            flex-wrap: wrap;
         }
 
         .demo-btn {
-            padding: 8px 16px;
-            border: 1px solid #ccc;
+            padding: 10px 16px;
+            border: 2px solid #ddd;
             background: white;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
+            font-weight: 500;
             transition: all 0.3s;
+            text-align: left;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .demo-btn:hover {
-            background: #f0f0f0;
+            background: #f8f9ff;
+            border-color: #4A5A9E;
+            transform: translateX(4px);
+            box-shadow: 0 4px 8px rgba(74, 90, 158, 0.2);
         }
 
         .demo-btn.active {
-            background: #4A5A9E;
+            background: linear-gradient(135deg, #4A5A9E 0%, #D4145A 100%);
             color: white;
             border-color: #4A5A9E;
+            box-shadow: 0 4px 12px rgba(74, 90, 158, 0.3);
+        }
+
+        .collapse-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .collapse-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .collapse-btn .material-icons {
+            font-size: 20px;
+            color: #666;
+        }
+
+        .expand-icon {
+            display: none;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #4A5A9E;
+        }
+
+        .demo-state-selector.collapsed .expand-icon {
+            display: flex;
+        }
+
+        .demo-state-selector.collapsed h3,
+        .demo-state-selector.collapsed .subtitle,
+        .demo-state-selector.collapsed .demo-buttons,
+        .demo-state-selector.collapsed .collapse-btn {
+            display: none;
+        }
+
+        .toggle-demo-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4A5A9E;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .toggle-demo-btn:hover {
+            background: #D4145A;
+            transform: scale(1.1);
+        }
+
+        .hidden-for-screenshot {
+            display: none !important;
         }
 
         /* Form Sections */
@@ -101,6 +213,7 @@
             padding: 24px;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
+            background: white;
         }
 
         .form-section h2 {
@@ -220,6 +333,7 @@
             font-size: 12px;
             color: #666;
             margin-top: 4px;
+            display: none; /* Oculto por defecto - solo se muestra en errores */
         }
 
         .form-group .error-text {
@@ -236,11 +350,19 @@
             display: none;
         }
 
-        .form-group input.error + .error-text {
+        /* Mostrar mensajes solo en estados específicos */
+        .form-group.has-error .hint-text,
+        .form-group.has-error .error-text {
             display: block;
         }
 
-        .form-group input.success + .success-text {
+        .form-group input.error ~ .hint-text,
+        .form-group input.error ~ .error-text {
+            display: block;
+        }
+
+        .form-group.has-success .success-text,
+        .form-group input.success ~ .success-text {
             display: block;
         }
 
@@ -512,6 +634,11 @@
     </style>
 </head>
 <body>
+    <!-- Toggle Demo Controls Button -->
+    <button class="toggle-demo-btn" id="toggleDemoBtn" onclick="toggleDemoControls()" title="Ocultar/Mostrar controles de demostración">
+        <span class="material-icons">visibility_off</span>
+    </button>
+
     <div class="container">
         <div class="header">
             <h1>Crear Nuevo Usuario</h1>
@@ -519,21 +646,6 @@
         </div>
 
         <div class="content">
-            <!-- Demo State Selector -->
-            <div class="demo-state-selector">
-                <h3>
-                    <span class="material-icons" style="font-size: 16px;">science</span>
-                    Estado de Demostración
-                </h3>
-                <div class="demo-buttons">
-                    <button class="demo-btn active" onclick="showState('normal', this)">Normal</button>
-                    <button class="demo-btn" onclick="showState('id-duplicate', this)">ID Duplicado</button>
-                    <button class="demo-btn" onclick="showState('form-filled', this)">Formulario Lleno</button>
-                    <button class="demo-btn" onclick="showState('with-permissions', this)">Con Permisos</button>
-                    <button class="demo-btn" onclick="showState('ready-submit', this)">Listo para Crear</button>
-                </div>
-            </div>
-
             <form id="createUserForm">
                 <!-- Section 1: User Type -->
                 <div class="form-section">
@@ -744,6 +856,28 @@
         </div>
     </div>
 
+    <!-- Floating Demo State Selector -->
+    <div class="demo-state-selector demo-control" id="demoPanel" onclick="expandPanel(event)">
+        <div class="expand-icon">
+            <span class="material-icons">settings</span>
+        </div>
+        <button class="collapse-btn" onclick="collapsePanel(event)">
+            <span class="material-icons">chevron_left</span>
+        </button>
+        <h3>
+            <span class="material-icons" style="font-size: 18px;">camera_alt</span>
+            Estados del Formulario
+        </h3>
+        <p class="subtitle">Seleccione el estado que desea visualizar. Use el botón de la esquina superior derecha (👁️) para ocultar todos los controles.</p>
+        <div class="demo-buttons">
+            <button class="demo-btn active" onclick="showState('normal', this)">📝 Estado Normal</button>
+            <button class="demo-btn" onclick="showState('id-duplicate', this)">⚠️ ID Duplicado</button>
+            <button class="demo-btn" onclick="showState('form-filled', this)">✅ Formulario Lleno</button>
+            <button class="demo-btn" onclick="showState('with-permissions', this)">🔐 Con Permisos</button>
+            <button class="demo-btn" onclick="showState('ready-submit', this)">🚀 Listo para Crear</button>
+        </div>
+    </div>
+
     <script>
         // Mock data
         const mockCompanies = [
@@ -782,6 +916,8 @@
 
         // Demo state functions
         function showState(state, buttonElement) {
+            event.stopPropagation(); // Prevent panel collapse when clicking buttons
+
             document.querySelectorAll('.demo-btn').forEach(btn => btn.classList.remove('active'));
             buttonElement.classList.add('active');
 
@@ -854,6 +990,9 @@
             document.getElementById('createBtn').disabled = true;
             document.querySelectorAll('input').forEach(input => {
                 input.classList.remove('error', 'success');
+            });
+            document.querySelectorAll('.form-group').forEach(group => {
+                group.classList.remove('has-error', 'has-success');
             });
             renderPermissionsTable();
             hideError();
@@ -959,6 +1098,7 @@
         function checkIdUniqueness(input) {
             const value = input.value.trim();
             const errorSpan = document.getElementById('idNumberError');
+            const formGroup = input.closest('.form-group');
 
             if (!value) return;
 
@@ -967,10 +1107,14 @@
             if (existing) {
                 input.classList.add('error');
                 input.classList.remove('success');
+                formGroup.classList.add('has-error');
+                formGroup.classList.remove('has-success');
                 errorSpan.textContent = `Este número de identificación ya está registrado en el sistema. Usuario existente: ${existing.name}`;
             } else {
                 input.classList.remove('error');
                 input.classList.add('success');
+                formGroup.classList.remove('has-error');
+                formGroup.classList.add('has-success');
             }
 
             validateForm();
@@ -981,15 +1125,25 @@
         }
 
         function validateEmail(input) {
-            if (!input.value) return;
+            const formGroup = input.closest('.form-group');
+
+            if (!input.value) {
+                input.classList.remove('error', 'success');
+                formGroup.classList.remove('has-error', 'has-success');
+                return;
+            }
 
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (emailRegex.test(input.value)) {
                 input.classList.add('success');
                 input.classList.remove('error');
+                formGroup.classList.add('has-success');
+                formGroup.classList.remove('has-error');
             } else {
                 input.classList.add('error');
                 input.classList.remove('success');
+                formGroup.classList.add('has-error');
+                formGroup.classList.remove('has-success');
             }
         }
 
@@ -1169,6 +1323,42 @@
 
             sessionStorage.setItem('newUserData', JSON.stringify(formData));
             window.location.href = 'HU006-ResumenUsuario.html';
+        }
+
+        // Toggle demo controls visibility for clean screenshots
+        function toggleDemoControls() {
+            const demoControls = document.querySelectorAll('.demo-control');
+            const toggleBtn = document.getElementById('toggleDemoBtn');
+            const icon = toggleBtn.querySelector('.material-icons');
+
+            demoControls.forEach(control => {
+                control.classList.toggle('hidden-for-screenshot');
+            });
+
+            // Update button icon
+            if (demoControls[0].classList.contains('hidden-for-screenshot')) {
+                icon.textContent = 'visibility';
+                toggleBtn.title = 'Mostrar controles de demostración';
+            } else {
+                icon.textContent = 'visibility_off';
+                toggleBtn.title = 'Ocultar controles de demostración';
+            }
+        }
+
+        // Collapse the demo panel to a small button
+        function collapsePanel(event) {
+            event.stopPropagation();
+            const panel = document.getElementById('demoPanel');
+            panel.classList.add('collapsed');
+        }
+
+        // Expand the demo panel
+        function expandPanel(event) {
+            const panel = document.getElementById('demoPanel');
+            if (panel.classList.contains('collapsed')) {
+                panel.classList.remove('collapsed');
+                event.stopPropagation();
+            }
         }
     </script>
 </body>

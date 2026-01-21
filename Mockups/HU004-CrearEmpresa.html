@@ -14,7 +14,12 @@
         .header p { font-size: 14px; color: #757575; margin-bottom: 32px; }
         .section { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid #E0E0E0; }
         .section:last-of-type { border-bottom: none; }
-        .section-title { font-size: 1.25rem; font-weight: 600; color: #4A5A9E; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+        .section-title { font-size: 1.25rem; font-weight: 600; color: #4A5A9E; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; transition: color 0.3s; }
+        .section-title:hover { color: #D4145A; }
+        .section-title .collapse-icon { margin-left: auto; transition: transform 0.3s; }
+        .section-title .collapse-icon.collapsed { transform: rotate(-90deg); }
+        .section-content { overflow: hidden; transition: max-height 0.3s ease-out; }
+        .section-content.collapsed { max-height: 0 !important; }
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px; }
         .form-group { display: flex; flex-direction: column; }
         label { font-size: 14px; font-weight: 500; color: #424242; margin-bottom: 8px; }
@@ -42,6 +47,17 @@
         td { padding: 12px; font-size: 14px; color: #616161; border-top: 1px solid #F5F5F5; }
         .icon-btn { background: transparent; border: none; cursor: pointer; padding: 4px; color: #F44336; }
         .button-group { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid #E0E0E0; }
+
+        /* Estilos del modal */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 0; border-radius: 12px; width: 90%; max-width: 600px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .modal-header { padding: 24px; border-bottom: 1px solid #E0E0E0; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { margin: 0; font-size: 1.5rem; color: #4A5A9E; display: flex; align-items: center; gap: 8px; }
+        .modal-body { padding: 24px; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid #E0E0E0; display: flex; justify-content: flex-end; gap: 12px; }
+        .close-modal { color: #9E9E9E; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.3s; }
+        .close-modal:hover { color: #D4145A; }
+
         @media (max-width: 768px) { .container { padding: 24px; } .form-row { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -55,8 +71,13 @@
         <form id="empresaForm">
             <!-- Sección 1: Datos de la Empresa -->
             <div class="section">
-                <h2 class="section-title"><span class="material-icons">business</span> Datos de la Empresa</h2>
+                <h2 class="section-title" onclick="toggleSection(this)">
+                    <span class="material-icons">business</span>
+                    Datos de la Empresa
+                    <span class="material-icons collapse-icon">expand_more</span>
+                </h2>
 
+                <div class="section-content">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="tipoId" class="required">Tipo de Identificación</label>
@@ -160,12 +181,18 @@
                         <tbody id="centrosCostosBody"></tbody>
                     </table>
                 </div>
+                </div>
             </div>
 
             <!-- Sección 2: Ubicación -->
             <div class="section">
-                <h2 class="section-title"><span class="material-icons">location_on</span> Ubicación</h2>
+                <h2 class="section-title" onclick="toggleSection(this)">
+                    <span class="material-icons">location_on</span>
+                    Ubicación
+                    <span class="material-icons collapse-icon">expand_more</span>
+                </h2>
 
+                <div class="section-content">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="pais" class="required">País</label>
@@ -196,12 +223,18 @@
                         <input type="text" id="direccionPrincipal" placeholder="Calle 100 # 20-30, Oficina 502" required />
                     </div>
                 </div>
+                </div>
             </div>
 
             <!-- Sección 3: Registro Mercantil -->
             <div class="section">
-                <h2 class="section-title"><span class="material-icons">description</span> Registro Mercantil</h2>
+                <h2 class="section-title" onclick="toggleSection(this)">
+                    <span class="material-icons">description</span>
+                    Registro Mercantil
+                    <span class="material-icons collapse-icon">expand_more</span>
+                </h2>
 
+                <div class="section-content">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="matriculaMercantil" class="required">Matrícula Mercantil</label>
@@ -251,6 +284,172 @@
                     <thead><tr><th>Matrícula</th><th>Nombre</th><th>País</th><th>Dirección</th><th>Acciones</th></tr></thead>
                     <tbody id="registrosMercantilesBody"></tbody>
                 </table>
+                </div>
+            </div>
+
+            <!-- Sección 4: Configuración SCIM -->
+            <div class="section">
+                <h2 class="section-title" onclick="toggleSection(this)">
+                    <span class="material-icons">security</span>
+                    Configuración SCIM
+                    <span class="material-icons collapse-icon">expand_more</span>
+                </h2>
+
+                <div class="section-content">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                            <input type="checkbox" id="scimActivo" onchange="handleSCIMToggle()" style="width: 20px; height: 20px; cursor: pointer;" />
+                            <span style="font-weight: 600;">Integración SCIM Activa</span>
+                        </label>
+                        <div class="helper-text">Active esta opción para habilitar la sincronización de usuarios mediante SCIM</div>
+                    </div>
+                </div>
+
+                <div id="scimConfigSection" style="display: none;">
+                    <!-- Endpoint SCIM -->
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="endpointSCIM" class="required">Endpoint SCIM de la Plataforma</label>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <input type="text" id="endpointSCIM" value="https://plataforma.com/scim/v2/{tenantId}/Users" readonly
+                                    style="flex: 1; background-color: #F5F5F5;" />
+                                <button type="button" class="btn btn-secondary btn-small" onclick="copyToClipboard('endpointSCIM')" title="Copiar al portapapeles">
+                                    <span class="material-icons" style="font-size: 18px;">content_copy</span>
+                                </button>
+                            </div>
+                            <div class="helper-text">Este endpoint será utilizado por su Identity Provider para sincronizar usuarios</div>
+                        </div>
+                    </div>
+
+                    <!-- Bearer Token -->
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="bearerToken" class="required">Bearer Token SCIM</label>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <input type="password" id="bearerToken" value="" readonly
+                                    style="flex: 1; background-color: #F5F5F5; font-family: monospace;" />
+                                <button type="button" class="btn btn-secondary btn-small" onclick="toggleTokenVisibility()" title="Mostrar/Ocultar token">
+                                    <span class="material-icons" style="font-size: 18px;" id="tokenVisibilityIcon">visibility</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-small" onclick="copyToClipboard('bearerToken')" title="Copiar al portapapeles">
+                                    <span class="material-icons" style="font-size: 18px;">content_copy</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-small" onclick="regenerateToken()" title="Regenerar token">
+                                    <span class="material-icons" style="font-size: 18px;">refresh</span>
+                                </button>
+                            </div>
+                            <div class="helper-text" style="color: #F57C00; display: flex; align-items: center; gap: 4px;">
+                                <span class="material-icons" style="font-size: 16px;">warning</span>
+                                Guarde este token en un lugar seguro. Solo se muestra una vez en formato claro.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fecha de Expiración -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fechaExpiracion">Fecha de Expiración del Token</label>
+                            <input type="text" id="fechaExpiracion" value="" readonly style="background-color: #F5F5F5;" />
+                            <div class="helper-text" id="expiracionHelper">El token expirará en 90 días</div>
+                        </div>
+                    </div>
+
+                    <!-- URL del IdP SAML -->
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="urlIdpSAML" class="required">URL del Identity Provider (IdP) SAML</label>
+                            <input type="url" id="urlIdpSAML" placeholder="https://adfs.empresa.com/adfs/ls"
+                                pattern="https://.*" oninput="validateURL()" required />
+                            <div class="helper-text" id="urlIdpHelper">Ingrese la URL HTTPS de su Identity Provider SAML</div>
+                        </div>
+                    </div>
+
+                    <!-- Certificado SAML -->
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="certificadoSAML" class="required">Certificado SAML (Certificado Público del IdP)</label>
+                            <textarea id="certificadoSAML" rows="8" placeholder="-----BEGIN CERTIFICATE-----&#10;MIIDXTCCAkWgAwIBAgIJAKL0UG...&#10;-----END CERTIFICATE-----"
+                                oninput="validateCertificate()" required style="font-family: monospace; font-size: 12px;"></textarea>
+                            <div class="helper-text" id="certificadoHelper">Pegue el certificado X.509 público de su Identity Provider</div>
+                        </div>
+                    </div>
+
+                    <!-- Duración de Sesión -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="duracionSesion" class="required">Duración de Sesión (Token JWT)</label>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <input type="number" id="duracionSesion" value="4" min="1" max="24" required
+                                    oninput="validateDuracion()" style="flex: 0.3;" />
+                                <span style="color: #757575;">horas</span>
+                            </div>
+                            <div class="helper-text" id="duracionHelper">Valor entre 1 y 24 horas (por defecto: 4 horas)</div>
+                        </div>
+                    </div>
+
+                    <!-- Botón Guardar Configuración SCIM -->
+                    <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #E0E0E0;">
+                        <button type="button" class="btn btn-primary" onclick="saveScimConfig()" id="saveScimBtn" disabled>
+                            <span class="material-icons" style="font-size: 18px; vertical-align: middle;">save</span>
+                            Guardar Configuración SCIM
+                        </button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Sección 5: Productos -->
+            <div class="section">
+                <h2 class="section-title" onclick="toggleSection(this)">
+                    <span class="material-icons">inventory_2</span>
+                    Productos
+                    <span class="material-icons collapse-icon">expand_more</span>
+                </h2>
+
+                <div class="section-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <p style="color: #757575; margin: 0;">Gestione los productos de la empresa</p>
+                        <button type="button" class="btn btn-primary btn-small" onclick="openProductModal('add')">
+                            <span class="material-icons" style="font-size: 16px; vertical-align: middle;">add</span>
+                            Agregar Producto
+                        </button>
+                    </div>
+
+                    <!-- Mensaje cuando no hay productos -->
+                    <div id="noProductsMessage" style="text-align: center; padding: 48px 24px; background-color: #FAFAFA; border-radius: 8px; border: 1px dashed #BDBDBD;">
+                        <span class="material-icons" style="font-size: 64px; color: #BDBDBD;">inventory_2</span>
+                        <p style="color: #757575; margin: 16px 0 0 0; font-size: 16px;">No hay productos registrados</p>
+                        <p style="color: #9E9E9E; margin: 8px 0 0 0; font-size: 14px;">Haga clic en "Agregar Producto" para crear el primer producto</p>
+                    </div>
+
+                    <!-- Tabla de productos -->
+                    <div id="productsTableContainer" style="display: none;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th style="text-align: center; width: 100px;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody"></tbody>
+                        </table>
+
+                        <!-- Paginación -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #E0E0E0;">
+                            <div style="color: #757575; font-size: 14px;" id="paginationInfo"></div>
+                            <div style="display: flex; gap: 8px;">
+                                <button type="button" class="btn btn-secondary btn-small" onclick="changePage(-1)" id="prevPageBtn" disabled>
+                                    <span class="material-icons" style="font-size: 16px;">chevron_left</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-small" onclick="changePage(1)" id="nextPageBtn" disabled>
+                                    <span class="material-icons" style="font-size: 16px;">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="button-group">
@@ -258,6 +457,46 @@
                 <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Crear Empresa</button>
             </div>
         </form>
+    </div>
+
+    <!-- Modal de Producto -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>
+                    <span class="material-icons">inventory_2</span>
+                    <span id="modalTitle">Agregar Producto</span>
+                </h2>
+                <span class="close-modal" onclick="closeProductModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productIndex" value="-1">
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="productNombre" class="required">Nombre</label>
+                            <input type="text" id="productNombre" placeholder="Nombre del producto" maxlength="100" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label for="productDescripcion">Descripción</label>
+                            <textarea id="productDescripcion" rows="3" placeholder="Descripción del producto" maxlength="200"></textarea>
+                            <div class="character-counter" id="descripcionCounter">0/200 caracteres</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="saveProduct()" id="saveProductBtn">
+                    <span class="material-icons" style="font-size: 16px; vertical-align: middle;">save</span>
+                    Guardar
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -531,6 +770,480 @@
             const tipoId = document.getElementById('tipoId').value;
             document.getElementById('submitBtn').disabled = !numeroId || !tipoId;
         }, 500);
+
+        // ========== FUNCIONES DE COLAPSO DE SECCIONES ==========
+
+        function toggleSection(titleElement) {
+            const contentDiv = titleElement.nextElementSibling;
+            const icon = titleElement.querySelector('.collapse-icon');
+
+            if (contentDiv.classList.contains('collapsed')) {
+                // Expandir
+                contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+                contentDiv.classList.remove('collapsed');
+                icon.classList.remove('collapsed');
+            } else {
+                // Colapsar
+                contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+                // Forzar reflow
+                contentDiv.offsetHeight;
+                contentDiv.style.maxHeight = '0px';
+                contentDiv.classList.add('collapsed');
+                icon.classList.add('collapsed');
+            }
+        }
+
+        // Inicializar altura máxima de las secciones al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                if (!content.classList.contains('collapsed')) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+
+            // Event listeners para validación SCIM
+            document.getElementById('urlIdpSAML')?.addEventListener('blur', validateURL);
+            document.getElementById('certificadoSAML')?.addEventListener('blur', validateCertificate);
+            document.getElementById('duracionSesion')?.addEventListener('blur', validateDuracion);
+        });
+
+        // ========== FUNCIONES SCIM ==========
+
+        let tokenVisible = false;
+        let currentToken = '';
+
+        function handleSCIMToggle() {
+            const checkbox = document.getElementById('scimActivo');
+            const configSection = document.getElementById('scimConfigSection');
+
+            if (checkbox.checked) {
+                // Generar token automáticamente al activar
+                generateInitialToken();
+                configSection.style.display = 'block';
+
+                // Simular actualización del endpoint con tenantId real
+                const tenantId = 'TENANT' + Math.floor(Math.random() * 10000);
+                document.getElementById('endpointSCIM').value = `https://plataforma.com/scim/v2/${tenantId}/Users`;
+
+                // Recalcular altura de la sección padre
+                updateSectionHeight(checkbox);
+            } else {
+                configSection.style.display = 'none';
+                if (!confirm('¿Está seguro que desea desactivar la integración SCIM? Esto puede afectar la sincronización de usuarios.')) {
+                    checkbox.checked = true;
+                    configSection.style.display = 'block';
+                } else {
+                    // Recalcular altura de la sección padre
+                    updateSectionHeight(checkbox);
+                }
+            }
+        }
+
+        function updateSectionHeight(element) {
+            // Encontrar la sección-content padre más cercana
+            let sectionContent = element.closest('.section-content');
+            if (sectionContent && !sectionContent.classList.contains('collapsed')) {
+                // Pequeño delay para que el DOM se actualice
+                setTimeout(() => {
+                    sectionContent.style.maxHeight = sectionContent.scrollHeight + 'px';
+                }, 10);
+            }
+        }
+
+        function generateInitialToken() {
+            // Generar token aleatorio de 32 caracteres
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let token = '';
+            for (let i = 0; i < 32; i++) {
+                token += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            currentToken = token;
+            document.getElementById('bearerToken').value = token;
+
+            // Establecer fecha de expiración (90 días)
+            const expDate = new Date();
+            expDate.setDate(expDate.getDate() + 90);
+            document.getElementById('fechaExpiracion').value = expDate.toLocaleString('es-CO');
+            document.getElementById('expiracionHelper').textContent = 'El token expirará en 90 días';
+            document.getElementById('expiracionHelper').style.color = '#4CAF50';
+        }
+
+        function toggleTokenVisibility() {
+            const tokenInput = document.getElementById('bearerToken');
+            const icon = document.getElementById('tokenVisibilityIcon');
+
+            tokenVisible = !tokenVisible;
+            tokenInput.type = tokenVisible ? 'text' : 'password';
+            icon.textContent = tokenVisible ? 'visibility_off' : 'visibility';
+        }
+
+        function copyToClipboard(fieldId) {
+            const input = document.getElementById(fieldId);
+            input.select();
+            input.setSelectionRange(0, 99999); // Para móviles
+
+            try {
+                navigator.clipboard.writeText(input.value).then(() => {
+                    // Mostrar feedback visual
+                    const originalBg = input.style.backgroundColor;
+                    input.style.backgroundColor = '#E8F5E9';
+                    setTimeout(() => {
+                        input.style.backgroundColor = originalBg;
+                    }, 500);
+                    alert('Copiado al portapapeles');
+                });
+            } catch (err) {
+                alert('No se pudo copiar. Por favor, copie manualmente.');
+            }
+        }
+
+        function regenerateToken() {
+            if (!confirm('¿Está seguro que desea regenerar el token? El token anterior dejará de funcionar y deberá actualizar la configuración en su Identity Provider.')) {
+                return;
+            }
+
+            generateInitialToken();
+            alert('Token regenerado exitosamente. Asegúrese de actualizar la configuración en su Identity Provider.');
+
+            // El token anterior se guarda en historial (simulación)
+            console.log('Token anterior guardado en historial:', currentToken);
+        }
+
+        function validateURL() {
+            const input = document.getElementById('urlIdpSAML');
+            const helper = document.getElementById('urlIdpHelper');
+            const url = input.value.trim();
+
+            if (!url) {
+                input.classList.remove('error', 'success');
+                helper.className = 'helper-text';
+                helper.textContent = 'Ingrese la URL HTTPS de su Identity Provider SAML';
+                return;
+            }
+
+            // Validar que comience con https://
+            if (!url.startsWith('https://')) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'Ingrese una URL HTTPS válida del Identity Provider';
+                return;
+            }
+
+            // Validar formato de URL
+            try {
+                new URL(url);
+                input.classList.remove('error');
+                input.classList.add('success');
+                helper.className = 'helper-text success';
+                helper.innerHTML = '<span class="material-icons" style="font-size:16px;">check_circle</span> URL válida';
+            } catch (e) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'Formato de URL inválido';
+            }
+
+            checkScimFormValidity();
+        }
+
+        function validateCertificate() {
+            const input = document.getElementById('certificadoSAML');
+            const helper = document.getElementById('certificadoHelper');
+            const cert = input.value.trim();
+
+            if (!cert) {
+                input.classList.remove('error', 'success');
+                helper.className = 'helper-text';
+                helper.textContent = 'Pegue el certificado X.509 público de su Identity Provider';
+                return;
+            }
+
+            // Validar que contenga BEGIN y END CERTIFICATE
+            if (!cert.includes('-----BEGIN CERTIFICATE-----') || !cert.includes('-----END CERTIFICATE-----')) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'Certificado SAML no válido. Debe contener los bloques BEGIN/END CERTIFICATE';
+                return;
+            }
+
+            // Validación simplificada de formato base64
+            const certContent = cert.replace('-----BEGIN CERTIFICATE-----', '')
+                                   .replace('-----END CERTIFICATE-----', '')
+                                   .replace(/\s/g, '');
+
+            const base64Regex = /^[A-Za-z0-9+/=]+$/;
+            if (!base64Regex.test(certContent)) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'El contenido del certificado no es válido';
+                return;
+            }
+
+            input.classList.remove('error');
+            input.classList.add('success');
+            helper.className = 'helper-text success';
+            helper.innerHTML = '<span class="material-icons" style="font-size:16px;">check_circle</span> Certificado válido';
+
+            checkScimFormValidity();
+        }
+
+        function validateDuracion() {
+            const input = document.getElementById('duracionSesion');
+            const helper = document.getElementById('duracionHelper');
+            const valor = parseInt(input.value);
+
+            if (isNaN(valor) || valor < 1 || valor > 24) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                helper.className = 'helper-text error';
+                helper.textContent = 'La duración debe estar entre 1 y 24 horas';
+                return;
+            }
+
+            input.classList.remove('error');
+            input.classList.add('success');
+            helper.className = 'helper-text';
+            helper.textContent = `Duración configurada: ${valor} hora${valor > 1 ? 's' : ''}`;
+
+            checkScimFormValidity();
+        }
+
+        function checkScimFormValidity() {
+            const urlValida = document.getElementById('urlIdpSAML').classList.contains('success');
+            const certValido = document.getElementById('certificadoSAML').classList.contains('success');
+            const duracionValida = document.getElementById('duracionSesion').classList.contains('success');
+            const scimActivo = document.getElementById('scimActivo').checked;
+
+            const saveBtn = document.getElementById('saveScimBtn');
+            saveBtn.disabled = !(scimActivo && urlValida && certValido && duracionValida);
+        }
+
+        function saveScimConfig() {
+            const config = {
+                scimActivo: document.getElementById('scimActivo').checked,
+                endpoint: document.getElementById('endpointSCIM').value,
+                bearerToken: currentToken,
+                fechaExpiracion: document.getElementById('fechaExpiracion').value,
+                urlIdp: document.getElementById('urlIdpSAML').value,
+                certificado: document.getElementById('certificadoSAML').value,
+                duracionSesion: document.getElementById('duracionSesion').value
+            };
+
+            console.log('Configuración SCIM a guardar:', config);
+
+            // Simulación de guardado exitoso
+            alert('Configuración SCIM guardada exitosamente.\n\n' +
+                  'Endpoint: ' + config.endpoint + '\n' +
+                  'Token generado: ' + config.bearerToken.substring(0, 10) + '...\n' +
+                  'Duración de sesión: ' + config.duracionSesion + ' horas\n\n' +
+                  'Configure estos valores en su Identity Provider.');
+
+            // Ocultar token después del primer guardado (simulación)
+            setTimeout(() => {
+                document.getElementById('bearerToken').type = 'password';
+                tokenVisible = false;
+                document.getElementById('tokenVisibilityIcon').textContent = 'visibility';
+            }, 3000);
+        }
+
+        // ========== FUNCIONES DE PRODUCTOS ==========
+
+        let productos = [];
+        let currentPage = 1;
+        const productsPerPage = 5;
+        let editingProductIndex = -1;
+
+        // Cargar algunos productos de ejemplo (puedes comentar esto para empezar sin productos)
+        // productos = [
+        //     { nombre: 'Servicio de Consultoría', descripcion: 'Consultoría especializada en tecnología' },
+        //     { nombre: 'Licencia Software Anual', descripcion: 'Licencia de uso del software por un año' },
+        //     { nombre: 'Soporte Técnico Premium', descripcion: 'Soporte técnico 24/7' }
+        // ];
+
+        function openProductModal(mode, index = -1) {
+            const modal = document.getElementById('productModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const form = document.getElementById('productForm');
+
+            // Resetear formulario
+            form.reset();
+            document.getElementById('descripcionCounter').textContent = '0/200 caracteres';
+
+            if (mode === 'add') {
+                modalTitle.textContent = 'Agregar Producto';
+                editingProductIndex = -1;
+                document.getElementById('productIndex').value = '-1';
+            } else if (mode === 'edit' && index >= 0) {
+                modalTitle.textContent = 'Editar Producto';
+                editingProductIndex = index;
+                document.getElementById('productIndex').value = index;
+
+                // Cargar datos del producto
+                const product = productos[index];
+                document.getElementById('productNombre').value = product.nombre;
+                document.getElementById('productDescripcion').value = product.descripcion || '';
+
+                // Actualizar contador
+                const descLen = (product.descripcion || '').length;
+                document.getElementById('descripcionCounter').textContent = `${descLen}/200 caracteres`;
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('productModal');
+            modal.style.display = 'none';
+            editingProductIndex = -1;
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target === modal) {
+                closeProductModal();
+            }
+        }
+
+        function saveProduct() {
+            const nombre = document.getElementById('productNombre').value.trim();
+            const descripcion = document.getElementById('productDescripcion').value.trim();
+
+            // Validaciones básicas
+            if (!nombre) {
+                alert('Por favor ingrese el nombre del producto');
+                return;
+            }
+
+            const producto = {
+                nombre: nombre,
+                descripcion: descripcion
+            };
+
+            if (editingProductIndex >= 0) {
+                // Editar producto existente
+                productos[editingProductIndex] = producto;
+                alert('Producto actualizado correctamente');
+            } else {
+                // Agregar nuevo producto
+                productos.push(producto);
+                alert('Producto agregado correctamente');
+            }
+
+            closeProductModal();
+            renderProductsTable();
+
+            // Recalcular altura de la sección
+            const sectionContent = document.querySelector('#productsTableContainer').closest('.section-content');
+            if (sectionContent && !sectionContent.classList.contains('collapsed')) {
+                setTimeout(() => {
+                    sectionContent.style.maxHeight = sectionContent.scrollHeight + 'px';
+                }, 10);
+            }
+        }
+
+        function deleteProduct(index) {
+            const product = productos[index];
+            if (confirm(`¿Está seguro que desea eliminar el producto "${product.nombre}"?`)) {
+                productos.splice(index, 1);
+
+                // Ajustar página actual si es necesario
+                const totalPages = Math.ceil(productos.length / productsPerPage);
+                if (currentPage > totalPages && currentPage > 1) {
+                    currentPage = totalPages;
+                }
+
+                renderProductsTable();
+                alert('Producto eliminado correctamente');
+            }
+        }
+
+        function renderProductsTable() {
+            const noProductsMsg = document.getElementById('noProductsMessage');
+            const tableContainer = document.getElementById('productsTableContainer');
+            const tbody = document.getElementById('productsTableBody');
+
+            if (productos.length === 0) {
+                noProductsMsg.style.display = 'block';
+                tableContainer.style.display = 'none';
+                return;
+            }
+
+            noProductsMsg.style.display = 'none';
+            tableContainer.style.display = 'block';
+
+            // Calcular paginación
+            const totalPages = Math.ceil(productos.length / productsPerPage);
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = Math.min(startIndex + productsPerPage, productos.length);
+            const currentProducts = productos.slice(startIndex, endIndex);
+
+            // Renderizar filas
+            tbody.innerHTML = '';
+            currentProducts.forEach((product, idx) => {
+                const realIndex = startIndex + idx;
+                const row = `
+                    <tr>
+                        <td><strong>${product.nombre}</strong></td>
+                        <td>${product.descripcion || '<span style="color: #9E9E9E;">Sin descripción</span>'}</td>
+                        <td style="text-align: center;">
+                            <button type="button" class="icon-btn" onclick="openProductModal('edit', ${realIndex})" title="Editar producto" style="color: #4A5A9E;">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <button type="button" class="icon-btn" onclick="deleteProduct(${realIndex})" title="Eliminar producto">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+
+            // Actualizar información de paginación
+            document.getElementById('paginationInfo').textContent =
+                `Mostrando ${startIndex + 1}-${endIndex} de ${productos.length} productos`;
+
+            // Actualizar botones de paginación
+            document.getElementById('prevPageBtn').disabled = currentPage === 1;
+            document.getElementById('nextPageBtn').disabled = currentPage === totalPages;
+        }
+
+        function changePage(direction) {
+            const totalPages = Math.ceil(productos.length / productsPerPage);
+            currentPage += direction;
+
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            renderProductsTable();
+        }
+
+        // Event listener para contador de caracteres en descripción del producto
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicialización existente...
+            document.querySelectorAll('.section-content').forEach(content => {
+                if (!content.classList.contains('collapsed')) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+
+            // Event listeners para validación SCIM
+            document.getElementById('urlIdpSAML')?.addEventListener('blur', validateURL);
+            document.getElementById('certificadoSAML')?.addEventListener('blur', validateCertificate);
+            document.getElementById('duracionSesion')?.addEventListener('blur', validateDuracion);
+
+            // Event listeners para productos
+            document.getElementById('productDescripcion')?.addEventListener('input', function() {
+                const counter = document.getElementById('descripcionCounter');
+                counter.textContent = `${this.value.length}/200 caracteres`;
+            });
+
+            // Renderizar tabla inicial
+            renderProductsTable();
+        });
     </script>
 </body>
 </html>
