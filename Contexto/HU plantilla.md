@@ -69,4 +69,31 @@
 
 
 
+---
+
+## Dependencias
+
+**HUs que deben completarse antes de esta:**
+- <HUXXX - Título de HU previa>
+- <HUYYYY - Título de otra HU previa>
+
+**HUs que dependen de esta:**
+- <HUZZZ - Título de HU posterior>
+
+**Integraciones o sistemas externos:**
+- <Sistema/Servicio externo si aplica>
+
+---
+
+## Fuera de Alcance
+
+**Esta HU NO incluye:**
+- <Funcionalidad que NO está incluida>
+- <Aspecto que se cubrirá en otra HU>
+- <Validación o escenario que se abordará posteriormente>
+
+**Razón:**
+<Justificación de por qué estos elementos están fuera de alcance>
+
+---
 

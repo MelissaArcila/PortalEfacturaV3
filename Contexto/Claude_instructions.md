@@ -99,63 +99,111 @@ Cada Historia de Usuario debe:
 
 ⚛️ ATOMIZACIÓN DE HISTORIAS DE USUARIO (OBLIGATORIO)
 
-### Principio de Atomización
-Las Historias de Usuario deben ser **lo más pequeñas y autónomas posible** para facilitar entregas tempranas, testing incremental y reducir riesgos.
+### Principio Fundamental de Atomización
+Las Historias de Usuario deben ser **lo más pequeñas posible** manteniendo **valor entregable**. El enfoque debe estar en **facilidad de desarrollo**, **simplicidad** y **entrega continua**, no en funcionalidades completas.
 
-### ¿Cuándo atomizar una HU?
-Una HU debe dividirse en HUs más pequeñas cuando:
-- ✅ Tiene **más de 15 escenarios funcionales** (sin contar auditoría)
-- ✅ Aborda **múltiples pantallas o flujos independientes**
-- ✅ Contiene **componentes que pueden entregarse y probarse de forma separada**
-- ✅ Un componente puede generar **valor de negocio por sí mismo**
-- ✅ La complejidad dificulta la comprensión, estimación o testing
+### Filosofía de Desarrollo Incremental
+Las HUs NO deben estar orientadas a **funcionalidades completas**, sino a **incrementos entregables pequeños** que:
+- 🎯 Agreguen valor de negocio mínimo pero verificable
+- 🚀 Faciliten el desarrollo (menor complejidad cognitiva)
+- ✅ Permitan testing rápido y efectivo
+- 🔄 Habiliten entrega continua (CI/CD)
+- 🧩 Sean simples de entender y estimar
+
+**Regla de Oro:** Si una HU puede dividirse en partes más pequeñas que aún aporten valor, **debe dividirse**.
+
+### ¿Cuándo atomizar una HU? (Criterios Proactivos)
+Una HU DEBE dividirse en HUs más pequeñas cuando:
+- ✅ Tiene **más de 8 escenarios funcionales** (sin contar auditoría)
+- ✅ Aborda **más de una pantalla o flujo**
+- ✅ Mezcla **diferentes tipos de operaciones** (ej: listado + creación + edición)
+- ✅ Contiene **componentes que pueden entregarse por separado**
+- ✅ Un **camino feliz simple** puede extraerse como HU independiente
+- ✅ La **complejidad dificulta** la estimación en menos de 2 días de desarrollo
+- ✅ Requiere **múltiples validaciones de negocio** independientes
 
 ### ¿Cuándo NO atomizar?
-Mantener una HU unificada cuando:
-- ❌ Los componentes están **fuertemente acoplados** y no tienen sentido por separado
-- ❌ Dividirla genera **dependencias circulares** o muy complejas
-- ❌ La HU ya es **pequeña y simple** (≤10 escenarios)
-- ❌ La división genera **duplicación significativa** de contexto o escenarios de auditoría
+Mantener una HU unificada SOLO cuando:
+- ❌ Los componentes están **tan acoplados** que separarlos es artificial
+- ❌ La HU ya es **muy pequeña** (≤ 5 escenarios, 1 pantalla, camino feliz simple)
+- ❌ Dividirla genera **dependencias circulares** imposibles de resolver
+- ❌ La división **no aporta valor** entregable en cada parte
+
+### Estrategia de Atomización: Vertical Slices
+
+**Preferir siempre "Vertical Slices"** (rebanadas verticales):
+- Cada HU debe atravesar todas las capas necesarias (UI, lógica, datos)
+- Pero con el **alcance funcional mínimo posible**
+- Enfocarse en **un solo flujo** o **un solo caso de uso** por HU
+
+**Ejemplos de Vertical Slices:**
+
+**❌ Evitar HUs por "capa horizontal":**
+- HU004A - "Modelo de datos de Empresa"
+- HU004B - "API de Empresa"
+- HU004C - "Interfaz de Empresa"
+
+**✅ Preferir HUs por "slice vertical":**
+- HU004A - "Listado básico de empresas (solo lectura, sin filtros)"
+- HU004B - "Búsqueda de empresas por NIT"
+- HU004C - "Creación de empresa: datos mínimos obligatorios"
+- HU004D - "Creación de empresa: información complementaria"
+- HU004E - "Edición de empresa: datos de identificación"
 
 ### Nomenclatura de HUs Atomizadas
 Al atomizar una HU, usar el siguiente formato:
-- **HU original**: HU002 - Recuperación de Contraseña
+- **HU original conceptual**: HU002 - Recuperación de Contraseña
 - **HU atomizada 1**: HU002A - Solicitud de Recuperación de Contraseña
 - **HU atomizada 2**: HU002B - Validación de Enlace de Recuperación
 - **HU atomizada 3**: HU002C - Restablecimiento de Contraseña
 
-### Criterios de Atomización
+**Nomenclatura descriptiva:**
+Cada HU atomizada debe tener un título que describa **claramente el incremento específico** que entrega, no solo la entidad o módulo general.
+
+### Criterios de Atomización Enfocados en Simplicidad
 Al dividir una HU en partes más pequeñas:
-1. **Identificar componentes funcionales independientes** que tengan cohesión interna
-2. **Establecer dependencias claras** entre HUs atomizadas (ej: HU002A → HU002B → HU002C)
-3. **Asignar escenarios completos** a cada HU atomizada (incluyendo su auditoría correspondiente)
-4. **Mantener el contexto necesario** en cada HU para que sea comprensible por sí misma
-5. **Verificar que cada HU atomizada puede entregarse y probarse de forma independiente**
+1. **Priorizar el camino feliz primero**: Crear una HU solo con el flujo exitoso básico
+2. **Separar validaciones complejas**: Cada validación de negocio compleja puede ser una HU adicional
+3. **Dividir por operación**: Listado, Creación, Edición, Eliminación como HUs separadas
+4. **Separar manejo de errores**: El camino feliz en una HU, escenarios de error en otra
+5. **Establecer dependencias claras**: HU002A → HU002B → HU002C (secuencia lógica)
+6. **Cada HU debe ser demostrable**: Debe poder mostrarse funcionando al negocio
 
-### Estructura de HU Atomizada
+### Estructura de HU Atomizada (Simplificada)
 Cada HU atomizada debe incluir:
-- ✅ **Contexto propio** que explique su alcance específico y dependencias
-- ✅ **Enunciados de historia** enfocados en su componente funcional
-- ✅ **Escenarios funcionales** completos de su alcance
-- ✅ **Escenarios de auditoría** correspondientes
-- ✅ **Mockups/Wireframes** específicos de sus pantallas
-- ✅ **Riesgos** relevantes a su alcance
-- ✅ **Notas sobre "Fuera de Alcance"** indicando qué se cubre en otras HUs atomizadas
-- ✅ **Sección de "Dependencias"** que liste las HUs relacionadas (previas y posteriores)
+- ✅ **Contexto conciso** (2-3 párrafos máximo)
+- ✅ **Enunciados de historia** enfocados en el incremento específico
+- ✅ **Escenarios funcionales mínimos** (idealmente 3-8 escenarios)
+- ✅ **Auditoría solo si aplica** (no duplicar auditoría innecesariamente)
+- ✅ **Mockup/Wireframe específico** (si tiene interfaz)
+- ✅ **Dependencias claras**: Qué HUs deben completarse antes
+- ✅ **Fuera de Alcance explícito**: Qué NO incluye esta HU pero sí futuras
 
-### Ventajas de la Atomización
-1. **Entregas tempranas**: Poder entregar valor incremental al negocio
-2. **Testing focalizado**: Cada HU es más fácil de probar exhaustivamente
-3. **Desarrollo paralelo**: Diferentes equipos pueden trabajar simultáneamente
-4. **Menor riesgo**: Problemas en una parte no bloquean las demás
-5. **Mejor priorización**: Poder decidir qué componente es más crítico
-6. **Estimaciones más precisas**: HUs pequeñas son más fáciles de estimar
+### Ventajas del Nuevo Enfoque
+1. **Desarrollo más rápido**: HUs pequeñas se completan en 1-2 días
+2. **Testing más simple**: Menos escenarios = testing más exhaustivo
+3. **Feedback temprano**: Demos frecuentes con incrementos reales
+4. **Menor riesgo**: Problemas detectados tempranamente
+5. **Mejor priorización**: Flexibilidad para reordenar HUs según necesidad
+6. **CI/CD habilitado**: Deploys frecuentes de incrementos pequeños
+7. **Simplicidad cognitiva**: Desarrollador se enfoca en una cosa a la vez
 
-### Ejemplo de Atomización Correcta
-**HU002 Original** (37 escenarios) → **3 HUs atomizadas**:
-- **HU002A** - Solicitud de Recuperación (Escenarios 1-2, 12-17 + auditoría): Pantalla de solicitud, validaciones, envío de correo
-- **HU002B** - Validación de Enlace (Escenarios 3, 9-11, 17 + auditoría): Validación de token, pantallas de error
-- **HU002C** - Restablecimiento de Contraseña (Escenarios 4-8, 18-20 + auditoría): Cambio de contraseña, validaciones de requisitos
+### Ejemplo de Atomización con Nuevo Enfoque
+
+**Funcionalidad Completa:** "Gestión de Usuarios"
+
+**❌ Enfoque antiguo (orientado a funcionalidad):**
+- HU005 - Gestión de Usuarios (20+ escenarios: listado, búsqueda, filtros, creación, edición, permisos, etc.)
+
+**✅ Enfoque nuevo (orientado a incrementos):**
+- **HU005A** - "Listado básico de usuarios activos" (3 escenarios: visualizar tabla, paginación básica, ordenar por nombre)
+- **HU005B** - "Búsqueda de usuarios por nombre o correo" (4 escenarios: búsqueda simple, sin resultados, limpiar búsqueda, combinar con paginación)
+- **HU005C** - "Filtros avanzados de usuarios" (5 escenarios: filtrar por rol, por cliente, por estado, combinar filtros, limpiar filtros)
+- **HU005D** - "Visualizar detalle de usuario" (3 escenarios: ver información completa, ver permisos asignados, ver auditoría del usuario)
+- **HU005E** - "Crear usuario: datos básicos" (6 escenarios: formulario básico, validaciones mínimas, guardar, cancelar, mensajes de éxito/error)
+- **HU005F** - "Crear usuario: asignación de rol" (4 escenarios: seleccionar rol, visualizar permisos del rol, asignar, guardar)
+- **HU005G** - "Editar usuario: información personal" (5 escenarios: cargar datos, modificar, validaciones, guardar, auditoría)
+- **HU005H** - "Editar usuario: modificar rol y permisos" (4 escenarios: cambiar rol, ajustar permisos específicos, guardar, auditoría)
 
 🚫 RESTRICCIONES
 - No incluir detalles técnicos ni suposiciones de implementación.
